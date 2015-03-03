@@ -18,9 +18,38 @@ public class PlayerController : MonoBehaviour {
 	{
 		float horizontal, vertical;
 
+		horizontal = 0;
+		vertical = 0;
+
+		#if UNITY_STANDALONE || UNITY_WEBPLAYER
+
 		horizontal = Input.GetAxisRaw ("Horizontal");
-		//vertical = Input.GetAxisRaw ("Vertical");
-		vertical = (Input.GetButtonDown ("Jump") ? 1.0f : 0.0f );
+		if ( Input.GetButtonDown ("Jump") )
+		{
+			vertical = 1.0f;
+		}
+		else
+		{
+			vertical = 0.0f;
+		}
+			
+
+		#elif UNITY_IOS || UNITY_ANDROID || UNITY_WP8 || UNITY_IPHONE
+
+		if (Input.touchCount > 0) 
+		{
+			Touch touch = Input.GetTouch(0);
+			if (touch.phase == TouchPhase.Began)
+			{
+				vertical = 1.0f;
+			}
+			else
+			{
+				vertical = 0.0f;
+			}
+		}
+		
+		#endif
 
 		HandleInput (horizontal * walkForce, vertical * jumpForce);
 	}
