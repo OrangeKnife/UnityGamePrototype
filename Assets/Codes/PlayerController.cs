@@ -3,34 +3,60 @@ using System.Collections;
 
 public class PlayerController : MonoBehaviour {
 
+	public float threshold;
+	private bool isGrounded;
+	private bool bActivateGlide;
+	private int GlideCount;
+
 	private Rigidbody2D tmpRigidBody;
 	private float jumpForce = 500.0f;
-	private float walkForce = 10.0f;
+	private float moveSpeed = 5.0f;
+
+	private float oriGravity;
 
 	// Use this for initialization
 	void Start () 
 	{
 		tmpRigidBody = GetComponent<Rigidbody2D> ();
+		oriGravity = tmpRigidBody.gravityScale;
 	}
 	
 	// Update is called once per frame
 	void Update () 
 	{
-		float horizontal, vertical;
+		float horizontal;
+		bool ButtonJumpDown, ButtonJumpHold, ButtonJumpUp;
 
 		horizontal = 0;
-		vertical = 0;
 
 		#if UNITY_STANDALONE || UNITY_WEBPLAYER
 
 		horizontal = Input.GetAxisRaw ("Horizontal");
-		if ( Input.GetButtonDown ("Jump") )
+		if ( Input.GetButton ("Jump") )
 		{
-			vertical = 1.0f;
+			ButtonJumpHold = true;
 		}
 		else
 		{
-			vertical = 0.0f;
+			ButtonJumpHold = false;
+		}
+
+		if ( Input.GetButtonDown ("Jump") )
+		{
+			ButtonJumpDown = true;
+		}
+		else
+		{
+			ButtonJumpDown = false;
+		}
+
+		if ( Input.GetButtonUp ("Jump") )
+		{
+			ButtonJumpUp = true;
+		}
+		else
+		{
+			ButtonJumpUp = false;
 		}
 			
 
@@ -51,13 +77,72 @@ public class PlayerController : MonoBehaviour {
 		
 		#endif
 
-		HandleInput (horizontal * walkForce, vertical * jumpForce);
+		HandleInput (horizontal, ButtonJumpDown, ButtonJumpHold, ButtonJumpUp);
 	}
 
-	void HandleInput(float horizontal, float vertical)
+	void OnCollisionEnter2D(Collision2D coll) 
 	{
+		if (coll.gameObject.tag == "Ground") 
+		{
+			isGrounded = true;
+		}
+	}
+
+	void OnCollisionExit2D(Collision2D coll) 
+	{
+		if (coll.gameObject.tag == "Ground") 
+		{
+			isGrounded = false;
+		}
+	}
+
+	void HandleInput(float horizontal, bool bButtonJumpDown, bool bButtonJumpHold, bool bButtonJumpUp)
+	{
+		float tmpForce;
 		Vector2 tmpVec;
-		tmpVec = new Vector2 (horizontal, vertical);
-		tmpRigidBody.AddForce ( tmpVec );
+
+		tmpRigidBody.velocity = new Vector2 (horizontal * moveSpeed, tmpRigidBody.velocity.y);
+
+		if (!isGrounded) 
+		{
+			// in air
+			if (bButtonJumpDown)
+			{
+				// tap jump button
+				bActivateGlide = true;
+				GlideCount++;
+			}
+
+			if (bButtonJumpUp)
+			{
+				// release jump button
+				bActivateGlide = false;
+			}
+
+			if (bActivateGlide)
+			{
+				tmpRigidBody.velocity = new Vector2(tmpRigidBody.velocity.x, 0.0f);
+				tmpRigidBody.gravityScale = 0.0f;
+			}
+			else
+			{
+				tmpRigidBody.gravityScale = oriGravity;
+			}
+		} 
+		else 
+		{
+			// on ground
+			bActivateGlide = false;
+			GlideCount = 0;
+
+			tmpForce = (bButtonJumpDown ? 1.0f : 0.0f) * jumpForce;
+			
+			if (tmpForce != 0) 
+			{
+				tmpVec = new Vector2 (0.0f, tmpForce);
+				tmpRigidBody.AddForce (tmpVec);
+				isGrounded = false;
+			}
+		}
 	}
 }
