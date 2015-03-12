@@ -11,6 +11,8 @@ public class PlayerController : MonoBehaviour {
 	private Rigidbody2D tmpRigidBody;
 	private float jumpForce = 500.0f;
 	private float moveSpeed = 5.0f;
+	public GameObject groundObj;
+	private GameObject currentGround;
 
 	private float oriGravity;
 
@@ -19,6 +21,10 @@ public class PlayerController : MonoBehaviour {
 	{
 		tmpRigidBody = GetComponent<Rigidbody2D> ();
 		oriGravity = tmpRigidBody.gravityScale;
+		print ("test start");
+		currentGround = groundObj;
+		//GameObject clone;
+		//clone = (GameObject)Instantiate(tmpRigidBody, transform.position, transform.rotation);
 	}
 	
 	// Update is called once per frame
@@ -96,13 +102,31 @@ public class PlayerController : MonoBehaviour {
 		}
 	}
 
+	void OnOutSection() 
+	{
+			
+	}
+
 	void HandleInput(float horizontal, bool bButtonJumpDown, bool bButtonJumpHold, bool bButtonJumpUp)
 	{
 		float tmpForce;
 		Vector2 tmpVec;
 
 		tmpRigidBody.velocity = new Vector2 (horizontal * moveSpeed, tmpRigidBody.velocity.y);
+		//print (transform.position.x + "," + groundObj.transform.position.x);
+		if(transform.position.x >= currentGround.transform.position.x)
+		{
 
+			//print (transform.position.x + "," + groundObj.transform.position.x);
+			//float addX = groundObj.transform.localScale.x;
+			//currentGround.transform.position.x+=addX;
+			//groundObj.transform.position.x+=addX;
+			//print("bound: "+groundObj.mesh.bounds.size.x);
+			//float fx = groundObj.GetComponent(MeshFilter).mesh.bounds.extents.x; 
+			Vector3 addX = new Vector3(groundObj.transform.Find ("Platform").localScale.x,0,0);
+			Instantiate(groundObj, groundObj.transform.position+addX, groundObj.transform.rotation);
+			currentGround.transform.position += addX;
+		}
 		if (!isGrounded) 
 		{
 			// in air
@@ -123,6 +147,8 @@ public class PlayerController : MonoBehaviour {
 			{
 				tmpRigidBody.velocity = new Vector2(tmpRigidBody.velocity.x, 0.0f);
 				tmpRigidBody.gravityScale = 0.0f;
+
+
 			}
 			else
 			{
