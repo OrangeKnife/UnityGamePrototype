@@ -20,6 +20,7 @@ public class PlayerController : MonoBehaviour {
 	void Start () 
 	{
 		tmpRigidBody = GetComponent<Rigidbody2D> ();
+		//tmpRigidBody.useGravity = false;
 		oriGravity = tmpRigidBody.gravityScale;
 
 //		print ("test start");
@@ -28,7 +29,13 @@ public class PlayerController : MonoBehaviour {
 //		//clone = (GameObject)Instantiate(tmpRigidBody, transform.position, transform.rotation);
 //		groundObj.transform.position = transform.position;
 	}
-	
+	void GoForward() 
+	{
+
+		transform.position += new Vector3(1,0,0)/10;
+
+	}
+
 	// Update is called once per frame
 	void Update () 
 	{
@@ -36,6 +43,11 @@ public class PlayerController : MonoBehaviour {
 		bool ButtonJumpDown, ButtonJumpHold, ButtonJumpUp;
 
 		horizontal = 0;
+
+		// Command to make player go forward forever
+		// when pree button( -> ) player will move faster
+		GoForward ();
+
 
 		#if UNITY_STANDALONE || UNITY_WEBPLAYER
 
