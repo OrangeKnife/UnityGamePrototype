@@ -25,6 +25,7 @@ public class PlayerController : MonoBehaviour {
 		currentGround = groundObj;
 		//GameObject clone;
 		//clone = (GameObject)Instantiate(tmpRigidBody, transform.position, transform.rotation);
+		groundObj.transform.position = transform.position;
 	}
 	
 	// Update is called once per frame
@@ -113,7 +114,7 @@ public class PlayerController : MonoBehaviour {
 		Vector2 tmpVec;
 
 		tmpRigidBody.velocity = new Vector2 (horizontal * moveSpeed, tmpRigidBody.velocity.y);
-		//print (transform.position.x + "," + groundObj.transform.position.x);
+		print (transform.position.x + "," + groundObj.transform.position.x);
 		if(transform.position.x >= currentGround.transform.position.x)
 		{
 
