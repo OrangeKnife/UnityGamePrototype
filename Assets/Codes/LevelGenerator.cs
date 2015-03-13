@@ -25,14 +25,14 @@ public class LevelGenerator : MonoBehaviour {
 	// store spawned section here, so we know how many we have and can kill it properly
 	private LinkedList<GameObject> SpawnedSectionList;
 	private float LastSectionBeginPosition;
-	public bool isSelectCurrentLevel() {
-		print ("test");
-		if (currentLevel!=null) {
-			return true;
-		} else { 
-			return false;
-		}
-	}
+//	public bool isSelectCurrentLevel() {
+//		print ("test");
+//		if (currentLevel!=null) {
+//			return true;
+//		} else { 
+//			return false;
+//		}
+//	}
 	void OnGUI () {
 		// Make a background box
 		GUI.Box(new Rect(10,10,100,120), "Loader Menu");
@@ -62,10 +62,10 @@ public class LevelGenerator : MonoBehaviour {
 		SpawnedSectionList = new LinkedList<GameObject>();
 
 		// init first 2-3 sections here
-		for (int i = 0; i < 3; ++i)
-		{
-			SpawnSection(currentLevel[Random.Range(0,SectionArray_Easy.Count)]);
-		}
+		//for (int i = 0; i < 3; ++i)
+		//{
+			SpawnSection(currentLevel[Random.Range(0,currentLevel.Count)]);
+		//}
 	}
 	
 	// Update is called once per frame
@@ -75,7 +75,7 @@ public class LevelGenerator : MonoBehaviour {
 		if (player.transform.position.x > LastSectionBeginPosition)
 		{
 			///// player enters last section
-			SpawnSection(currentLevel[Random.Range(0,SectionArray_Easy.Count)]);
+			SpawnSection(currentLevel[Random.Range(0,currentLevel.Count)]);
 		}
 	}
 
