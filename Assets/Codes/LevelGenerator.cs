@@ -75,7 +75,7 @@ public class LevelGenerator : MonoBehaviour {
 		if (player.transform.position.x > LastSectionBeginPosition)
 		{
 			///// player enters last section
-			SpawnSection(currentLevel[Random.Range(0,SectionArray_Hard.Count)]);
+			SpawnSection(currentLevel[Random.Range(0,SectionArray_Easy.Count)]);
 		}
 	}
 
@@ -103,10 +103,17 @@ public class LevelGenerator : MonoBehaviour {
 		{
 			// spawn next section next to last section
 			GameObject lastSection = SpawnedSectionList.Last.Value;
-			Bounds lastSectionBound = lastSection.GetComponent<BoxCollider2D>().bounds;
+//			Bounds lastSectionBound = lastSection.GetComponent<BoxCollider2D>().bounds;
+//			Bounds randomSectionBound = randomSection.GetComponent<BoxCollider2D>().bounds;
+
+			Bounds lastSectionBound = lastSection.GetComponent<LevelSectionScript>().boundingBox;
 			Bounds randomSectionBound = randomSection.GetComponent<BoxCollider2D>().bounds;
+		
 			randomSection.transform.position = new Vector3( lastSectionBound.max.x + randomSectionBound.extents.x, 0, 0 );
 		}
+
+		randomSection.GetComponent<LevelSectionScript>().boundingBox = randomSection.GetComponent<BoxCollider2D>().bounds;
+		randomSection.GetComponent<BoxCollider2D>().enabled = false;
 
 		///// add spawned section to the list
 		SpawnedSectionList.AddLast(randomSection);

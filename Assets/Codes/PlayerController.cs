@@ -4,13 +4,17 @@ using System.Collections;
 public class PlayerController : MonoBehaviour {
 
 	public float threshold;
-	private bool isGrounded;
 	private bool bActivateGlide;
+	private int MaxGlideAllow = 2;
 	private int GlideCount;
 
 	private Rigidbody2D tmpRigidBody;
 	private float jumpForce = 500.0f;
 	private float moveSpeed = 5.0f;
+	private float distToGround = 0.0f;
+
+	private bool isDead;
+
 //	public GameObject groundObj;
 //	private GameObject currentGround;
 
@@ -23,17 +27,32 @@ public class PlayerController : MonoBehaviour {
 		//tmpRigidBody.useGravity = false;
 		oriGravity = tmpRigidBody.gravityScale;
 
+		distToGround = GetComponent<BoxCollider2D>().bounds.extents.y;
+
 //		print ("test start");
 //		currentGround = groundObj;
 //		//GameObject clone;
 //		//clone = (GameObject)Instantiate(tmpRigidBody, transform.position, transform.rotation);
 //		groundObj.transform.position = transform.position;
 	}
-	void GoForward() 
+
+	void UpdatePlayer()
 	{
+		///// if your face into something, you died
+		Debug.DrawRay(transform.position, transform.right, Color.green);
+		RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.right, distToGround + 0.1f, 1 << LayerMask.NameToLayer("Level"));
+		if ( hit.collider != null )
+		{
+			isDead = true;
+		}
 
-		transform.position += new Vector3(1,0,0)/10;
-
+		///// also your back
+		Debug.DrawRay(transform.position, -transform.right, Color.red);
+		hit = Physics2D.Raycast(transform.position, -transform.right, distToGround + 0.1f, 1 << LayerMask.NameToLayer("Level"));
+		if ( hit.collider != null )
+		{
+			isDead = true;
+		}
 	}
 
 	// Update is called once per frame
@@ -42,11 +61,21 @@ public class PlayerController : MonoBehaviour {
 		float horizontal;
 		bool ButtonJumpDown, ButtonJumpHold, ButtonJumpUp;
 
-		horizontal = 0;
+		UpdatePlayer();
+		if (isDead)
+		{
+			transform.position = new Vector3(-10.0f, 5.0f, 0.0f);
+			transform.rotation = Quaternion.identity;
 
-		// Command to make player go forward forever
-		// when pree button( -> ) player will move faster
-		GoForward ();
+			tmpRigidBody.angularVelocity = 0.0f;
+			isDead = false;
+		}
+
+		horizontal = 0;
+		ButtonJumpDown = false;
+		ButtonJumpHold = false;
+		ButtonJumpUp = false;
+
 
 
 		#if UNITY_STANDALONE || UNITY_WEBPLAYER
@@ -87,33 +116,48 @@ public class PlayerController : MonoBehaviour {
 			Touch touch = Input.GetTouch(0);
 			if (touch.phase == TouchPhase.Began)
 			{
-				vertical = 1.0f;
+				ButtonJumpDown = true;
 			}
 			else
 			{
-				vertical = 0.0f;
+				ButtonJumpDown = false;
+			}
+
+			if (touch.phase == TouchPhase.Ended)
+			{
+				ButtonJumpUp = true;
+			}
+			else
+			{
+				ButtonJumpUp = false;
+			}
+
+			if (touch.phase == TouchPhase.Moved)
+			{
+				ButtonJumpHold = true;
+			}
+			else
+			{
+				ButtonJumpHold = false;
 			}
 		}
 		
 		#endif
 
+		horizontal = 1.0f; ///// force player to move forward only
 		HandleInput (horizontal, ButtonJumpDown, ButtonJumpHold, ButtonJumpUp);
 	}
 
-	void OnCollisionEnter2D(Collision2D coll) 
+	bool IsGrounded()
 	{
-		if (coll.gameObject.tag == "Ground") 
+		//Debug.DrawRay(transform.position, -transform.up, Color.green);
+		RaycastHit2D hit = Physics2D.Raycast(transform.position, -transform.up, distToGround + 0.1f, 1 << LayerMask.NameToLayer("Level"));
+		if ( hit.collider != null )
 		{
-			isGrounded = true;
+			if (hit.collider.gameObject.tag == "Ground" || hit.collider.gameObject.tag == "Wall")
+				return true;
 		}
-	}
-
-	void OnCollisionExit2D(Collision2D coll) 
-	{
-		if (coll.gameObject.tag == "Ground") 
-		{
-			isGrounded = false;
-		}
+		return false;
 	}
 
 	void OnOutSection() 
@@ -127,6 +171,7 @@ public class PlayerController : MonoBehaviour {
 		Vector2 tmpVec;
 
 		tmpRigidBody.velocity = new Vector2 (horizontal * moveSpeed, tmpRigidBody.velocity.y);
+
 //		print (transform.position.x + "," + groundObj.transform.position.x);
 //		if(transform.position.x >= currentGround.transform.position.x)
 //		{
@@ -141,14 +186,18 @@ public class PlayerController : MonoBehaviour {
 //			//Instantiate(groundObj, groundObj.transform.position+addX, groundObj.transform.rotation);
 //			currentGround.transform.position += addX;
 //		}
-		if (!isGrounded) 
+
+		if (!IsGrounded()) 
 		{
 			// in air
 			if (bButtonJumpDown)
 			{
 				// tap jump button
-				bActivateGlide = true;
-				GlideCount++;
+				if (GlideCount < MaxGlideAllow)
+				{
+					bActivateGlide = true;
+					GlideCount++;
+				}
 			}
 
 			if (bButtonJumpUp)
@@ -181,7 +230,6 @@ public class PlayerController : MonoBehaviour {
 			{
 				tmpVec = new Vector2 (0.0f, tmpForce);
 				tmpRigidBody.AddForce (tmpVec);
-				isGrounded = false;
 			}
 		}
 	}

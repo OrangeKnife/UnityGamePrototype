@@ -1,7 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class GameSection : MonoBehaviour {
+/// <summary>
+/// Level section script.
+/// Keep data about section here
+/// </summary>
+public class LevelSectionScript : MonoBehaviour {
+
+	public Bounds boundingBox;
 
 	// Use this for initialization
 	void Start () {
