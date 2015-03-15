@@ -55,7 +55,7 @@ public class LevelGenerator : MonoBehaviour {
 		SpawnedSectionList = new LinkedList<GameObject>();
 
 		// init first 2-3 sections here
-		for (int i = 0; i < 3; ++i)
+		for (int i = 0; i < MAXSECTIONS; ++i)
 		{
 			SpawnSection(currentLevel[Random.Range(0,currentLevel.Count)]);
 		}
@@ -64,14 +64,14 @@ public class LevelGenerator : MonoBehaviour {
 	// Update is called once per frame
 	void Update () 
 	{
-		///// check if player enter lastSection, generate more section
-		if (player.transform.position.x > LastSectionBeginPosition)
+		///// check if player enter second to last Section, generate more section
+		if (player.transform.position.x > SpawnedSectionList.Last.Previous.Value.GetComponent<LevelSectionScript>().boundingBox.min.x)
 		{
 			///// player enters last section
 			SpawnSection(currentLevel[Random.Range(0,currentLevel.Count)]);
-			SpawnSection(currentLevel[Random.Range(0,currentLevel.Count)]);
-
 		}
+
+		///// kill old sections
 		if (SpawnedSectionList.Count > MAXSECTIONS) 
 		{
 			Destroy (SpawnedSectionList.First.Value);
@@ -116,6 +116,7 @@ public class LevelGenerator : MonoBehaviour {
 		randomSection.GetComponent<BoxCollider2D>().enabled = false;
 		///// add spawned section to the list
 		SpawnedSectionList.AddLast(randomSection);
-		LastSectionBeginPosition = randomSection.GetComponent<BoxCollider2D>().bounds.min.x;
+
+		LastSectionBeginPosition = SpawnedSectionList.Last.Value.GetComponent<LevelSectionScript>().boundingBox.min.x;
 	}
 }

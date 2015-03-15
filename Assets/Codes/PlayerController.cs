@@ -8,9 +8,10 @@ public class PlayerController : MonoBehaviour {
 	private int MaxGlideAllow = 2;
 	private int GlideCount;
 
+	private ConstantForce2D tmpGravityForce;
 	private Rigidbody2D tmpRigidBody;
 	private float jumpForce = 500.0f;
-	private float moveSpeed = 5.0f;
+	private float moveSpeed = 10.0f;
 	private float distToGround = 0.0f;
 
 	private bool isDead;
@@ -18,14 +19,17 @@ public class PlayerController : MonoBehaviour {
 //	public GameObject groundObj;
 //	private GameObject currentGround;
 
+	private float PlayerGravity = 1.0f;
 	private float oriGravity;
 
 	// Use this for initialization
 	void Start () 
 	{
 		tmpRigidBody = GetComponent<Rigidbody2D> ();
-		//tmpRigidBody.useGravity = false;
-		oriGravity = tmpRigidBody.gravityScale;
+		tmpRigidBody.gravityScale = 0.0f;
+
+		tmpGravityForce = GetComponent<ConstantForce2D>();
+		SetGravity(-10.0f);
 
 		distToGround = GetComponent<BoxCollider2D>().bounds.extents.y;
 
@@ -34,6 +38,11 @@ public class PlayerController : MonoBehaviour {
 //		//GameObject clone;
 //		//clone = (GameObject)Instantiate(tmpRigidBody, transform.position, transform.rotation);
 //		groundObj.transform.position = transform.position;
+	}
+
+	void SetGravity(float val)
+	{
+		tmpGravityForce.force.y = val;
 	}
 
 	void UpdatePlayer()
@@ -144,6 +153,7 @@ public class PlayerController : MonoBehaviour {
 		
 		#endif
 
+		print ("velo=" + tmpRigidBody.velocity);
 		horizontal = 1.0f; ///// force player to move forward only
 		HandleInput (horizontal, ButtonJumpDown, ButtonJumpHold, ButtonJumpUp);
 	}
