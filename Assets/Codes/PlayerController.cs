@@ -49,7 +49,10 @@ public class PlayerController : MonoBehaviour {
 
 	void UpdatePlayer()
 	{
-		///// if your face into something, you died
+		///// force no tilt/spinning cause by rigid body
+		transform.rotation = Quaternion.identity;
+
+		///// if your face bump into something, you die
 		Debug.DrawRay(transform.position, transform.right, Color.green);
 		RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.right, distToGround + 0.1f, 1 << LayerMask.NameToLayer("Level"));
 		if ( hit.collider != null )
@@ -58,8 +61,16 @@ public class PlayerController : MonoBehaviour {
 		}
 
 		///// also your back
-		Debug.DrawRay(transform.position, -transform.right, Color.red);
+		Debug.DrawRay(transform.position, -transform.right, Color.green);
 		hit = Physics2D.Raycast(transform.position, -transform.right, distToGround + 0.1f, 1 << LayerMask.NameToLayer("Level"));
+		if ( hit.collider != null )
+		{
+			isDead = true;
+		}
+
+		///// also your head
+		Debug.DrawRay(transform.position, transform.up, Color.green);
+		hit = Physics2D.Raycast(transform.position, transform.up, distToGround + 0.1f, 1 << LayerMask.NameToLayer("Level"));
 		if ( hit.collider != null )
 		{
 			isDead = true;
