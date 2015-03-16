@@ -10,8 +10,11 @@ public class PlayerController : MonoBehaviour {
 
 	private ConstantForce2D tmpGravityForce;
 	private Rigidbody2D tmpRigidBody;
-	private float jumpForce = 500.0f;
+
+	private float jumpForce = 1500.0f;
 	private float moveSpeed = 10.0f;
+	private float PlayerGravity = 80.0f;
+
 	private float distToGround = 0.0f;
 
 	private bool isDead;
@@ -19,8 +22,7 @@ public class PlayerController : MonoBehaviour {
 //	public GameObject groundObj;
 //	private GameObject currentGround;
 
-	private float PlayerGravity = 1.0f;
-	private float oriGravity;
+
 
 	// Use this for initialization
 	void Start () 
@@ -29,7 +31,7 @@ public class PlayerController : MonoBehaviour {
 		tmpRigidBody.gravityScale = 0.0f;
 
 		tmpGravityForce = GetComponent<ConstantForce2D>();
-		SetGravity(-10.0f);
+		SetGravity(-PlayerGravity);
 
 		distToGround = GetComponent<BoxCollider2D>().bounds.extents.y;
 
@@ -42,7 +44,7 @@ public class PlayerController : MonoBehaviour {
 
 	void SetGravity(float val)
 	{
-		tmpGravityForce.force.y = val;
+		tmpGravityForce.force = new Vector2(0, val);
 	}
 
 	void UpdatePlayer()
@@ -219,13 +221,13 @@ public class PlayerController : MonoBehaviour {
 			if (bActivateGlide)
 			{
 				tmpRigidBody.velocity = new Vector2(tmpRigidBody.velocity.x, 0.0f);
-				tmpRigidBody.gravityScale = 0.0f;
+				SetGravity(0.0f);
 
 
 			}
 			else
 			{
-				tmpRigidBody.gravityScale = oriGravity;
+				SetGravity(-PlayerGravity);
 			}
 		} 
 		else 
