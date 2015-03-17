@@ -49,10 +49,30 @@ public class LevelGenerator : MonoBehaviour {
 		currentLevel = SectionArray_Easy;
 
 		///// grab player
-		player = GameObject.Find ("Player");
+		player = GameObject.FindGameObjectWithTag ("Player");
 		playerTransform = player.transform;
 
-		SpawnedSectionList = new LinkedList<GameObject>();
+		//InitLevel();
+	}
+
+	public void InitLevel()
+	{
+		if (SpawnedSectionList == null)
+			SpawnedSectionList = new LinkedList<GameObject>();
+
+		currentLevel = SectionArray_Easy;
+
+		///// grab player
+		player = GameObject.FindGameObjectWithTag ("Player");
+		playerTransform = player.transform;
+
+		///// kill old sections
+		int count = SpawnedSectionList.Count;
+		for (int i = 0; i < count; ++i) 
+		{
+			Destroy (SpawnedSectionList.First.Value);
+			SpawnedSectionList.RemoveFirst();
+		}
 
 		// init first 2-3 sections here
 		for (int i = 0; i < MAXSECTIONS; ++i)

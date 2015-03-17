@@ -7,7 +7,10 @@ public class PlayerController : MonoBehaviour {
 	private bool bActivateGlide;
 	private int MaxGlideAllow = 2;
 	private int GlideCount;
+	private float MaxGlideTime = 3.0f;
+	private float GlideSpeedModifier = 2.3f; // increased speed when gliding
 
+	private ParticleSystem tmpJetParticle;
 	private ConstantForce2D tmpGravityForce;
 	private Rigidbody2D tmpRigidBody;
 
@@ -17,7 +20,12 @@ public class PlayerController : MonoBehaviour {
 
 	private float distToGround = 0.0f;
 
+	private Animator animator;
 	private bool isDead;
+	private bool isPlayDying;
+
+	private float DeadBounceForce = 500.0f;
+	private Vector3 DeadBounceVelocity;
 
 //	public GameObject groundObj;
 //	private GameObject currentGround;
@@ -27,9 +35,12 @@ public class PlayerController : MonoBehaviour {
 	// Use this for initialization
 	void Start () 
 	{
+		animator = GetComponent<Animator>();
+
 		tmpRigidBody = GetComponent<Rigidbody2D> ();
 		tmpRigidBody.gravityScale = 0.0f;
 
+		tmpJetParticle = GetComponentInChildren<ParticleSystem>();
 		tmpGravityForce = GetComponent<ConstantForce2D>();
 		SetGravity(-PlayerGravity);
 
@@ -58,6 +69,9 @@ public class PlayerController : MonoBehaviour {
 		if ( hit.collider != null )
 		{
 			isDead = true;
+			//DeadBounceVelocity = Vector3.Reflect(tmpRigidBody.velocity, transform.right);
+			DeadBounceVelocity = tmpRigidBody.velocity;
+			DeadBounceVelocity.x = -1;
 		}
 
 		///// also your back
@@ -66,6 +80,9 @@ public class PlayerController : MonoBehaviour {
 		if ( hit.collider != null )
 		{
 			isDead = true;
+			//DeadBounceVelocity = Vector3.Reflect(tmpRigidBody.velocity, transform.right);
+			DeadBounceVelocity = tmpRigidBody.velocity;
+			DeadBounceVelocity.x = 1;
 		}
 
 		///// also your head
@@ -74,7 +91,52 @@ public class PlayerController : MonoBehaviour {
 		if ( hit.collider != null )
 		{
 			isDead = true;
+			//DeadBounceVelocity = Vector3.Reflect(tmpRigidBody.velocity, -transform.up);
+			DeadBounceVelocity = tmpRigidBody.velocity;
+			DeadBounceVelocity.y = -1;
 		}
+	}
+
+	void UpdateAnimator()
+	{
+		animator.SetBool("IsOnGround", IsGrounded());
+		animator.SetBool("IsDead", isDead);
+	}
+
+	void Died()
+	{
+		isPlayDying = true;
+
+		///// make player bounce
+		tmpRigidBody.velocity = new Vector2(0,0);
+		//tmpRigidBody.velocity = DeadBounceVelocity;
+		tmpRigidBody.AddForce( DeadBounceVelocity.normalized * DeadBounceForce );
+		SetGravity(-PlayerGravity);
+
+		bActivateGlide = false;
+		tmpJetParticle.Stop();
+
+		StartCoroutine(WaitForRespawn());
+	}
+
+	void Respawn()
+	{
+		GameObject tmp = GameObject.Find("GameManager");
+		tmp.GetComponent<GameManager>().RespawnPlayer();
+
+		//Destroy(this.gameObject);
+
+		transform.position = new Vector3(-10.0f, 5.0f, 0.0f);
+		transform.rotation = Quaternion.identity;
+		
+		tmpRigidBody.angularVelocity = 0.0f;
+		isDead = false;
+		isPlayDying = false;
+
+		bActivateGlide = false;
+		GlideCount = 0;
+		
+		animator.SetTrigger("Respawn");
 	}
 
 	// Update is called once per frame
@@ -84,13 +146,16 @@ public class PlayerController : MonoBehaviour {
 		bool ButtonJumpDown, ButtonJumpHold, ButtonJumpUp;
 
 		UpdatePlayer();
+		UpdateAnimator();
+
+		if (isDead && !isPlayDying)
+		{
+			Died();
+		}
+
 		if (isDead)
 		{
-			transform.position = new Vector3(-10.0f, 5.0f, 0.0f);
-			transform.rotation = Quaternion.identity;
-
-			tmpRigidBody.angularVelocity = 0.0f;
-			isDead = false;
+			return;
 		}
 
 		horizontal = 0;
@@ -166,7 +231,6 @@ public class PlayerController : MonoBehaviour {
 		
 		#endif
 
-		print ("velo=" + tmpRigidBody.velocity);
 		horizontal = 1.0f; ///// force player to move forward only
 		HandleInput (horizontal, ButtonJumpDown, ButtonJumpHold, ButtonJumpUp);
 	}
@@ -193,7 +257,7 @@ public class PlayerController : MonoBehaviour {
 		float tmpForce;
 		Vector2 tmpVec;
 
-		tmpRigidBody.velocity = new Vector2 (horizontal * moveSpeed, tmpRigidBody.velocity.y);
+		tmpRigidBody.velocity = new Vector2 (horizontal * moveSpeed * (bActivateGlide?GlideSpeedModifier:1.0f), tmpRigidBody.velocity.y);
 
 //		print (transform.position.x + "," + groundObj.transform.position.x);
 //		if(transform.position.x >= currentGround.transform.position.x)
@@ -220,6 +284,8 @@ public class PlayerController : MonoBehaviour {
 				{
 					bActivateGlide = true;
 					GlideCount++;
+
+					tmpJetParticle.Play();
 				}
 			}
 
@@ -227,14 +293,14 @@ public class PlayerController : MonoBehaviour {
 			{
 				// release jump button
 				bActivateGlide = false;
+
+				tmpJetParticle.Stop();
 			}
 
 			if (bActivateGlide)
 			{
 				tmpRigidBody.velocity = new Vector2(tmpRigidBody.velocity.x, 0.0f);
 				SetGravity(0.0f);
-
-
 			}
 			else
 			{
@@ -255,5 +321,12 @@ public class PlayerController : MonoBehaviour {
 				tmpRigidBody.AddForce (tmpVec);
 			}
 		}
+	}
+
+	IEnumerator WaitForRespawn()
+	{
+		yield return new WaitForSeconds(3.0f);
+
+		Respawn();
 	}
 }

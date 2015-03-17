@@ -14,7 +14,7 @@ public class LevelSectionScript : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
-		player = GameObject.Find ("Player");
+		player = GameObject.FindGameObjectWithTag ("Player");
 		//print ((privateBounding.max.x/3)+", player: "+player.transform.position.x );
 		_playerManager = player.GetComponent<PlayerManager>();
 	}

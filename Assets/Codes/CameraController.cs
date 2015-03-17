@@ -11,13 +11,19 @@ public class CameraController : MonoBehaviour {
 	// Use this for initialization
 	void Start () 
 	{
-		player = GameObject.Find ("Player");
+		player = GameObject.FindGameObjectWithTag ("Player");
 		playerTransform = player.transform;
 	}
 	
 	// Update is called once per frame
 	void Update () 
 	{
+		if (player == null)
+		{
+			player = GameObject.FindGameObjectWithTag ("Player");
+			playerTransform = player.transform;
+		}
+
 		transform.position = new Vector3( playerTransform.position.x, playerTransform.position.y, -10 );
 
 //		transform.position = new Vector3( Mathf.Lerp(transform.position.x,target.position.x,Time.deltaTime*smooth), 
