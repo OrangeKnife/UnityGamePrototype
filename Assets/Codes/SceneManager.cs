@@ -13,10 +13,7 @@ public class SceneManager : MonoBehaviour {
 		Debug.Log ("Loading save.data ->" + testLoad [0].key + ":" + testLoad [0].value); 
 	}
 	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+ 
 
 	public void OpenScene(string newSceneName)
 	{
