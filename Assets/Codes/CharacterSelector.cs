@@ -29,7 +29,7 @@ public class CharacterSelector : MonoBehaviour
 	private int currentSelectedIndex = -1;
 	private int lastSelectedIndex = -1;
 
-	private float TouchMovementX = 0;
+
 	void Start () {
 		CreateCharacters ();
 		if (CharObjectList.Count > 0)

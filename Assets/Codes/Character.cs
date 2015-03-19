@@ -16,6 +16,7 @@ public class Character: MonoBehaviour {
 		if (bDirty) {
 			transform.position = DisplayPosition;
 			transform.localScale = DisplayScale;
+			bDirty = false;
 		}
 
 	}
