@@ -16,6 +16,10 @@ public class LevelGenerator : MonoBehaviour {
 	private GameObject player;
 	private Transform playerTransform;
 
+	public bool bInitSpawnTestSection;
+	public bool bInitSpawnTutorialSection = true;
+	public List<GameObject> SectionArray_TestSection;
+	public List<GameObject> SectionArray_Tutorial;
 	public List<GameObject> SectionArray_Easy;
 	public List<GameObject> SectionArray_Normal;
 	public List<GameObject> SectionArray_Hard;
@@ -74,11 +78,30 @@ public class LevelGenerator : MonoBehaviour {
 			SpawnedSectionList.RemoveFirst();
 		}
 
-		// init first 2-3 sections here
-		for (int i = 0; i < MAXSECTIONS; ++i)
+		if (bInitSpawnTestSection)
 		{
-			SpawnSection(currentLevel[Random.Range(0,currentLevel.Count)]);
+			for (int i = 0; i < SectionArray_TestSection.Count; ++i)
+			{
+				SpawnSection(SectionArray_TestSection[i]);
+			}
 		}
+		else if (bInitSpawnTutorialSection)
+		{
+			// spawn tutorial sections
+			for (int i = 0; i < SectionArray_Tutorial.Count; ++i)
+			{
+				SpawnSection(SectionArray_Tutorial[i]);
+			}
+		}
+		else
+		{
+			// init first 2-3 sections here
+			for (int i = 0; i < MAXSECTIONS; ++i)
+			{
+				SpawnSection(currentLevel[Random.Range(0,currentLevel.Count)]);
+			}
+		}
+
 	}
 	
 	// Update is called once per frame
@@ -108,16 +131,18 @@ public class LevelGenerator : MonoBehaviour {
 		Bounds tmp = new Bounds();
 		foreach (Transform t in randomSection.GetComponentsInChildren<Transform>())
 		{
-			tmp.Encapsulate(t.GetComponent<BoxCollider2D>().bounds);
+			if (t.GetComponent<BoxCollider2D>() != null)
+				tmp.Encapsulate(t.GetComponent<BoxCollider2D>().bounds);
 		}
-		randomSection.GetComponent<BoxCollider2D>().size = tmp.size;
+		randomSection.GetComponent<BoxCollider2D>().size = tmp.size / randomSection.transform.localScale.x;
 		randomSection.GetComponent<BoxCollider2D>().offset = new Vector2( tmp.center.x, tmp.center.y );
 
 		///// put spawned template in the right position
 		if (SpawnedSectionList.Count == 0)
 		{
 			// spawn at the beginning if we have no section in the list
-			randomSection.transform.position = new Vector3(tmp.extents.x*-1,0,0);
+			//randomSection.transform.position = new Vector3(tmp.extents.x*-1,0,0);
+			randomSection.transform.position = new Vector3(0,0,0);
 		}
 		else
 		{
@@ -133,7 +158,7 @@ public class LevelGenerator : MonoBehaviour {
 		}
 
 		randomSection.GetComponent<LevelSectionScript>().boundingBox = randomSection.GetComponent<BoxCollider2D>().bounds;
-		randomSection.GetComponent<BoxCollider2D>().enabled = false;
+		//randomSection.GetComponent<BoxCollider2D>().enabled = false;
 		///// add spawned section to the list
 		SpawnedSectionList.AddLast(randomSection);
 
