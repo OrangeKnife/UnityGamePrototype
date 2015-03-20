@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour {
 	private Rigidbody2D tmpRigidBody;
 
 	private float jumpForce = 1500.0f;
-	private float moveSpeed = 9.0f;
+	private float moveSpeed = 10.0f;
 	private float PlayerGravity = 80.0f;
 
 	private float distToGround = 0.0f;
@@ -51,6 +51,20 @@ public class PlayerController : MonoBehaviour {
 //		//GameObject clone;
 //		//clone = (GameObject)Instantiate(tmpRigidBody, transform.position, transform.rotation);
 //		groundObj.transform.position = transform.position;
+	}
+
+	public void setMoveSpeed(float speed) {
+		moveSpeed = speed;
+	}
+	public float getMoveSpeed() {
+		return moveSpeed;
+	}
+	
+	public void setPlayerGravity(float gravity) {
+		PlayerGravity = gravity;
+	}
+	public float getPlayerGravity() {
+		return PlayerGravity;
 	}
 
 	void SetGravity(float val)
@@ -131,6 +145,7 @@ public class PlayerController : MonoBehaviour {
 		tmpJetParticle.Stop();
 
 		StartCoroutine(WaitForRespawn());
+
 	}
 
 	void Respawn()
@@ -151,7 +166,9 @@ public class PlayerController : MonoBehaviour {
 		GlideCount = 0;
 		
 		animator.SetTrigger("Respawn");
-		GetComponent<PlayerManager> ().resetPlayerScore();
+
+		GameObject tmpPlayer = GameObject.FindGameObjectWithTag("Player");
+		tmpPlayer.GetComponent<PlayerManager>().setPlayerScore(0);
 	}
 
 	// Update is called once per frame
