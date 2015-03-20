@@ -12,8 +12,11 @@ public class MaterialController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		tmpSpriteRenderer = GetComponent<SpriteRenderer>();
-
-		tmpSpriteRenderer.material.mainTextureScale = new Vector2( transform.localScale.x / ScaleReductionX ,transform.localScale.y / ScaleReductionY);
+#if UNITY_EDITOR
+		tmpSpriteRenderer.sharedMaterial.mainTextureScale = new Vector2( transform.localScale.x / ScaleReductionX ,transform.localScale.y / ScaleReductionY);
+#else 
+		tmpSpriteRenderer.Material.mainTextureScale = new Vector2( transform.localScale.x / ScaleReductionX ,transform.localScale.y / ScaleReductionY);
+#endif
 
 //		if (transform.localScale.x > transform.localScale.y)
 //			tmpSpriteRenderer.material.mainTextureScale = new Vector2( transform.localScale.x / transform.localScale.y ,mainRow);
@@ -26,7 +29,7 @@ public class MaterialController : MonoBehaviour {
 #if UNITY_EDITOR
 		tmpSpriteRenderer = GetComponent<SpriteRenderer>();
 		
-		tmpSpriteRenderer.material.mainTextureScale = new Vector2( transform.localScale.x / ScaleReductionX ,transform.localScale.y / ScaleReductionY);
+		tmpSpriteRenderer.sharedMaterial.mainTextureScale = new Vector2( transform.localScale.x / ScaleReductionX ,transform.localScale.y / ScaleReductionY);
 
 #endif
 	}
