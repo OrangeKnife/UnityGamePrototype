@@ -1,8 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-#if UNITY_EDITOR
-[ExecuteInEditMode]
-#endif
+
 public class MaterialController : MonoBehaviour {
 
 	public float ScaleReductionX = 1.0f;
@@ -15,6 +13,7 @@ public class MaterialController : MonoBehaviour {
 
 		tmpSpriteRenderer.material.mainTextureScale = new Vector2( transform.localScale.x / ScaleReductionX ,transform.localScale.y / ScaleReductionY);
 
+
 //		if (transform.localScale.x > transform.localScale.y)
 //			tmpSpriteRenderer.material.mainTextureScale = new Vector2( transform.localScale.x / transform.localScale.y ,mainRow);
 //		else
@@ -23,12 +22,7 @@ public class MaterialController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-#if UNITY_EDITOR
-		tmpSpriteRenderer = GetComponent<SpriteRenderer>();
-		
-		tmpSpriteRenderer.material.mainTextureScale = new Vector2( transform.localScale.x / ScaleReductionX ,transform.localScale.y / ScaleReductionY);
 
-#endif
 	}
 	
 }
