@@ -1,14 +1,16 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.UI;
-
+using System;
 public class MainMenuEvents : MonoBehaviour {
 
-	private List<SaveObject> mysave = new List<SaveObject>();
+	private SaveObject mysave;// = new SaveObject();
 	// Use this for initialization
 	void Start () {
-		GameFile.Load ("save.data", ref mysave);
-		GameObject.Find ("WelcomeText").GetComponent<Text> ().enabled = mysave[0].value == "True";
+		if(GameFile.Load ("save.data", ref mysave))
+			GameObject.Find ("WelcomeText").GetComponent<Text> ().enabled = mysave.firstRun == "True";
+		else
+			mysave = new SaveObject();
 	}
 	
 	// Update is called once per frame
@@ -16,10 +18,17 @@ public class MainMenuEvents : MonoBehaviour {
 	
 	}
 
+	void Awake()
+	{
+		Environment.SetEnvironmentVariable("MONO_REFLECTION_SERIALIZER", "yes");
+	}
+
 	public void OnStartButtonClick()
 	{
-		mysave [0].value = "False";
-		GameFile.Save ("save.data",  mysave);
-		SceneManager.OpenScene("GameScene");
+		  
+		mysave.firstRun = "False";
+		GameFile.Save ("save.data", mysave);
+
+			SceneManager.OpenScene ("GameScene");
 	}
 }

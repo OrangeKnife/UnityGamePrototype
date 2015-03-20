@@ -151,6 +151,7 @@ public class PlayerController : MonoBehaviour {
 		GlideCount = 0;
 		
 		animator.SetTrigger("Respawn");
+		GetComponent<PlayerManager> ().resetPlayerScore();
 	}
 
 	// Update is called once per frame

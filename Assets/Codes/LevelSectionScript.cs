@@ -10,7 +10,7 @@ public class LevelSectionScript : MonoBehaviour {
 	public Bounds boundingBox;
 	private GameObject player;
 	private int lvScore = 10; // this score value is depended on level
-	private PlayerManager _playerManager = new PlayerManager();
+	private PlayerManager _playerManager;// = new PlayerManager();
 	
 	// Use this for initialization
 	void Start () {

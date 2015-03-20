@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-
+using UnityEngine.UI;
 public class PlayerManager : MonoBehaviour {
 
 	private int playerScore = 0;
@@ -11,6 +11,12 @@ public class PlayerManager : MonoBehaviour {
 
 	public void addPlayerScore(int score) {
 		playerScore += score;
+		UpdateSocre (playerScore);
+	}
+
+	public void resetPlayerScore(){
+		playerScore = 0;
+		UpdateSocre (playerScore);
 	}
 
 	public int getPlayerScore() {
@@ -19,6 +25,10 @@ public class PlayerManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		print ("Score: " + playerScore);
+	}
+
+	public void UpdateSocre(int newScore)
+	{
+		GameObject.Find ("ScoreText").GetComponent<Text>().text = newScore.ToString();
 	}
 }

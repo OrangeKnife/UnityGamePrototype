@@ -28,8 +28,9 @@ public class CharacterSelector : MonoBehaviour
 	private List<GameObject> CharObjectList = new List<GameObject>();
 	private int currentSelectedIndex = -1;
 	private int lastSelectedIndex = -1;
-
-
+#if UNITY_IOS || UNITY_ANDROID || UNITY_WP8 || UNITY_IPHONE
+	private float TouchMovementX = 0;
+#endif
 	void Start () {
 		CreateCharacters ();
 		if (CharObjectList.Count > 0)
