@@ -31,22 +31,7 @@ public class LevelGenerator : MonoBehaviour {
 	private float LastSectionBeginPosition;
 	private int MAXSECTIONS = 5;
 	
-	void OnGUI () {
-		// Make a background box
-		GUI.Box(new Rect(10,10,100,120), "Loader Menu");
 
-		if(GUI.Button(new Rect(20,40,80,20), "Easy")) {
-			currentLevel = SectionArray_Easy;
-		}
-
-		if(GUI.Button(new Rect(20,70,80,20), "Normal")) {
-			currentLevel = SectionArray_Normal;
-		}
-
-		if(GUI.Button(new Rect(20,100,80,20), "Hard")) {
-			currentLevel = SectionArray_Hard;
-		}
-	}
 	// Use this for initialization
 	void Start () 
 	{
