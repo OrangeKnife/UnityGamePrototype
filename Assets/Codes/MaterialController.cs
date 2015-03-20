@@ -28,9 +28,9 @@ public class MaterialController : MonoBehaviour {
 	void Update () {
 #if UNITY_EDITOR
 		tmpSpriteRenderer = GetComponent<SpriteRenderer>();
-		
-		tmpSpriteRenderer.sharedMaterial.mainTextureScale = new Vector2( transform.localScale.x / ScaleReductionX ,transform.localScale.y / ScaleReductionY);
-
+		var tempMaterial = new Material(tmpSpriteRenderer.sharedMaterial);
+		tempMaterial.mainTextureScale = new Vector2( transform.localScale.x / ScaleReductionX ,transform.localScale.y / ScaleReductionY);
+		tmpSpriteRenderer.sharedMaterial = tempMaterial;
 #endif
 	}
 	
