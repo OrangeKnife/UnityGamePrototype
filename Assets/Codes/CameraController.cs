@@ -3,7 +3,8 @@ using System.Collections;
 
 public class CameraController : MonoBehaviour {
 	
-	//public float smooth = 5; 
+	//public float smooth = 5;
+	public Vector3 CamOffset;
 
 	private GameObject player;
 	private Transform playerTransform;
@@ -24,7 +25,7 @@ public class CameraController : MonoBehaviour {
 			playerTransform = player.transform;
 		}
 
-		transform.position = new Vector3( playerTransform.position.x, playerTransform.position.y, -10 );
+		transform.position = new Vector3( playerTransform.position.x, playerTransform.position.y, -10 ) + CamOffset;
 
 //		transform.position = new Vector3( Mathf.Lerp(transform.position.x,target.position.x,Time.deltaTime*smooth), 
 //		                                 Mathf.Lerp(transform.position.y,target.position.y,Time.deltaTime*smooth), 
