@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour {
 	private Rigidbody2D tmpRigidBody;
 
 	private float jumpForce = 1500.0f;
-	private float moveSpeed = 10.0f;
+	private float moveSpeed = 8.0f;
 	private float PlayerGravity = 80.0f;
 
 	private float distToGround = 0.0f;
