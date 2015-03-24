@@ -31,7 +31,9 @@ public class PlayerController : MonoBehaviour {
 //	private GameObject currentGround;
 
 
-
+	GameSceneEvents eventHandler;
+	PlayerManager playerMgr;
+	GameManager gameMgr;
 	// Use this for initialization
 	void Start () 
 	{
@@ -51,6 +53,10 @@ public class PlayerController : MonoBehaviour {
 //		//GameObject clone;
 //		//clone = (GameObject)Instantiate(tmpRigidBody, transform.position, transform.rotation);
 //		groundObj.transform.position = transform.position;
+
+		eventHandler = GameObject.Find("eventHandler").GetComponent<GameSceneEvents>();
+		playerMgr = gameObject.GetComponent<PlayerManager>();
+		gameMgr = GameObject.Find("GameManager").GetComponent<GameManager>();
 	}
 
 	public void setMoveSpeed(float speed) {
@@ -144,14 +150,15 @@ public class PlayerController : MonoBehaviour {
 		bActivateGlide = false;
 		tmpJetParticle.Stop();
 
-		StartCoroutine(WaitForRespawn());
+		//StartCoroutine(WaitForRespawn());
+		eventHandler.onPlayerDead();
+		playerMgr.resetPlayerScore ();
 
 	}
 
-	void Respawn()
+	public void Respawn()
 	{
-		GameObject tmp = GameObject.Find("GameManager");
-		tmp.GetComponent<GameManager>().RespawnPlayer();
+		gameMgr.RespawnPlayer();
 
 		//Destroy(this.gameObject);
 
@@ -167,8 +174,7 @@ public class PlayerController : MonoBehaviour {
 		
 		animator.SetTrigger("Respawn");
 
-		GameObject tmpPlayer = GameObject.FindGameObjectWithTag("Player");
-		tmpPlayer.GetComponent<PlayerManager>().setPlayerScore(0);
+		playerMgr.setPlayerScore(0);
 	}
 
 	// Update is called once per frame

@@ -29,6 +29,6 @@ public class MainMenuEvents : MonoBehaviour {
 		mysave.firstRun = "False";
 		GameFile.Save ("save.data", mysave);
 
-			SceneManager.OpenScene ("GameScene");
+		SceneManager.OpenScene ("CharacterSelection");
 	}
 }
