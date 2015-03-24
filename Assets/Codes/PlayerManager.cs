@@ -22,15 +22,12 @@ public class PlayerManager : MonoBehaviour {
 		eventHandler.UpdateUISocre (playerScore);
 	}
 
-	public void resetPlayerScore(){
-		playerScore = 0;
-		eventHandler.UpdateUISocre (playerScore);
-	}
 	public int getPlayerScore() {
 		return playerScore;
 	}
 	public void setPlayerScore(int score) {
 		playerScore = score;
+		eventHandler.UpdateUISocre (playerScore);
 	}
 	// Update is called once per frame
 	void Update () {

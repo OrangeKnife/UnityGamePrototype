@@ -152,7 +152,6 @@ public class PlayerController : MonoBehaviour {
 
 		//StartCoroutine(WaitForRespawn());
 		eventHandler.onPlayerDead();
-		playerMgr.resetPlayerScore ();
 
 	}
 

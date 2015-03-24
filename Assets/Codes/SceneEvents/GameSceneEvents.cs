@@ -25,6 +25,11 @@ public class GameSceneEvents : MonoBehaviour {
 
 	public void onPlayerDead() 
 	{
+		Invoke ("ShowDeathPanel", 3f);
+	}
+
+	void ShowDeathPanel()
+	{	
 		UI_DeathPanel.SetActive (true);
 		UI_ScorePanel.SetActive (false);
 	}
