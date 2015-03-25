@@ -5,9 +5,10 @@ public class PlayerController : MonoBehaviour {
 
 	public float threshold;
 	private bool bActivateGlide;
+	private float ActivateGlideStartTime = 0;
 	private int MaxGlideAllow = 2;
 	private int GlideCount;
-	private float MaxGlideTime = 3.0f;
+	private float MaxGlideTime = 2.0f;
 	private float GlideSpeedModifier = 2.3f; // increased speed when gliding
 
 	private ParticleSystem tmpJetParticle;
@@ -34,6 +35,14 @@ public class PlayerController : MonoBehaviour {
 	GameSceneEvents eventHandler;
 	PlayerManager playerMgr;
 	GameManager gameMgr;
+
+	void OnGUI () {
+		GUIStyle myStyle = new GUIStyle(GUI.skin.textField);
+		myStyle.alignment = TextAnchor.MiddleRight;
+		myStyle.fontSize = 25;
+		GUI.TextField (new Rect (10, 50, 100, 30), GetCurrentGlideTime().ToString("F2"), myStyle );
+	}
+
 	// Use this for initialization
 	void Start () 
 	{
@@ -94,31 +103,45 @@ public class PlayerController : MonoBehaviour {
 			DeadBounceVelocity.x = -1;
 		}
 
-		///// also your back
-		Debug.DrawRay(transform.position, -transform.right, Color.green);
-		hit = Physics2D.Raycast(transform.position, -transform.right, distToGround + 0.1f, 1 << LayerMask.NameToLayer("Level"));
-		if ( hit.collider != null )
-		{
-			isDead = true;
-			//DeadBounceVelocity = Vector3.Reflect(tmpRigidBody.velocity, transform.right);
-			DeadBounceVelocity = tmpRigidBody.velocity;
-			DeadBounceVelocity.x = 1;
-		}
+//		///// also your back
+//		Debug.DrawRay(transform.position, -transform.right, Color.green);
+//		hit = Physics2D.Raycast(transform.position, -transform.right, distToGround + 0.1f, 1 << LayerMask.NameToLayer("Level"));
+//		if ( hit.collider != null )
+//		{
+//			isDead = true;
+//			//DeadBounceVelocity = Vector3.Reflect(tmpRigidBody.velocity, transform.right);
+//			DeadBounceVelocity = tmpRigidBody.velocity;
+//			DeadBounceVelocity.x = 1;
+//		}
 
-		///// also your head
-		Debug.DrawRay(transform.position, transform.up, Color.green);
-		hit = Physics2D.Raycast(transform.position, transform.up, distToGround + 0.1f, 1 << LayerMask.NameToLayer("Level"));
-		if ( hit.collider != null )
-		{
-			isDead = true;
-			//DeadBounceVelocity = Vector3.Reflect(tmpRigidBody.velocity, -transform.up);
-			DeadBounceVelocity = tmpRigidBody.velocity;
-			DeadBounceVelocity.y = -1;
-		}
+//		///// also your head
+//		Debug.DrawRay(transform.position, transform.up, Color.green);
+//		hit = Physics2D.Raycast(transform.position, transform.up, distToGround + 0.1f, 1 << LayerMask.NameToLayer("Level"));
+//		if ( hit.collider != null )
+//		{
+//			isDead = true;
+//			//DeadBounceVelocity = Vector3.Reflect(tmpRigidBody.velocity, -transform.up);
+//			DeadBounceVelocity = tmpRigidBody.velocity;
+//			DeadBounceVelocity.y = -1;
+//		}
 
 		///// don't touch kill volume
 		Debug.DrawRay(transform.position, -transform.up, Color.green);
 		hit = Physics2D.Raycast(transform.position, -transform.up, distToGround + 0.1f, 1 << LayerMask.NameToLayer("Level"));
+		if ( hit.collider != null )
+		{
+			if (hit.collider.gameObject.tag == "KillVolume")
+			{
+				isDead = true;
+				//DeadBounceVelocity = Vector3.Reflect(tmpRigidBody.velocity, -transform.up);
+				DeadBounceVelocity = tmpRigidBody.velocity;
+				DeadBounceVelocity.y = 1;
+			}
+		}
+
+		///// don't touch kill volume on your head too
+		Debug.DrawRay(transform.position, transform.up, Color.green);
+		hit = Physics2D.Raycast(transform.position, transform.up, distToGround + 0.1f, 1 << LayerMask.NameToLayer("Level"));
 		if ( hit.collider != null )
 		{
 			if (hit.collider.gameObject.tag == "KillVolume")
@@ -147,8 +170,7 @@ public class PlayerController : MonoBehaviour {
 		tmpRigidBody.AddForce( DeadBounceVelocity.normalized * DeadBounceForce );
 		SetGravity(-PlayerGravity);
 
-		bActivateGlide = false;
-		tmpJetParticle.Stop();
+		SetGlide(false, true);
 
 		//StartCoroutine(WaitForRespawn());
 		eventHandler.onPlayerDead();
@@ -168,9 +190,7 @@ public class PlayerController : MonoBehaviour {
 		isDead = false;
 		isPlayDying = false;
 
-		bActivateGlide = false;
-		GlideCount = 0;
-		
+		SetGlide(false, true);
 		animator.SetTrigger("Respawn");
 
 		playerMgr.setPlayerScore(0);
@@ -289,6 +309,34 @@ public class PlayerController : MonoBehaviour {
 			
 	}
 
+	void SetGlide(bool bActivate, bool resetGlideCount = false)
+	{
+		if (bActivate)
+		{
+			ActivateGlideStartTime = Time.time;
+			bActivateGlide = true;
+			GlideCount++;
+
+			tmpJetParticle.Play();
+		}
+		else
+		{
+			bActivateGlide = false;
+			tmpJetParticle.Stop();
+
+			if (resetGlideCount)
+				GlideCount = 0;
+		}
+	}
+
+	float GetCurrentGlideTime()
+	{
+		if (bActivateGlide)
+			return Time.time - ActivateGlideStartTime;
+		else
+			return MaxGlideTime;
+	}
+
 	void HandleInput(float horizontal, bool bButtonJumpDown, bool bButtonJumpHold, bool bButtonJumpUp)
 	{
 		float tmpForce;
@@ -319,19 +367,20 @@ public class PlayerController : MonoBehaviour {
 				// tap jump button
 				if (GlideCount < MaxGlideAllow)
 				{
-					bActivateGlide = true;
-					GlideCount++;
-
-					tmpJetParticle.Play();
+					SetGlide(true);
 				}
 			}
 
 			if (bButtonJumpUp)
 			{
 				// release jump button
-				bActivateGlide = false;
+				SetGlide(false);
+			}
 
-				tmpJetParticle.Stop();
+			///// force stop gliding
+			if (GetCurrentGlideTime() > MaxGlideTime)
+			{
+				SetGlide(false);
 			}
 
 			if (bActivateGlide)
@@ -347,8 +396,7 @@ public class PlayerController : MonoBehaviour {
 		else 
 		{
 			// on ground
-			bActivateGlide = false;
-			GlideCount = 0;
+			SetGlide(false, true);
 
 			tmpForce = (bButtonJumpDown ? 1.0f : 0.0f) * jumpForce;
 			
