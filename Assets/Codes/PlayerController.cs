@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour {
 	private float MaxGlideTime = 2.0f;
 	private float GlideSpeedModifier = 2.3f; // increased speed when gliding
 
+	private MaterialBackgroundController tmpBackground;
 	private ParticleSystem tmpJetParticle;
 	private ConstantForce2D tmpGravityForce;
 	private Rigidbody2D tmpRigidBody;
@@ -46,6 +47,7 @@ public class PlayerController : MonoBehaviour {
 	// Use this for initialization
 	void Start () 
 	{
+		tmpBackground = GameObject.Find("ScrollingBackground").GetComponent<MaterialBackgroundController>();
 		animator = GetComponent<Animator>();
 
 		tmpRigidBody = GetComponent<Rigidbody2D> ();
@@ -85,6 +87,11 @@ public class PlayerController : MonoBehaviour {
 	void SetGravity(float val)
 	{
 		tmpGravityForce.force = new Vector2(0, val);
+	}
+
+	void UpdateBackground()
+	{
+		tmpBackground.SetScrollingSpeed(tmpRigidBody.velocity.x / moveSpeed / 10.0f);
 	}
 
 	void UpdatePlayer()
@@ -202,6 +209,7 @@ public class PlayerController : MonoBehaviour {
 		float horizontal;
 		bool ButtonJumpDown, ButtonJumpHold, ButtonJumpUp;
 
+		UpdateBackground();
 		UpdatePlayer();
 		UpdateAnimator();
 
