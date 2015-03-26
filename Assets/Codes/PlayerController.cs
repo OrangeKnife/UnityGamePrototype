@@ -68,6 +68,10 @@ public class PlayerController : MonoBehaviour {
 		eventHandler = GameObject.Find("eventHandler").GetComponent<GameSceneEvents>();
 		playerMgr = gameObject.GetComponent<PlayerManager>();
 		gameMgr = GameObject.Find("GameManager").GetComponent<GameManager>();
+
+		AbilityManager abManager = GameObject.Find("Player").GetComponent<AbilityManager>();
+		abManager.addAbility ("abi1");
+		abManager.addAbility ("abi2");
 	}
 
 	public void setMoveSpeed(float speed) {

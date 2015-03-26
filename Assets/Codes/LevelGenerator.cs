@@ -29,7 +29,7 @@ public class LevelGenerator : MonoBehaviour {
 	// store spawned section here, so we know how many we have and can kill it properly
 	private LinkedList<GameObject> SpawnedSectionList;
 	private float LastSectionBeginPosition;
-	private int MAXSECTIONS = 5;
+	private int MAXSECTIONS = 7;
 	
 
 	// Use this for initialization
