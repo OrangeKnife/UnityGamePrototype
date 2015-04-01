@@ -4,7 +4,7 @@ using System.Collections;
 public class PlayerController : MonoBehaviour {
 
 	public float threshold;
-	private bool bActivateGlide;
+	public bool bActivateGlide { get; private set;}
 	private float ActivateGlideStartTime = 0;
 	private int MaxGlideAllow = 2;
 	private int GlideCount;
@@ -75,6 +75,9 @@ public class PlayerController : MonoBehaviour {
 		//AbilityManager abManager = gameMgr.GetCurrentPlayer().GetComponent<AbilityManager>();
 //		abManager.addAbility ("abi1");
 //		abManager.addAbility ("abi2");
+
+
+
 	}
 
 	public void setMoveSpeed(float speed) {
@@ -362,6 +365,11 @@ public class PlayerController : MonoBehaviour {
 			if (resetGlideCount)
 				GlideCount = 0;
 		}
+	}
+
+	public float GetCurrentGliderPercentLeft()
+	{
+		return 1 - GetCurrentGlideTime() / MaxGlideTime;
 	}
 
 	float GetCurrentGlideTime()
