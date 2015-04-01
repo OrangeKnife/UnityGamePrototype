@@ -31,15 +31,18 @@ public class LevelGenerator : MonoBehaviour {
 	private float LastSectionBeginPosition;
 	private int MAXSECTIONS = 7;
 	
-
+	GameManager gameMgr;
 	// Use this for initialization
 	void Start () 
 	{
 		currentLevel = SectionArray_Easy;
 
-		///// grab player
-		player = GameObject.FindGameObjectWithTag ("Player");
-		playerTransform = player.transform;
+		if (gameMgr == null)
+			gameMgr = GameObject.Find("GameManager").GetComponent<GameManager>();
+
+//		///// grab player
+//		player = GameObject.FindGameObjectWithTag ("Player");
+//		playerTransform = player.transform;
 
 		//InitLevel();
 	}
@@ -52,7 +55,11 @@ public class LevelGenerator : MonoBehaviour {
 		currentLevel = SectionArray_Easy;
 
 		///// grab player
-		player = GameObject.FindGameObjectWithTag ("Player");
+		//player = GameObject.FindGameObjectWithTag ("Player");
+		if (gameMgr == null)
+			gameMgr = GameObject.Find("GameManager").GetComponent<GameManager>();
+
+		player = gameMgr.GetCurrentPlayer();
 		playerTransform = player.transform;
 
 		///// kill old sections

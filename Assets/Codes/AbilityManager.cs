@@ -2,7 +2,10 @@
 using System.Collections;
 
 public class AbilityManager : MonoBehaviour {
+	
 	private GameObject player;
+	GameManager gameMgr;
+
 	// Use this for initialization
 	void Start () {
 		//player = GameObject.FindGameObjectWithTag ("Player");
@@ -17,11 +20,12 @@ public class AbilityManager : MonoBehaviour {
 //		addAbility ("abi2");
 		//player.AddComponent(typeof(abi2));
 
-
+		gameMgr = GameObject.Find("GameManager").GetComponent<GameManager>();
 	}
 
 	public bool addAbility(string abilityObjectName) {
-		player = GameObject.FindGameObjectWithTag ("Player");
+		//player = GameObject.FindGameObjectWithTag ("Player");
+		player = gameMgr.GetCurrentPlayer();
 		if (player) {
 			System.Type t2 = System.Type.GetType (abilityObjectName);
 

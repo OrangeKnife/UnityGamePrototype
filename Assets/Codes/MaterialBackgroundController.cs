@@ -11,11 +11,16 @@ public class MaterialBackgroundController : MonoBehaviour {
 	private Vector2 savedOffset;
 
 	private float currentOffset;
-	
+
+	GameManager gameMgr;
+
 	void Start () 
 	{
-		player = GameObject.FindGameObjectWithTag ("Player");
-		playerTransform = player.transform;
+//		player = GameObject.FindGameObjectWithTag ("Player");
+//		playerTransform = player.transform;
+
+		gameMgr = GameObject.Find("GameManager").GetComponent<GameManager>();
+
 		tmpSpriteRenderer = GetComponent<SpriteRenderer>();
 
 		savedOffset = tmpSpriteRenderer.material.mainTextureOffset;
@@ -23,6 +28,13 @@ public class MaterialBackgroundController : MonoBehaviour {
 	
 	void Update () 
 	{
+		if (player == null)
+		{
+			//player = GameObject.FindGameObjectWithTag ("Player");
+			player = gameMgr.GetCurrentPlayer();
+			playerTransform = player.transform;
+		}
+
 		currentOffset = currentOffset + (Time.deltaTime * scrollSpeed);
 		//float x = Mathf.Repeat (Time.time * scrollSpeed, 1);
 		float x = Mathf.Repeat (currentOffset, 1);

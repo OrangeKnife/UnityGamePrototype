@@ -9,11 +9,12 @@ public class CameraController : MonoBehaviour {
 	private GameObject player;
 	private Transform playerTransform;
 
+	GameManager gameMgr;
+
 	// Use this for initialization
 	void Start () 
 	{
-		player = GameObject.FindGameObjectWithTag ("Player");
-		playerTransform = player.transform;
+		gameMgr = GameObject.Find("GameManager").GetComponent<GameManager>();
 	}
 	
 	// Update is called once per frame
@@ -21,7 +22,8 @@ public class CameraController : MonoBehaviour {
 	{
 		if (player == null)
 		{
-			player = GameObject.FindGameObjectWithTag ("Player");
+			//player = GameObject.FindGameObjectWithTag ("Player");
+			player = gameMgr.GetCurrentPlayer();
 			playerTransform = player.transform;
 		}
 

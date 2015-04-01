@@ -69,7 +69,7 @@ public class PlayerController : MonoBehaviour {
 		playerMgr = gameObject.GetComponent<PlayerManager>();
 		gameMgr = GameObject.Find("GameManager").GetComponent<GameManager>();
 
-		AbilityManager abManager = GameObject.Find("Player").GetComponent<AbilityManager>();
+		AbilityManager abManager = gameMgr.GetCurrentPlayer().GetComponent<AbilityManager>();
 //		abManager.addAbility ("abi1");
 //		abManager.addAbility ("abi2");
 	}
@@ -190,21 +190,22 @@ public class PlayerController : MonoBehaviour {
 
 	public void Respawn()
 	{
+		playerMgr.setPlayerScore(0);
 		gameMgr.RespawnPlayer();
 
 		//Destroy(this.gameObject);
 
-		transform.position = new Vector3(-10.0f, 5.0f, 0.0f);
-		transform.rotation = Quaternion.identity;
-		
-		tmpRigidBody.angularVelocity = 0.0f;
-		isDead = false;
-		isPlayDying = false;
-
-		SetGlide(false, true);
-		animator.SetTrigger("Respawn");
-
-		playerMgr.setPlayerScore(0);
+//		transform.position = new Vector3(-10.0f, 5.0f, 0.0f);
+//		transform.rotation = Quaternion.identity;
+//		
+//		tmpRigidBody.angularVelocity = 0.0f;
+//		isDead = false;
+//		isPlayDying = false;
+//
+//		SetGlide(false, true);
+//		animator.SetTrigger("Respawn");
+//
+//
 	}
 
 	// Update is called once per frame

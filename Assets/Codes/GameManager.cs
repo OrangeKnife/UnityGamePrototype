@@ -3,7 +3,8 @@ using System.Collections;
 
 public class GameManager : MonoBehaviour {
 
-	public GameObject Player;
+	public GameObject PlayerTemplate;
+	private GameObject CurrentPlayer;
 
 	// Use this for initialization
 	void Start () {
@@ -15,11 +16,19 @@ public class GameManager : MonoBehaviour {
 
 	}
 
-
-
 	public void RespawnPlayer()
 	{
-		//Instantiate(Player);
+		if (CurrentPlayer != null)
+		{
+			Destroy(CurrentPlayer);
+		}
+
+		CurrentPlayer = Instantiate(PlayerTemplate);
 		GetComponent<LevelGenerator>().InitLevel();
+	}
+
+	public GameObject GetCurrentPlayer()
+	{
+		return CurrentPlayer;
 	}
 }

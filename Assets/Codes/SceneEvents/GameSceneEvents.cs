@@ -26,15 +26,24 @@ public class GameSceneEvents : MonoBehaviour {
 	int finalScore = 0,finalGold = 0;
 	int bTickSpeed_SocrePerTick = 1;
 
+	GameManager gameMgr;
+
 	// Use this for initialization
 	void Start () {
+		gameMgr = GameObject.Find("GameManager").GetComponent<GameManager>();
+
 		UI_DeathPanel.SetActive (false);
-		playerMgr = Player.GetComponent<PlayerManager> ();
+
+		if (playerMgr == null)
+			playerMgr = gameMgr.GetCurrentPlayer().GetComponent<PlayerManager> ();
 	}
 
 	
 	// Update is called once per frame
 	void Update () {
+		if (playerMgr == null)
+			playerMgr = gameMgr.GetCurrentPlayer().GetComponent<PlayerManager> ();
+
 		if (bTickScoreToGold) {
 			finalScore -= bTickSpeed_SocrePerTick;
 			finalGold += (int)(bTickSpeed_SocrePerTick * playerMgr.Score2GoldRatio + 0.5f);
@@ -68,7 +77,9 @@ public class GameSceneEvents : MonoBehaviour {
 	public void OnTryAgainButtonClicked()
 	{
 		Debug.Log("TryAgain!");
-		Player.GetComponent<PlayerController> ().Respawn();
+		//Player.GetComponent<PlayerController> ().Respawn();
+		gameMgr.RespawnPlayer();
+
 		UI_DeathPanel.SetActive (false);
 		UI_ScorePanel.SetActive (true);
 	}

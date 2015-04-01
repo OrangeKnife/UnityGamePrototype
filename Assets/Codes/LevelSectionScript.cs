@@ -11,10 +11,17 @@ public class LevelSectionScript : MonoBehaviour {
 	private GameObject player;
 	private int lvScore = 10; // this score value is depended on level
 	private PlayerManager _playerManager;// = new PlayerManager();
-	
+
+	GameManager gameMgr;
 	// Use this for initialization
 	void Start () {
-		player = GameObject.FindGameObjectWithTag ("Player");
+
+
+		gameMgr = GameObject.Find("GameManager").GetComponent<GameManager>();
+
+		//player = GameObject.FindGameObjectWithTag ("Player");
+		player = gameMgr.GetCurrentPlayer();
+
 		//print ((privateBounding.max.x/3)+", player: "+player.transform.position.x );
 		_playerManager = player.GetComponent<PlayerManager>();
 	}
