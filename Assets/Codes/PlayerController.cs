@@ -69,7 +69,7 @@ public class PlayerController : MonoBehaviour {
 		playerMgr = gameObject.GetComponent<PlayerManager>();
 		gameMgr = GameObject.Find("GameManager").GetComponent<GameManager>();
 
-		AbilityManager abManager = gameMgr.GetCurrentPlayer().GetComponent<AbilityManager>();
+		//AbilityManager abManager = gameMgr.GetCurrentPlayer().GetComponent<AbilityManager>();
 //		abManager.addAbility ("abi1");
 //		abManager.addAbility ("abi2");
 	}

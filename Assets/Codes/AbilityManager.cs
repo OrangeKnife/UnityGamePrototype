@@ -25,6 +25,9 @@ public class AbilityManager : MonoBehaviour {
 
 	public bool addAbility(string abilityObjectName) {
 		//player = GameObject.FindGameObjectWithTag ("Player");
+		if (gameMgr == null)
+			gameMgr = GameObject.Find("GameManager").GetComponent<GameManager>();
+
 		player = gameMgr.GetCurrentPlayer();
 		if (player) {
 			System.Type t2 = System.Type.GetType (abilityObjectName);
