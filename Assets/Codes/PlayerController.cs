@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour {
 	private ParticleSystem tmpJetParticle;
 	private ConstantForce2D tmpGravityForce;
 	private Rigidbody2D tmpRigidBody;
+	private BoxCollider2D tmpBoxCollider2D;
 
 	private float jumpForce = 1500.0f;
 	private float moveSpeed = 8.0f;
@@ -49,6 +50,8 @@ public class PlayerController : MonoBehaviour {
 	{
 		tmpBackground = GameObject.Find("ScrollingBackground").GetComponent<MaterialBackgroundController>();
 		animator = GetComponent<Animator>();
+
+		tmpBoxCollider2D = GetComponent<BoxCollider2D>();
 
 		tmpRigidBody = GetComponent<Rigidbody2D> ();
 		tmpRigidBody.gravityScale = 0.0f;
@@ -308,7 +311,26 @@ public class PlayerController : MonoBehaviour {
 	bool IsGrounded()
 	{
 		//Debug.DrawRay(transform.position, -transform.up, Color.green);
-		RaycastHit2D hit = Physics2D.Raycast(transform.position, -transform.up, distToGround + 0.1f, 1 << LayerMask.NameToLayer("Level"));
+		Vector2 tmpPos;
+		tmpPos = transform.position;
+		RaycastHit2D hit = Physics2D.Raycast(tmpPos, -transform.up, distToGround + 0.1f, 1 << LayerMask.NameToLayer("Level"));
+
+		if (hit.collider == null)
+		{
+			tmpPos = transform.position;
+			tmpPos.x -= tmpBoxCollider2D.bounds.extents.x;
+			Debug.DrawRay(tmpPos, -transform.up, Color.blue);
+			hit = Physics2D.Raycast(tmpPos, -transform.up, distToGround + 0.1f, 1 << LayerMask.NameToLayer("Level"));
+		}
+
+		if (hit.collider == null)
+		{
+			tmpPos = transform.position;
+			tmpPos.x += tmpBoxCollider2D.bounds.extents.x;
+			Debug.DrawRay(tmpPos, -transform.up, Color.blue);
+			hit = Physics2D.Raycast(tmpPos, -transform.up, distToGround + 0.1f, 1 << LayerMask.NameToLayer("Level"));
+		}
+
 		if ( hit.collider != null )
 		{
 			if (hit.collider.gameObject.tag == "Ground" || hit.collider.gameObject.tag == "Wall")
