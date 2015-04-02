@@ -21,25 +21,35 @@ public class CharacterSelector : MonoBehaviour
 {
 
 
-	public List<CharacterInfo> CharacterList = new List<CharacterInfo> ();
+	public List<CharacterInfo> CharacterInfoList = new List<CharacterInfo> ();
 	public GameObject CharacterTemplate;
 	public int maxDisplayNum = 5;
 
 	private List<GameObject> CharObjectList = new List<GameObject>();
 	private int currentSelectedIndex = -1;
 	private int lastSelectedIndex = -1;
+
+	GameManager gameMgr;
+
 #if UNITY_IOS || UNITY_ANDROID || UNITY_WP8 || UNITY_IPHONE
 	private float TouchMovementX = 0;
 #endif
 	void Start () {
 		CreateCharacters ();
-		if (CharObjectList.Count > 0)
+		
+		gameMgr = GameObject.Find("GameManager").GetComponent<GameManager>();
+
+		if (CharObjectList.Count > 0) {
 			currentSelectedIndex = 0;
+			gameMgr.CurrentPlayerTemplate = gameMgr.PlayerTemplates [currentSelectedIndex];
+		}
+
+
 	}
 
 	void CreateCharacters ()
 	{
-		foreach (CharacterInfo c in CharacterList)
+		foreach (CharacterInfo c in CharacterInfoList)
 		{
 			CharObjectList.Add(CreateObject2D(c));
 
@@ -56,20 +66,29 @@ public class CharacterSelector : MonoBehaviour
 
 	}
 
+	void Select(int idx)
+	{
+		currentSelectedIndex = idx;
+		gameMgr.CurrentPlayerTemplate = gameMgr.PlayerTemplates [currentSelectedIndex];
+	}
+
 	// Update is called once per frame
 	void Update () {
 
 		#if UNITY_STANDALONE || UNITY_WEBPLAYER
 
 		if(Input.GetKeyUp ("a"))
-			currentSelectedIndex--;
+			Select(--currentSelectedIndex);
 		else if(Input.GetKeyUp ("d"))
-			currentSelectedIndex++;
+			Select(++currentSelectedIndex);
 		
 		currentSelectedIndex = Math.Min(Math.Max(0,currentSelectedIndex),CharObjectList.Count-1);
 
 		if(currentSelectedIndex != lastSelectedIndex)
+		{
 			ReArrange(currentSelectedIndex);
+			Select(currentSelectedIndex);
+		}
 		
 		
 		#elif UNITY_IOS || UNITY_ANDROID || UNITY_WP8 || UNITY_IPHONE
@@ -84,9 +103,9 @@ public class CharacterSelector : MonoBehaviour
 				if(Mathf.Abs(TouchMovementX) > 100)
 				{
 					if(TouchMovementX > 0)
-						currentSelectedIndex--;
+						Select(--currentSelectedIndex);
 					else
-						currentSelectedIndex++;
+						Select(++currentSelectedIndex);
 
 					currentSelectedIndex = Math.Min(Math.Max(0,currentSelectedIndex),CharObjectList.Count-1);
 
@@ -97,7 +116,10 @@ public class CharacterSelector : MonoBehaviour
  
 		}
 		if(currentSelectedIndex != lastSelectedIndex)
+		{
 			ReArrange(currentSelectedIndex);
+			Select(currentSelectedIndex);
+		}
 		#endif
 
 	}

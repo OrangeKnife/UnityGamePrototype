@@ -30,17 +30,36 @@ public class GameSceneEvents : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		gameMgr = GameObject.Find("GameManager").GetComponent<GameManager>();
+
 
 		UI_DeathPanel.SetActive (false);
 
+		if (gameMgr == null)
+			InitGameMgr ();
+
+	}
+
+	void InitGameMgr()
+	{
+		gameMgr = GameObject.Find("GameManager").GetComponent<GameManager>();
+		gameMgr.RespawnPlayer ();
+		gameMgr.StartGame ();
 		if (playerMgr == null)
 			playerMgr = gameMgr.GetCurrentPlayer().GetComponent<PlayerManager> ();
+
 	}
 
 	
 	// Update is called once per frame
 	void Update () {
+
+//		if (gameMgr == null) {
+//			InitGameMgr ();
+//			return;
+//		}
+
+
+
 		if (playerMgr == null)
 			playerMgr = gameMgr.GetCurrentPlayer().GetComponent<PlayerManager> ();
 
@@ -86,6 +105,7 @@ public class GameSceneEvents : MonoBehaviour {
 
 	public void OnChangeCharacterButtonClicked()
 	{
+		gameMgr.EndGame ();
 		SceneManager.OpenScene ("CharacterSelection");
 	}
 

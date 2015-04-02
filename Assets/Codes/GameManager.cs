@@ -4,20 +4,38 @@ using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour {
 
-	public GameObject PlayerTemplate;
+	public GameObject CurrentPlayerTemplate;
 	public List<string> AbilityNameArray;
+	public string CurrentActiveAbility;
+	public List<GameObject> PlayerTemplates;
 
 	private GameObject CurrentPlayer;
 	AbilityManager abManager;
 
-	// Use this for initialization
+	bool bGameStarted = false;
 	void Start () {
-		RespawnPlayer();
+		//RespawnPlayer();
 	}
-	
+
+	public void StartGame()
+	{
+		bGameStarted = true;
+		GetComponent<LevelGenerator> ().enabled = bGameStarted;
+	}
+
+	public void EndGame()
+	{
+		bGameStarted = false;
+		GetComponent<LevelGenerator> ().enabled = bGameStarted;
+	}
+
 	// Update is called once per frame
 	void Update () {
 
+	}
+
+	void Awake(){
+		DontDestroyOnLoad(gameObject);
 	}
 
 	public void RespawnPlayer()
@@ -27,7 +45,7 @@ public class GameManager : MonoBehaviour {
 			Destroy(CurrentPlayer);
 		}
 
-		CurrentPlayer = Instantiate(PlayerTemplate);
+		CurrentPlayer = Instantiate(CurrentPlayerTemplate);
 		abManager = CurrentPlayer.GetComponent<AbilityManager>();
 		for (int i = 0; i < AbilityNameArray.Count; ++i)
 		{
