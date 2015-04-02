@@ -1,39 +1,28 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class AbilityManager : MonoBehaviour {
-	
+
+	public List<AbilityBase> AbilityComponents;
 	private GameObject player;
 	GameManager gameMgr;
-
-	// Use this for initialization
+	
 	void Start () {
-		//player = GameObject.FindGameObjectWithTag ("Player");
-		//print(System.Activator.CreateInstance(System.Type.GetType("abi1")).ToString());
-		//add ability to player, disabled by comment
-
-		//abi1 : move speed minus 8, disable by commen
-		//player.AddComponent(typeof(abi1));
-		//print ("test");
-//		addAbility ("abi1");
-		//abi2 : graivty - 50
-//		addAbility ("abi2");
-		//player.AddComponent(typeof(abi2));
-
 		gameMgr = GameObject.Find("GameManager").GetComponent<GameManager>();
 	}
 
 	public bool addAbility(string abilityObjectName) {
-		//player = GameObject.FindGameObjectWithTag ("Player");
 		if (gameMgr == null)
 			gameMgr = GameObject.Find("GameManager").GetComponent<GameManager>();
 
 		player = gameMgr.GetCurrentPlayer();
 		if (player) {
 			System.Type t2 = System.Type.GetType (abilityObjectName);
-
-			if (player.AddComponent (t2)) {
-				//no error
+			AbilityBase tmpAbility = (AbilityBase)player.AddComponent (t2);
+			if (tmpAbility) 
+			{
+				AbilityComponents.Add(tmpAbility);
 				return true;
 			}
 		}
@@ -41,4 +30,19 @@ public class AbilityManager : MonoBehaviour {
 		return false;
 	}
 
+	public void ActivateAbility()
+	{
+		for (int i = 0; i < AbilityComponents.Count; ++i)
+		{
+			AbilityComponents[i].EnableAbilityActive();
+		}
+	}
+
+	public void DeactivateAbility()
+	{
+		for (int i = 0; i < AbilityComponents.Count; ++i)
+		{
+			AbilityComponents[i].DisableAbilityActive();
+		}
+	}
 }

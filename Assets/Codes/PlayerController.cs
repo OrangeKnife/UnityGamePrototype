@@ -16,6 +16,7 @@ public class PlayerController : MonoBehaviour {
 	private ConstantForce2D tmpGravityForce;
 	private Rigidbody2D tmpRigidBody;
 	private BoxCollider2D tmpBoxCollider2D;
+	private AbilityManager tmpAbilityManager;
 
 	private float jumpForce = 1500.0f;
 	private float moveSpeed = 8.0f;
@@ -71,6 +72,8 @@ public class PlayerController : MonoBehaviour {
 		eventHandler = GameObject.Find("eventHandler").GetComponent<GameSceneEvents>();
 		playerMgr = gameObject.GetComponent<PlayerManager>();
 		gameMgr = GameObject.Find("GameManager").GetComponent<GameManager>();
+
+		tmpAbilityManager = GetComponent<AbilityManager>();
 
 		//AbilityManager abManager = gameMgr.GetCurrentPlayer().GetComponent<AbilityManager>();
 //		abManager.addAbility ("abi1");
@@ -219,6 +222,7 @@ public class PlayerController : MonoBehaviour {
 	{
 		float horizontal;
 		bool ButtonJumpDown, ButtonJumpHold, ButtonJumpUp;
+		bool ButtonAbilityDown, ButtonAbilityHold, ButtonAbilityUp;
 
 		UpdateBackground();
 		UpdatePlayer();
@@ -239,11 +243,17 @@ public class PlayerController : MonoBehaviour {
 		ButtonJumpHold = false;
 		ButtonJumpUp = false;
 
+		ButtonAbilityDown = false;
+		ButtonAbilityHold = false;
+		ButtonAbilityUp = false;
+
 
 
 		#if UNITY_STANDALONE || UNITY_WEBPLAYER
 
 		horizontal = Input.GetAxisRaw ("Horizontal");
+
+		// jump
 		if ( Input.GetButton ("Jump") )
 		{
 			ButtonJumpHold = true;
@@ -270,45 +280,112 @@ public class PlayerController : MonoBehaviour {
 		{
 			ButtonJumpUp = false;
 		}
+
+		// active ability
+		if ( Input.GetButton ("Fire1") )
+		{
+			ButtonAbilityHold = true;
+		}
+		else
+		{
+			ButtonAbilityHold = false;
+		}
+		
+		if ( Input.GetButtonDown ("Fire1") )
+		{
+			ButtonAbilityDown = true;
+		}
+		else
+		{
+			ButtonAbilityDown = false;
+		}
+		
+		if ( Input.GetButtonUp ("Fire1") )
+		{
+			ButtonAbilityUp = true;
+		}
+		else
+		{
+			ButtonAbilityUp = false;
+		}
 			
 
 		#elif UNITY_IOS || UNITY_ANDROID || UNITY_WP8 || UNITY_IPHONE
 
 		if (Input.touchCount > 0) 
 		{
-			Touch touch = Input.GetTouch(0);
-			if (touch.phase == TouchPhase.Began)
-			{
-				ButtonJumpDown = true;
-			}
-			else
-			{
-				ButtonJumpDown = false;
-			}
 
-			if (touch.phase == TouchPhase.Ended)
+			for (int i = 0; i < Input.touchCount; ++i)
 			{
-				ButtonJumpUp = true;
-			}
-			else
-			{
-				ButtonJumpUp = false;
-			}
+				Touch touch = Input.GetTouch(i);
 
-			if (touch.phase == TouchPhase.Moved)
-			{
-				ButtonJumpHold = true;
-			}
-			else
-			{
-				ButtonJumpHold = false;
+				if (touch.position.x >= Screen.width / 2)
+				{
+					// jump
+					if (touch.phase == TouchPhase.Began)
+					{
+						ButtonJumpDown = true;
+					}
+					else
+					{
+						ButtonJumpDown = false;
+					}
+					
+					if (touch.phase == TouchPhase.Ended)
+					{
+						ButtonJumpUp = true;
+					}
+					else
+					{
+						ButtonJumpUp = false;
+					}
+					
+					if (touch.phase == TouchPhase.Moved)
+					{
+						ButtonJumpHold = true;
+					}
+					else
+					{
+						ButtonJumpHold = false;
+					}
+				}
+				else
+				{
+					// ability
+					if (touch.phase == TouchPhase.Began)
+					{
+						ButtonAbilityDown = true;
+					}
+					else
+					{
+						ButtonAbilityDown = false;
+					}
+					
+					if (touch.phase == TouchPhase.Ended)
+					{
+						ButtonAbilityUp = true;
+					}
+					else
+					{
+						ButtonAbilityUp = false;
+					}
+					
+					if (touch.phase == TouchPhase.Moved)
+					{
+						ButtonAbilityHold = true;
+					}
+					else
+					{
+						ButtonAbilityHold = false;
+					}
+				}
 			}
 		}
 		
 		#endif
 
 		horizontal = 1.0f; ///// force player to move forward only
-		HandleInput (horizontal, ButtonJumpDown, ButtonJumpHold, ButtonJumpUp);
+		HandleInput (horizontal, ButtonJumpDown, ButtonJumpHold, ButtonJumpUp, ButtonAbilityDown, ButtonAbilityHold, ButtonAbilityUp);
 	}
 
 	bool IsGrounded()
@@ -380,7 +457,7 @@ public class PlayerController : MonoBehaviour {
 			return MaxGlideTime;
 	}
 
-	void HandleInput(float horizontal, bool bButtonJumpDown, bool bButtonJumpHold, bool bButtonJumpUp)
+	void HandleInput(float horizontal, bool bButtonJumpDown, bool bButtonJumpHold, bool bButtonJumpUp, bool bButtonAbilityDown, bool bButtonAbilityHold, bool bButtonAbilityUp)
 	{
 		float tmpForce;
 		Vector2 tmpVec;
@@ -401,6 +478,16 @@ public class PlayerController : MonoBehaviour {
 //			//Instantiate(groundObj, groundObj.transform.position+addX, groundObj.transform.rotation);
 //			currentGround.transform.position += addX;
 //		}
+
+		if (bButtonAbilityDown)
+		{
+			tmpAbilityManager.ActivateAbility();
+		}
+
+		if (bButtonAbilityUp)
+		{
+			tmpAbilityManager.DeactivateAbility();
+		}
 
 		if (!IsGrounded()) 
 		{

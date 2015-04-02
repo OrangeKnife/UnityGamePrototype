@@ -1,10 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class abi1 : MonoBehaviour {
+public class abi1 : AbilityBase {
 	private PlayerController playerCtrl;
-	// Use this for initialization
-	void Start () {
+
+	public override void EnableAbilityPassive()
+	{
 		//print ("test abi1");
 		playerCtrl = GetComponent<PlayerController>();
 		
@@ -13,10 +14,7 @@ public class abi1 : MonoBehaviour {
 		speed -= 6;
 		playerCtrl.setMoveSpeed (speed);
 		print ("speed: " + speed);
-	}
 
-	// Update is called once per frame
-//	void Update () {
-//		print("player ctrl speed: " + playerCtrl.getMoveSpeed ());
-//	}
+		base.EnableAbilityPassive();
+	}
 }
