@@ -46,9 +46,11 @@ public class GameManager : MonoBehaviour {
 		}
 
 		CurrentPlayer = Instantiate(CurrentPlayerTemplate);
+		//AbilityNameArray [0] = "abi1";
 		abManager = CurrentPlayer.GetComponent<AbilityManager>();
 		for (int i = 0; i < AbilityNameArray.Count; ++i)
 		{
+			print ("add ability: "+AbilityNameArray[i]);
 			abManager.addAbility(AbilityNameArray[i]);
 		}
 

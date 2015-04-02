@@ -6,12 +6,12 @@ public class abi1 : AbilityBase {
 
 	public override void EnableAbilityPassive()
 	{
-		//print ("test abi1");
+		print ("test abi1");
 		playerCtrl = GetComponent<PlayerController>();
 		
 		print ("speed0: " + playerCtrl.getMoveSpeed ());
 		float speed = playerCtrl.getMoveSpeed ();
-		speed -= 6;
+		speed -= 5;
 		playerCtrl.setMoveSpeed (speed);
 		print ("speed: " + speed);
 
