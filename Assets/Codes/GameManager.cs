@@ -13,6 +13,8 @@ public class GameManager : MonoBehaviour {
 	AbilityManager abManager;
 
 	bool bGameStarted = false;
+	GameSceneEvents eventHandler = null;
+
 	void Start () {
 		//RespawnPlayer();
 	}
@@ -45,6 +47,12 @@ public class GameManager : MonoBehaviour {
 			Destroy(CurrentPlayer);
 		}
 
+		if(eventHandler == null)
+			eventHandler = GameObject.Find ("eventHandler").GetComponent<GameSceneEvents>();
+
+		eventHandler.CleanUpAbilityUISlots ();
+
+
 		CurrentPlayer = Instantiate(CurrentPlayerTemplate);
 		//AbilityNameArray [0] = "abi1";
 		abManager = CurrentPlayer.GetComponent<AbilityManager>();
@@ -52,6 +60,7 @@ public class GameManager : MonoBehaviour {
 		{
 			print ("add ability: "+AbilityNameArray[i]);
 			abManager.addAbility(AbilityNameArray[i]);
+			eventHandler.CreateAbilityUISlot(new Vector3(-65 + i*65+ i*5,0,0));
 		}
 
 		GetComponent<LevelGenerator>().InitLevel();

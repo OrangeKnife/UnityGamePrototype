@@ -14,10 +14,10 @@ public class PlayerManager : MonoBehaviour {
 
 	GameSceneEvents eventHandler;
 	void OnGUI () {
-		GUIStyle myStyle = new GUIStyle(GUI.skin.textField);
-		myStyle.alignment = TextAnchor.MiddleRight;
-		myStyle.fontSize = 25;
-		GUI.TextField (new Rect (10, 10, 100, 30), playerScore.ToString(), MAXSCORELENGTH, myStyle );
+//		GUIStyle myStyle = new GUIStyle(GUI.skin.textField);
+//		myStyle.alignment = TextAnchor.MiddleRight;
+//		myStyle.fontSize = 25;
+//		GUI.TextField (new Rect (10, 10, 100, 30), playerScore.ToString(), MAXSCORELENGTH, myStyle );
 	}
 	void Start () {
 		eventHandler = GameObject.Find ("eventHandler").GetComponent<GameSceneEvents>();

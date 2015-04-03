@@ -35,7 +35,7 @@ public class LevelGenerator : MonoBehaviour {
 	// Use this for initialization
 	void Start () 
 	{
-		currentLevel = SectionArray_Normal;
+		currentLevel = SectionArray_Easy;
 
 		if (gameMgr == null)
 			gameMgr = GameObject.Find("GameManager").GetComponent<GameManager>();
@@ -52,7 +52,7 @@ public class LevelGenerator : MonoBehaviour {
 		if (SpawnedSectionList == null)
 			SpawnedSectionList = new LinkedList<GameObject>();
 
-		currentLevel = SectionArray_Normal;
+		currentLevel = SectionArray_Easy;
 
 		///// grab player
 		//player = GameObject.FindGameObjectWithTag ("Player");

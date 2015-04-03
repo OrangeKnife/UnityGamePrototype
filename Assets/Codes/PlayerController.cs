@@ -40,10 +40,10 @@ public class PlayerController : MonoBehaviour {
 	GameManager gameMgr;
 
 	void OnGUI () {
-		GUIStyle myStyle = new GUIStyle(GUI.skin.textField);
-		myStyle.alignment = TextAnchor.MiddleRight;
-		myStyle.fontSize = 25;
-		GUI.TextField (new Rect (10, 50, 100, 30), GetCurrentGlideTime().ToString("F2"), myStyle );
+//		GUIStyle myStyle = new GUIStyle(GUI.skin.textField);
+//		myStyle.alignment = TextAnchor.MiddleRight;
+//		myStyle.fontSize = 25;
+//		GUI.TextField (new Rect (10, 50, 100, 30), GetCurrentGlideTime().ToString("F2"), myStyle );
 	}
 
 	// Use this for initialization

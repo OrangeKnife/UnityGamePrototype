@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class GameSceneEvents : MonoBehaviour {
 
@@ -11,15 +12,18 @@ public class GameSceneEvents : MonoBehaviour {
 	GameObject UI_ScoreText = null;
 	[SerializeField]
 	GameObject UI_GoldeText = null;
-	
+	[SerializeField]
+	GameObject UI_AbilityPanel = null;
 
 	[SerializeField]
 	GameObject UI_ScoreToGold_Score = null;
 	
 	[SerializeField]
 	GameObject UI_ScoreToGold_Gold = null;
+	[SerializeField]
+	GameObject AbilityUISlotTemplate = null;
 
-	public GameObject Player;
+	GameObject Player;
 
 	PlayerManager playerMgr = null;
 	bool bTickScoreToGold = false;
@@ -28,7 +32,9 @@ public class GameSceneEvents : MonoBehaviour {
 
 	GameManager gameMgr;
 
-	// Use this for initialization
+
+	List<GameObject> abilityUISlots = new List<GameObject>();
+
 	void Start () {
 
 
@@ -118,4 +124,20 @@ public class GameSceneEvents : MonoBehaviour {
 	{
 		UI_GoldeText.GetComponent<UnityEngine.UI.Text>().text = newGold.ToString();
 	}
+
+	public void CleanUpAbilityUISlots()
+	{
+		abilityUISlots.Clear ();
+	}
+
+	public GameObject CreateAbilityUISlot(Vector3 offset)
+	{
+		GameObject slot = GameObject.Instantiate (AbilityUISlotTemplate);
+		slot.transform.SetParent(UI_AbilityPanel.transform,false);
+		slot.transform.position += offset;
+		abilityUISlots.Add (slot);
+		return slot;
+
+	}
+
 }
