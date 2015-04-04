@@ -34,7 +34,8 @@ public class AbilityManager : MonoBehaviour {
 	{
 		for (int i = 0; i < AbilityComponents.Count; ++i)
 		{
-			AbilityComponents[i].EnableAbilityActive();
+			if (AbilityComponents[i].IsActiveAbility())
+				AbilityComponents[i].EnableAbilityActive();
 		}
 	}
 
@@ -42,7 +43,20 @@ public class AbilityManager : MonoBehaviour {
 	{
 		for (int i = 0; i < AbilityComponents.Count; ++i)
 		{
-			AbilityComponents[i].DisableAbilityActive();
+			if (AbilityComponents[i].IsActiveAbility())
+				AbilityComponents[i].DisableAbilityActive();
+		}
+	}
+
+	public void ForceStopActiveAbility()
+	{
+		for (int i = 0; i < AbilityComponents.Count; ++i)
+		{
+			if (AbilityComponents[i].IsActiveAbility())
+			{
+				AbilityComponents[i].DisableAbilityActive();
+				AbilityComponents[i].StopActiveEffect();
+			}
 		}
 	}
 }

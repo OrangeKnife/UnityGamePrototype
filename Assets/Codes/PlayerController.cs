@@ -18,6 +18,7 @@ public class PlayerController : MonoBehaviour {
 	private BoxCollider2D tmpBoxCollider2D;
 	private AbilityManager tmpAbilityManager;
 
+	private float backgroundMoveSpeed = 8.0f;
 	private float jumpForce = 1500.0f;
 	private float moveSpeed = 8.0f;
 	private float PlayerGravity = 80.0f;
@@ -89,6 +90,13 @@ public class PlayerController : MonoBehaviour {
 	public float getMoveSpeed() {
 		return moveSpeed;
 	}
+
+	public void setJumpForce(float val) {
+		jumpForce = val;
+	}
+	public float getJumpForce() {
+		return jumpForce;
+	}
 	
 	public void setPlayerGravity(float gravity) {
 		PlayerGravity = gravity;
@@ -104,7 +112,7 @@ public class PlayerController : MonoBehaviour {
 
 	void UpdateBackground()
 	{
-		tmpBackground.SetScrollingSpeed(tmpRigidBody.velocity.x / moveSpeed / 10.0f);
+		tmpBackground.SetScrollingSpeed(tmpRigidBody.velocity.x / backgroundMoveSpeed / 10.0f);
 	}
 
 	void UpdatePlayer()
@@ -194,7 +202,7 @@ public class PlayerController : MonoBehaviour {
 
 		//StartCoroutine(WaitForRespawn());
 		eventHandler.onPlayerDead();
-
+		tmpAbilityManager.ForceStopActiveAbility();
 	}
 
 	public void Respawn()

@@ -4,12 +4,14 @@ using System.Collections;
 public class AbilityBase : MonoBehaviour {
 
 	public bool bActiveAbility;
-	private static float CDTIMER = 10.0f;
-	private static float ACTIVETIMER = 2.0f;
+	private static float CDTIMER = 7.0f;
+	private static float ACTIVETIMER = 4.0f;
 	private float active_remain = ACTIVETIMER;
 	private float timer = CDTIMER;
 	private float startAbilityTime;
 	private float startCoolDownTime;
+
+	private bool isActiveEnable;
 
 	void Start()
 	{
@@ -18,7 +20,14 @@ public class AbilityBase : MonoBehaviour {
 	}
 	void Update()
 	{
-		print("ramain cooldown : "+GetRemainingCooldown());
+		print("duration : "+GetActiveRemainingDuration());
+		print("cooldown : "+GetRemainingCooldown());
+
+
+		if (isActiveEnable && GetActiveRemainingDuration() < 0)
+		{
+			StopActiveEffect();
+		}
 	}
 	public virtual bool IsActiveAbility()
 	{
@@ -27,20 +36,27 @@ public class AbilityBase : MonoBehaviour {
 	}
 	public virtual void EnableAbilityActive()
 	{
-		if (GetRemainingCooldown () <= 0) {
+		if (GetRemainingCooldown () < 0) 
+		{
 			print("Enable Active Base");
 			startAbilityTime = Time.time;
 			startCoolDownTime = Time.time;
+			isActiveEnable = true;
+			StartActiveEffect();
 		}
-
+	}
+	public virtual void StartActiveEffect()
+	{
 
 	}
 	public virtual void DisableAbilityActive()
 	{
-		print("Disable Active Base");
-		bActiveAbility = false;
 
-		//print ("time span = " + ts);
+	}
+	public virtual void StopActiveEffect()
+	{
+		print("Disable Active Base");
+		isActiveEnable = false;
 	}
 	public virtual void EnableAbilityPassive() {
 
