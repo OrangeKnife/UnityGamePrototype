@@ -8,8 +8,8 @@ public class AbilityBase : MonoBehaviour {
 	private static float ACTIVETIMER = 2.0f;
 	private float active_remain = ACTIVETIMER;
 	private float timer = CDTIMER;
-	private System.DateTime startAbilityTime;
-	private System.DateTime startCoolDownTime;
+	private float startAbilityTime;
+	private float startCoolDownTime;
 
 	void Start()
 	{
@@ -29,9 +29,8 @@ public class AbilityBase : MonoBehaviour {
 	{
 		if (GetRemainingCooldown () <= 0) {
 			print("Enable Active Base");
-			bActiveAbility = true;
-			startAbilityTime = System.DateTime.Now;
-			startCoolDownTime = System.DateTime.Now;
+			startAbilityTime = Time.time;
+			startCoolDownTime = Time.time;
 		}
 
 
@@ -52,15 +51,17 @@ public class AbilityBase : MonoBehaviour {
 		return CDTIMER;
 	}
 	public virtual float GetRemainingCooldown() {
-		System.TimeSpan _currentCDTime = System.DateTime.Now - startCoolDownTime;
-		print ("test tim  e" +startCoolDownTime);
-		return System.Convert.ToSingle(_currentCDTime.TotalSeconds);
+		float _currentCDTime = Time.time - startCoolDownTime;
+		//print ("test tim  e" +startCoolDownTime);
+		return CDTIMER - _currentCDTime;
+		//return System.Convert.ToSingle(_currentCDTime.TotalSeconds);
 	}
 	public virtual float GetActiveTotalDuration() {
 		return ACTIVETIMER;
 	}
 	public virtual float GetActiveRemainingDuration() {
-		System.TimeSpan _currentActiveTime = System.DateTime.Now - startAbilityTime;
-		return System.Convert.ToSingle(_currentActiveTime.TotalSeconds);
+		float _currentActiveTime = Time.time - startAbilityTime;
+		return ACTIVETIMER - _currentActiveTime;
+		//return System.Convert.ToSingle(_currentActiveTime.TotalSeconds);
 	}
 }
