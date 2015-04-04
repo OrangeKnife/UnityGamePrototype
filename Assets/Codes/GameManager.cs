@@ -59,8 +59,7 @@ public class GameManager : MonoBehaviour {
 		for (int i = 0; i < AbilityNameArray.Count; ++i)
 		{
 			print ("add ability: "+AbilityNameArray[i]);
-			abManager.addAbility(AbilityNameArray[i]);
-			eventHandler.CreateAbilityUISlot(new Vector3(-65 + i*65+ i*5,0,0));
+			abManager.addAbility(AbilityNameArray[i], eventHandler.CreateAbilityUISlot(new Vector3(-65 + i*65+ i*5,0,0)));
 		}
 
 		GetComponent<LevelGenerator>().InitLevel();

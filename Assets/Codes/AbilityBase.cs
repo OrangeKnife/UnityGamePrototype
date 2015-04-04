@@ -13,6 +13,8 @@ public class AbilityBase : MonoBehaviour {
 
 	private bool isActiveEnable;
 
+	GameObject UIIconObjectMask = null;
+
 	void Start()
 	{
 		print ("start abi");
@@ -23,12 +25,30 @@ public class AbilityBase : MonoBehaviour {
 		print("duration : "+GetActiveRemainingDuration());
 		print("cooldown : "+GetRemainingCooldown());
 
+		float cooldown = GetRemainingCooldown();
+		if (cooldown > 0 && UIIconObjectMask != null) {
+			float percentage = Mathf.Max(cooldown / timer,0f);
+			UIIconObjectMask.GetComponent<UnityEngine.UI.Image>().fillAmount = percentage;
+		}
 
 		if (isActiveEnable && GetActiveRemainingDuration() < 0)
 		{
 			StopActiveEffect();
 		}
 	}
+
+	public void bindUIIconObject(GameObject inUIIcon)
+	{
+		foreach(Transform tf in inUIIcon.GetComponentsInChildren<Transform>())
+		{
+			if(tf.name == "AbilityMaskImg")
+			{
+				UIIconObjectMask = tf.gameObject;
+				break;
+			}
+		}
+	}
+
 	public virtual bool IsActiveAbility()
 	{
 		return bActiveAbility;

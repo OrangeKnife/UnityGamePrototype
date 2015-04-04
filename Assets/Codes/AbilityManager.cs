@@ -12,7 +12,7 @@ public class AbilityManager : MonoBehaviour {
 		gameMgr = GameObject.Find("GameManager").GetComponent<GameManager>();
 	}
 
-	public bool addAbility(string abilityObjectName) {
+	public bool addAbility(string abilityObjectName, GameObject inUIIconObject) {
 		if (gameMgr == null)
 			gameMgr = GameObject.Find("GameManager").GetComponent<GameManager>();
 
@@ -23,6 +23,7 @@ public class AbilityManager : MonoBehaviour {
 			if (tmpAbility) 
 			{
 				AbilityComponents.Add(tmpAbility);
+				tmpAbility.bindUIIconObject(inUIIconObject);
 				return true;
 			}
 		}
