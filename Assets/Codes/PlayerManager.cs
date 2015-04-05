@@ -10,6 +10,8 @@ public class PlayerManager : MonoBehaviour {
 	private SaveObject mysave;
 
 	int gainedGold = 0;
+
+	private int coins = 0;
 	// Use this for initialization
 
 	GameSceneEvents eventHandler;
@@ -31,6 +33,11 @@ public class PlayerManager : MonoBehaviour {
 		playerScore += score;
 		eventHandler.UpdateUISocre (playerScore);
 
+	}
+	public void addCoin(int coin) {
+		coins += coin;
+		print ("coins : " + coins);
+		eventHandler.UpdateUICoins (coins);
 	}
 
 	public int getPlayerScore() {

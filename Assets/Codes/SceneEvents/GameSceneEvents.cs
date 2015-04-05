@@ -14,6 +14,8 @@ public class GameSceneEvents : MonoBehaviour {
 	GameObject UI_GoldeText = null;
 	[SerializeField]
 	GameObject UI_AbilityPanel = null;
+	[SerializeField]
+	GameObject UI_CoinsText = null;
 
 	[SerializeField]
 	GameObject UI_ScoreToGold_Score = null;
@@ -113,6 +115,11 @@ public class GameSceneEvents : MonoBehaviour {
 	{
 		gameMgr.EndGame ();
 		SceneManager.OpenScene ("CharacterSelection");
+	}
+	
+	public void UpdateUICoins(int newCoins)
+	{
+		UI_CoinsText.GetComponent<UnityEngine.UI.Text>().text = newCoins.ToString();
 	}
 
 	public void UpdateUISocre(int newScore)
