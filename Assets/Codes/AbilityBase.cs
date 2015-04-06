@@ -22,8 +22,8 @@ public class AbilityBase : MonoBehaviour {
 	}
 	void Update()
 	{
-//		print("duration : "+GetActiveRemainingDuration());
-//		print("cooldown : "+GetRemainingCooldown());
+		print("duration : "+GetActiveRemainingDuration());
+		print("cooldown : "+GetRemainingCooldown());
 
 		float cooldown = GetRemainingCooldown();
 		if (cooldown > 0 && UIIconObjectMask != null) {

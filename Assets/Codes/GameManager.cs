@@ -4,16 +4,17 @@ using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour {
 
-	public GameObject CurrentPlayerTemplate;
-	public List<string> AbilityNameArray;
-	public string CurrentActiveAbility;
+
 	public List<GameObject> PlayerTemplates;
+	public List<string> AbilityTemplates;
 
 	private GameObject CurrentPlayer;
 	AbilityManager abManager;
 
 	bool bGameStarted = false;
 	GameSceneEvents eventHandler = null;
+	List<string> AbilityNameArray = new List<string>();
+	GameObject CurrentPlayerTemplate;
 
 	void Start () {
 		//RespawnPlayer();
@@ -29,6 +30,51 @@ public class GameManager : MonoBehaviour {
 	{
 		bGameStarted = false;
 		GetComponent<LevelGenerator> ().enabled = bGameStarted;
+	}
+
+	public void CleanUpAbilityNames()
+	{
+		AbilityNameArray.Clear ();
+	}
+
+	public bool SetCurrentPlayerTemplateByIdx(int idx)
+	{
+		if (PlayerTemplates.Count > 0) {
+			CurrentPlayerTemplate = PlayerTemplates [idx];
+			return true;
+		} else 
+			return false;
+	}
+
+	public bool RemoveAbilityByIndex(int idx)
+	{
+		if (AbilityTemplates.Count > 0 && idx > -1) {
+			if(AbilityNameArray.IndexOf(AbilityTemplates [idx]) > -1)
+			{
+				AbilityNameArray.Remove (AbilityTemplates [idx]);
+				return true;
+			}
+			return false;
+		} else
+			return false;
+	}
+
+	public bool AddAbilityByIndex(int idx)
+	{
+		if (AbilityTemplates.Count > 0 && idx > -1) {
+			AbilityNameArray.Add (AbilityTemplates [idx]);
+			return true;
+		} else
+			return false;
+	}
+
+	public bool SetActiveAbilityByIndex(int idx)
+	{
+		if (AbilityTemplates.Count > 0 && idx > -1) {
+			AbilityNameArray.Add (AbilityTemplates [idx]);
+			return true;
+		} else
+			return false;
 	}
 
 	// Update is called once per frame

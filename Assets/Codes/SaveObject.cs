@@ -11,5 +11,10 @@ public class SaveObject
 	}
 	public string firstRun;// = "True";
 	public int playerGold;
+
+	public int lastSelectedCharacterIndex;//in selector
+	public int lastSelectedAbilityIndex;//in selector
+
+	public bool[] characterUnlockArray;
 }
 
