@@ -22,13 +22,15 @@ public class AbilityBase : MonoBehaviour {
 	}
 	void Update()
 	{
-		print("duration : "+GetActiveRemainingDuration());
-		print("cooldown : "+GetRemainingCooldown());
+		//print("duration : "+GetActiveRemainingDuration());
+		//print("cooldown : "+GetRemainingCooldown());
 
 		float cooldown = GetRemainingCooldown();
-		if (cooldown > 0 && UIIconObjectMask != null) {
+		if (cooldown >= 0 && UIIconObjectMask != null) {
 			float percentage = Mathf.Max(cooldown / timer,0f);
 			UIIconObjectMask.GetComponent<UnityEngine.UI.Image>().fillAmount = percentage;
+			print (percentage);
+			UIIconObjectMask.GetComponent<UnityEngine.UI.Image>().enabled = percentage > 0f;
 		}
 
 		if (isActiveEnable && GetActiveRemainingDuration() < 0)
@@ -56,7 +58,7 @@ public class AbilityBase : MonoBehaviour {
 	}
 	public virtual void EnableAbilityActive()
 	{
-		if (GetRemainingCooldown () < 0) 
+		if (GetRemainingCooldown () <= 0) 
 		{
 			print("Enable Active Base");
 			startAbilityTime = Time.time;
@@ -89,7 +91,7 @@ public class AbilityBase : MonoBehaviour {
 	public virtual float GetRemainingCooldown() {
 		float _currentCDTime = Time.time - startCoolDownTime;
 		//print ("test tim  e" +startCoolDownTime);
-		return CDTIMER - _currentCDTime;
+		return Mathf.Max(CDTIMER - _currentCDTime,0f) ;
 		//return System.Convert.ToSingle(_currentCDTime.TotalSeconds);
 	}
 	public virtual float GetActiveTotalDuration() {
