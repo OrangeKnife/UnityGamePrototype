@@ -40,6 +40,8 @@ public class PlayerController : MonoBehaviour {
 	PlayerManager playerMgr;
 	GameManager gameMgr;
 
+	bool freezed;
+
 	void OnGUI () {
 //		GUIStyle myStyle = new GUIStyle(GUI.skin.textField);
 //		myStyle.alignment = TextAnchor.MiddleRight;
@@ -470,7 +472,10 @@ public class PlayerController : MonoBehaviour {
 		float tmpForce;
 		Vector2 tmpVec;
 
-		tmpRigidBody.velocity = new Vector2 (horizontal * moveSpeed * (bActivateGlide?GlideSpeedModifier:1.0f), tmpRigidBody.velocity.y);
+		if (freezed)
+			tmpRigidBody.velocity = new Vector2 ();
+		else
+			tmpRigidBody.velocity = new Vector2 (horizontal * moveSpeed * (bActivateGlide?GlideSpeedModifier:1.0f), tmpRigidBody.velocity.y);
 
 //		print (transform.position.x + "," + groundObj.transform.position.x);
 //		if(transform.position.x >= currentGround.transform.position.x)
@@ -530,6 +535,9 @@ public class PlayerController : MonoBehaviour {
 			{
 				SetGravity(-PlayerGravity);
 			}
+
+			if(freezed)
+				SetGravity(0f);
 		} 
 		else 
 		{
@@ -551,5 +559,15 @@ public class PlayerController : MonoBehaviour {
 		yield return new WaitForSeconds(3.0f);
 
 		Respawn();
+	}
+
+	public void freeze()
+	{
+		freezed = true;
+	}
+
+	public void unFreeze()
+	{
+		freezed = false;
 	}
 }

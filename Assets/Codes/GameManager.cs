@@ -109,6 +109,9 @@ public class GameManager : MonoBehaviour {
 		}
 
 		GetComponent<LevelGenerator>().InitLevel();
+
+		if(eventHandler)
+			eventHandler.onPlayerRespawn ();
 	}
 
 	public GameObject GetCurrentPlayer()

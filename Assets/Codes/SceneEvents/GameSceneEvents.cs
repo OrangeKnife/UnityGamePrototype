@@ -11,8 +11,6 @@ public class GameSceneEvents : MonoBehaviour {
 	[SerializeField]
 	GameObject UI_ScoreText = null;
 	[SerializeField]
-	GameObject UI_GoldeText = null;
-	[SerializeField]
 	GameObject UI_AbilityPanel = null;
 	[SerializeField]
 	GameObject UI_CoinsText = null;
@@ -80,7 +78,7 @@ public class GameSceneEvents : MonoBehaviour {
 			if(finalScore <= 0)
 			{
 				bTickScoreToGold = false;
-				playerMgr.addGold(finalGold);//will save the gold
+				playerMgr.addCoin(finalGold);//will save the gold
 			}
 		}
 	}
@@ -88,6 +86,11 @@ public class GameSceneEvents : MonoBehaviour {
 	public void onPlayerDead() 
 	{
 		Invoke ("ShowDeathPanel", 2f);
+	}
+
+	public void onPlayerRespawn()
+	{
+		UpdateUISocre (0);
 	}
 
 	void ShowDeathPanel()
@@ -103,16 +106,28 @@ public class GameSceneEvents : MonoBehaviour {
 
 	public void OnTryAgainButtonClicked()
 	{
-		Debug.Log("TryAgain!");
-		//Player.GetComponent<PlayerController> ().Respawn();
+		if(finalScore > 0)
+		{
+			bTickScoreToGold = false;
+			playerMgr.addCoin(finalGold + (int)(finalScore * playerMgr.Score2GoldRatio + 0.5f));//will save the gold
+		}
+
 		gameMgr.RespawnPlayer();
 
 		UI_DeathPanel.SetActive (false);
 		UI_ScorePanel.SetActive (true);
+
+
 	}
 
 	public void OnChangeCharacterButtonClicked()
 	{
+		if(finalScore > 0)
+		{
+			bTickScoreToGold = false;
+			playerMgr.addCoin(finalGold + (int)(finalScore * playerMgr.Score2GoldRatio + 0.5f));//will save the gold
+		}
+
 		gameMgr.EndGame ();
 		SceneManager.OpenScene ("CharacterSelection");
 	}
@@ -125,11 +140,6 @@ public class GameSceneEvents : MonoBehaviour {
 	public void UpdateUISocre(int newScore)
 	{
 		UI_ScoreText.GetComponent<UnityEngine.UI.Text>().text = newScore.ToString();
-	}
-
-	public void UpdateUIGold(int newGold)
-	{
-		UI_GoldeText.GetComponent<UnityEngine.UI.Text>().text = newGold.ToString();
 	}
 
 	public void CleanUpAbilityUISlots()

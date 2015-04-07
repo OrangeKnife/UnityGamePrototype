@@ -9,8 +9,6 @@ public class PlayerManager : MonoBehaviour {
 
 	private SaveObject mysave;
 
-	int gainedGold = 0;
-
 	private int coins = 0;
 	// Use this for initialization
 
@@ -25,8 +23,8 @@ public class PlayerManager : MonoBehaviour {
 		eventHandler = GameObject.Find ("eventHandler").GetComponent<GameSceneEvents>();
 
 		GameFile.Load ("save.data", ref mysave);
-		gainedGold = mysave.playerGold;
-		eventHandler.UpdateUIGold (gainedGold);
+		coins = mysave.playerGold;
+		eventHandler.UpdateUICoins (coins);
 	}
 
 	public void addPlayerScore(int score) {
@@ -37,6 +35,8 @@ public class PlayerManager : MonoBehaviour {
 	public void addCoin(int coin) {
 		coins += coin;
 		print ("coins : " + coins);
+		mysave.playerGold = coins;
+		GameFile.Save ("save.data", mysave);
 		eventHandler.UpdateUICoins (coins);
 	}
 
@@ -48,21 +48,7 @@ public class PlayerManager : MonoBehaviour {
 		eventHandler.UpdateUISocre (playerScore);
 	}
 
-	public void addGold(int goldNum)
-	{
-		gainedGold += goldNum;
-
-		
-		mysave.playerGold = gainedGold;
-		GameFile.Save ("save.data", mysave);
-		eventHandler.UpdateUIGold (gainedGold);
-	}
-
-	public int getGainedGold()
-	{
-		return gainedGold;
-	}
-
+ 
 
 	// Update is called once per frame
 	void Update () {
