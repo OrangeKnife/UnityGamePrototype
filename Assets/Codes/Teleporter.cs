@@ -27,7 +27,8 @@ public class Teleporter : MonoBehaviour {
 			GameObject playerObj = playerCtrl.gameObject;
 			playerObj.transform.position = Vector3.Lerp(playerObj.transform.position,teleportToLocation,interpolationSpeed);
 
-			if((playerObj.transform.position - teleportToLocation).sqrMagnitude < 0.01f || playerObj.transform.position.x > teleportToLocation.x)
+			//if((playerObj.transform.position - teleportToLocation).sqrMagnitude < 0.01f || playerObj.transform.position.x > teleportToLocation.x)
+			if((playerObj.transform.position - teleportToLocation).sqrMagnitude < 0.01f)
 			{
 				startInterpolation = false;
 				if (delayAfterTeleporting)
@@ -79,10 +80,12 @@ public class Teleporter : MonoBehaviour {
 	void freezePlayer()
 	{
 		playerCtrl.freeze ();
+		//playerCtrl.GetComponent<BoxCollider2D>().enabled = false;
 	}
 
 	void unFreezePlayer()
 	{
 		playerCtrl.unFreeze ();
+		//playerCtrl.GetComponent<BoxCollider2D>().enabled = true;
 	}
 }
