@@ -7,9 +7,13 @@ public class MovingObject : MonoBehaviour {
 	public Vector2 OffsetPointA; // first destination
 	public Vector2 OffsetPointB; // second destination
 	public bool bMoveOnce = false;
+	public bool spin = false;
+	public Vector3 spinRotationVector = new Vector3(0,0,5);
 
 	private float currentTimer;
 	private Vector2 tmpOffset;
+
+	bool direction_AB = true;
 
 	// Use this for initialization
 	void Start () {
@@ -33,8 +37,13 @@ public class MovingObject : MonoBehaviour {
 				tmpOffset = OffsetPointA;
 				OffsetPointA = OffsetPointB;
 				OffsetPointB = tmpOffset;
+
+				direction_AB = !direction_AB;
 			}
 		}
+
+		if (spin)
+			transform.Rotate (spinRotationVector * (direction_AB?1:-1));
 	}
 
 //	var pointB : Vector3;
