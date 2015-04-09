@@ -42,6 +42,8 @@ public class CharacterSelector : MonoBehaviour
 	public GameObject AbilityInfoDisplayTemplate;
 	public int maxCharacterInfoDisplayNum = 5;
 	public int maxAbilityInfoDisplayNum = 5;
+	public Vector2 selectedAbilityScale = new Vector2(2.5f,2.5f);
+	public Vector2 selectedCharScale = new Vector2 (2.5f, 2.5f);
 
 	private List<GameObject> CharObjectList = new List<GameObject>();
 	private List<GameObject> AbilityObjectList = new List<GameObject> ();
@@ -50,6 +52,7 @@ public class CharacterSelector : MonoBehaviour
 	private int currentAbilityIndex = -1;
 	private int lastAbilityIndex = -1;
 	GameManager gameMgr;
+	CharacterSelectionEvents eventHandler;
 
 	private int savedCharacterIndex = 0,savedAbilityIndex = 0;
 	private SaveObject mysave;
@@ -68,6 +71,8 @@ public class CharacterSelector : MonoBehaviour
 		gameMgr = GameObject.Find("GameManager").GetComponent<GameManager>();
 
 		gameMgr.CleanUpAbilityNames ();
+
+		eventHandler = GameObject.Find ("CharacterSelectionEvents").GetComponent<CharacterSelectionEvents> ();
 
 		if (CharObjectList.Count > 0) {
 			SelectCharacter(savedCharacterIndex);
@@ -141,6 +146,8 @@ public class CharacterSelector : MonoBehaviour
 		currentCharacterIndex = idx;
 		gameMgr.SetCurrentPlayerTemplateByIdx( CharacterInfoList[currentCharacterIndex].CharacterId );
 		gameMgr.AddAbilityByIndex (CharacterInfoList [currentCharacterIndex].CharacterPassiveAbilityId);
+
+		eventHandler.OnSelectedACharacter(CharacterInfoList[currentCharacterIndex], mysave.characterUnlockedArray[CharacterInfoList[currentCharacterIndex].CharacterId]);
 		
 	}
 
@@ -152,8 +159,56 @@ public class CharacterSelector : MonoBehaviour
 			gameMgr.RemoveAbilityByIndex(lastAbilityIndex);
 			gameMgr.AddAbilityByIndex (currentAbilityIndex);
 		}
+
+		eventHandler.OnSelectedAnAbility(AbilityInfoList[currentAbilityIndex], mysave.abilityUnlockedArray[AbilityInfoList[currentAbilityIndex].AbilityId]);
 	}
 
+	public void LeftCharacter()
+	{
+		SelectCharacter(--currentCharacterIndex);
+		if(currentCharacterIndex != lastCharacterIndex)
+		{
+			ReArrangeCharacter(currentCharacterIndex);
+		}
+	}
+	public void RightCharacter()
+	{
+		SelectCharacter(++currentCharacterIndex);
+		if(currentCharacterIndex != lastCharacterIndex)
+		{
+			ReArrangeCharacter(currentCharacterIndex);
+		}
+	}
+	public void LeftAbility()
+	{
+		SelectAbility(--currentAbilityIndex);
+		if(currentAbilityIndex != lastAbilityIndex)
+		{
+			ReArrangeAbility(currentAbilityIndex);
+		}
+	}
+	public void RightAbility()
+	{
+		SelectAbility(++currentAbilityIndex);
+		if(currentAbilityIndex != lastAbilityIndex)
+		{
+			ReArrangeAbility(currentAbilityIndex);
+		}
+	}
+
+
+	
+	public void UnlockCurrentChar()
+	{
+		mysave.characterUnlockedArray[CharacterInfoList[currentCharacterIndex].CharacterId] = true;
+		eventHandler.OnSelectedACharacter(CharacterInfoList[currentCharacterIndex],true);
+	}
+	
+	public void UnlockCurrentAbility()
+	{
+		mysave.abilityUnlockedArray [AbilityInfoList[currentAbilityIndex].AbilityId] = true;
+		eventHandler.OnSelectedAnAbility(AbilityInfoList[currentAbilityIndex],true);
+	}
 	// Update is called once per frame
 	void Update () {
 
@@ -236,18 +291,18 @@ public class CharacterSelector : MonoBehaviour
 			gobject.GetComponent<SpriteRenderer> ().enabled = false;
 		}
 
-		CharObjectList [idx].GetComponent<CharacterInfoDisplay> ().SetPosition (0, 2.56f, 10, 10);
+		CharObjectList [idx].GetComponent<CharacterInfoDisplay> ().SetPosition (0, 3.5f, selectedCharScale.x, selectedCharScale.y);
 
 		for(int i = 1; i <= maxCharacterInfoDisplayNum/2; i++)
 		{
 			if(idx - i  >= 0)
 			{
-				CharObjectList[idx - i].GetComponent<CharacterInfoDisplay>().SetPosition(-i * 4, 2.56f, 5, 5);
+				CharObjectList[idx - i].GetComponent<CharacterInfoDisplay>().SetPosition(-i * 3, 3.5f, 1, 1);
 			}
 
 			if(idx + i < CharObjectList.Count )
 			{
-				CharObjectList[idx + i].GetComponent<CharacterInfoDisplay>().SetPosition(i * 4, 2.56f, 5, 5);
+				CharObjectList[idx + i].GetComponent<CharacterInfoDisplay>().SetPosition(i * 3, 3.5f, 1, 1);
 			}
 		}
 
@@ -260,18 +315,18 @@ public class CharacterSelector : MonoBehaviour
 			gobject.GetComponent<SpriteRenderer> ().enabled = false;
 		}
 		
-		AbilityObjectList [idx].GetComponent<AbilityInfoDisplay> ().SetPosition (0, -0.62f, 4, 4);
+		AbilityObjectList [idx].GetComponent<AbilityInfoDisplay> ().SetPosition (0, -0.3f, selectedAbilityScale.x, selectedAbilityScale.y);
 		
 		for(int i = 1; i <= maxAbilityInfoDisplayNum/2; i++)
 		{
 			if(idx - i  >= 0)
 			{
-				AbilityObjectList[idx - i].GetComponent<AbilityInfoDisplay>().SetPosition(-i * 4, -0.62f, 2, 2);
+				AbilityObjectList[idx - i].GetComponent<AbilityInfoDisplay>().SetPosition(-i * 3, -0.3f, 1, 1);
 			}
 			
 			if(idx + i < AbilityObjectList.Count )
 			{
-				AbilityObjectList[idx + i].GetComponent<AbilityInfoDisplay>().SetPosition(i * 4, -0.62f, 2, 2);
+				AbilityObjectList[idx + i].GetComponent<AbilityInfoDisplay>().SetPosition(i * 3, -0.3f, 1, 1);
 			}
 		}
 		

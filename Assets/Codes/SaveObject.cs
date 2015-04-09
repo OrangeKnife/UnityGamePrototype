@@ -8,6 +8,10 @@ public class SaveObject
 	{
 		firstRun = inFirstRun;
 		playerGold = inGold;
+		characterUnlockedArray = new bool[5];
+		characterUnlockedArray [0] = true;
+		abilityUnlockedArray = new bool[2];
+		abilityUnlockedArray [0] = true;
 	}
 	public string firstRun;// = "True";
 	public int playerGold;
@@ -15,6 +19,7 @@ public class SaveObject
 	public int lastSelectedCharacterIndex;//in selector
 	public int lastSelectedAbilityIndex;//in selector
 
-	public bool[] characterUnlockArray;
+	public bool[] characterUnlockedArray;
+	public bool[] abilityUnlockedArray;
 }
 
