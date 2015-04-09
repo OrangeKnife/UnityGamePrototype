@@ -8,6 +8,8 @@ public class CharacterSelectionEvents : MonoBehaviour {
 	public GameObject GoButton;
 	public GameObject UnlockCharButton,UnlockAbilityButton;
 
+	private bool charUnlocked,abilityUnlocked;
+
 	void Start () {
 		selector = GameObject.Find ("CharacterSelector").GetComponent<CharacterSelector>();
 	}
@@ -32,21 +34,21 @@ public class CharacterSelectionEvents : MonoBehaviour {
 
 	public void OnSelectedACharacter(CharacterInfo charInfo, bool bUnlocked)
 	{
+		charUnlocked = bUnlocked;
 		CharUIText.GetComponent<UnityEngine.UI.Text> ().text = charInfo.CharacterName;
 		if (bUnlocked) {
 			UnlockCharButton.SetActive (false);
-			GoButton.GetComponent<UnityEngine.UI.Button>().interactable = true;
 		}
 		else {
 			UnlockCharButton.SetActive (true);
-			GoButton.GetComponent<UnityEngine.UI.Button>().interactable = false;
 		}
-
+		checkGoButton ();
 
 	}
 
 	public void OnSelectedAnAbility(AbilityInfo abilityInfo, bool bUnlocked)
 	{
+		abilityUnlocked = bUnlocked;
 		AbilityUIText.GetComponent<UnityEngine.UI.Text> ().text = abilityInfo.AbilityName;
 
 		if (bUnlocked) {
@@ -55,5 +57,12 @@ public class CharacterSelectionEvents : MonoBehaviour {
 		else {
 			UnlockAbilityButton.SetActive (true);
 		}
+
+		checkGoButton ();
+	}
+
+	void checkGoButton()
+	{
+		GoButton.GetComponent<UnityEngine.UI.Button> ().interactable = charUnlocked && abilityUnlocked;
 	}
 }
