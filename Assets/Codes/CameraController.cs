@@ -10,13 +10,23 @@ public class CameraController : MonoBehaviour {
 
 	private GameObject player;
 	private Transform playerTransform;
+	private PlayerController playerCon;
 
+	private Camera tmpCamera;
+	private float CameraMinZoomValue = 6.0f;
+	private float CameraMaxZoomValue = 9.0f;
+	private float CameraZoomInterpSpeed = 6.0f;
+
+	float currentZoomValue;
 	GameManager gameMgr;
 
 	// Use this for initialization
 	void Start () 
 	{
 		gameMgr = GameObject.Find("GameManager").GetComponent<GameManager>();
+		tmpCamera = GetComponent<Camera>();
+		tmpCamera.orthographicSize = CameraMinZoomValue;
+		currentZoomValue = CameraMinZoomValue;
 	}
 	
 	// Update is called once per frame
@@ -27,6 +37,18 @@ public class CameraController : MonoBehaviour {
 			//player = GameObject.FindGameObjectWithTag ("Player");
 			player = gameMgr.GetCurrentPlayer();
 			playerTransform = player.transform;
+			playerCon = player.GetComponent<PlayerController>();
+		}
+
+		if (playerCon.bActivateGlide)
+		{
+			currentZoomValue = Mathf.Lerp(currentZoomValue, CameraMaxZoomValue, Time.deltaTime*CameraZoomInterpSpeed);
+			tmpCamera.orthographicSize = currentZoomValue;
+		}
+		else
+		{
+			currentZoomValue = Mathf.Lerp(currentZoomValue, CameraMinZoomValue, Time.deltaTime*CameraZoomInterpSpeed);
+			tmpCamera.orthographicSize = currentZoomValue;
 		}
 
 		if(interpolation)
