@@ -12,6 +12,8 @@ public class MaterialController : MonoBehaviour {
 		tmpSpriteRenderer = GetComponent<SpriteRenderer>();
 
 		tmpSpriteRenderer.material.mainTextureScale = new Vector2( transform.localScale.x / ScaleReductionX ,transform.localScale.y / ScaleReductionY);
+		tmpSpriteRenderer.material.SetFloat("RepeatX", transform.localScale.x / ScaleReductionX);
+		tmpSpriteRenderer.material.SetFloat("RepeatY", transform.localScale.y / ScaleReductionY);
 
 
 //		if (transform.localScale.x > transform.localScale.y)
