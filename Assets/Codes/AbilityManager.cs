@@ -23,7 +23,7 @@ public class AbilityManager : MonoBehaviour {
 			if (tmpAbility) 
 			{
 				AbilityComponents.Add(tmpAbility);
-				tmpAbility.bindUIIconObject(inUIIconObject);
+				tmpAbility.bindUIIconObject(inUIIconObject, tmpAbility.GetIcon());
 				return true;
 			}
 		}

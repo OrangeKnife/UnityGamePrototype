@@ -34,7 +34,7 @@ public class AbilityBase : MonoBehaviour {
 		if (cooldown >= 0 && UIIconObjectMask != null) {
 			float percentage = Mathf.Max(cooldown / GetTotalCooldown(),0f);
 			UIIconObjectMask.GetComponent<UnityEngine.UI.Image>().fillAmount = percentage;
-			print (percentage);
+			//print (percentage);
 			UIIconObjectMask.GetComponent<UnityEngine.UI.Image>().enabled = percentage > 0f;
 		}
 
@@ -44,7 +44,7 @@ public class AbilityBase : MonoBehaviour {
 		}
 	}
 
-	public void bindUIIconObject(GameObject inUIIcon)
+	public void bindUIIconObject(GameObject inUIIcon, Sprite inSprite)
 	{
 		foreach(Transform tf in inUIIcon.GetComponentsInChildren<Transform>())
 		{
@@ -52,6 +52,11 @@ public class AbilityBase : MonoBehaviour {
 			{
 				UIIconObjectMask = tf.gameObject;
 				break;
+			}
+
+			if(tf.name == "AbilityImg")
+			{
+				tf.GetComponent<UnityEngine.UI.Image>().sprite = inSprite;
 			}
 		}
 	}
