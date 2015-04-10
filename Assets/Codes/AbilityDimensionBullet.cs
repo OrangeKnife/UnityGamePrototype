@@ -13,7 +13,7 @@ public class AbilityDimensionBullet : AbilityBase {
 		CDTIMER = 8.0f;
 		ACTIVETIMER = 2.0f;
 
-		IconSprite = (Sprite)Resources.Load("Ability/Icon/AbilityIcon_2");
+		IconSprite = Resources.Load<Sprite>("Ability/Icon/AbilityIcon_2");
 	}
 	
 	public override void StartActiveEffect()
