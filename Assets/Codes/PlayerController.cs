@@ -28,6 +28,7 @@ public class PlayerController : MonoBehaviour {
 	private Animator animator;
 	private bool isDead;
 	private bool isPlayDying;
+	private bool CheckDeadRaycast = true;
 
 	private float DeadBounceForce = 500.0f;
 	private Vector3 DeadBounceVelocity;
@@ -86,6 +87,11 @@ public class PlayerController : MonoBehaviour {
 
 	}
 
+	public void SetCheckDeadRaycast(bool val)
+	{
+		CheckDeadRaycast = val;
+	}
+
 	public void setMoveSpeed(float speed) {
 		moveSpeed = speed;
 	}
@@ -119,67 +125,88 @@ public class PlayerController : MonoBehaviour {
 
 	void UpdatePlayer()
 	{
+		Vector2 tmpPos;
+
 		///// force no tilt/spinning cause by rigid body
 		transform.rotation = Quaternion.identity;
 
-		///// if your face bump into something, you die
-		Debug.DrawRay(transform.position, transform.right, Color.green);
-		RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.right, distToGround + 0.1f, 1 << LayerMask.NameToLayer("Level"));
-		if ( hit.collider != null )
+		if (CheckDeadRaycast)
 		{
-			isDead = true;
-			//DeadBounceVelocity = Vector3.Reflect(tmpRigidBody.velocity, transform.right);
-			DeadBounceVelocity = tmpRigidBody.velocity;
-			DeadBounceVelocity.x = -1;
-		}
-
-//		///// also your back
-//		Debug.DrawRay(transform.position, -transform.right, Color.green);
-//		hit = Physics2D.Raycast(transform.position, -transform.right, distToGround + 0.1f, 1 << LayerMask.NameToLayer("Level"));
-//		if ( hit.collider != null )
-//		{
-//			isDead = true;
-//			//DeadBounceVelocity = Vector3.Reflect(tmpRigidBody.velocity, transform.right);
-//			DeadBounceVelocity = tmpRigidBody.velocity;
-//			DeadBounceVelocity.x = 1;
-//		}
-
-//		///// also your head
-//		Debug.DrawRay(transform.position, transform.up, Color.green);
-//		hit = Physics2D.Raycast(transform.position, transform.up, distToGround + 0.1f, 1 << LayerMask.NameToLayer("Level"));
-//		if ( hit.collider != null )
-//		{
-//			isDead = true;
-//			//DeadBounceVelocity = Vector3.Reflect(tmpRigidBody.velocity, -transform.up);
-//			DeadBounceVelocity = tmpRigidBody.velocity;
-//			DeadBounceVelocity.y = -1;
-//		}
-
-		///// don't touch kill volume
-		Debug.DrawRay(transform.position, -transform.up, Color.green);
-		hit = Physics2D.Raycast(transform.position, -transform.up, distToGround + 0.1f, 1 << LayerMask.NameToLayer("Level"));
-		if ( hit.collider != null )
-		{
-			if (hit.collider.gameObject.tag == "KillVolume")
+			///// if your face bump into something, you die
+			Debug.DrawRay(transform.position, transform.right, Color.green);
+			RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.right, distToGround + 0.1f, 1 << LayerMask.NameToLayer("Level"));
+			if (hit.collider == null)
 			{
-				isDead = true;
-				//DeadBounceVelocity = Vector3.Reflect(tmpRigidBody.velocity, -transform.up);
-				DeadBounceVelocity = tmpRigidBody.velocity;
-				DeadBounceVelocity.y = 1;
+				tmpPos = transform.position;
+				tmpPos.y -= tmpBoxCollider2D.bounds.extents.y;
+				Debug.DrawRay(tmpPos, transform.right, Color.blue);
+				hit = Physics2D.Raycast(tmpPos, transform.right, distToGround + 0.1f, 1 << LayerMask.NameToLayer("Level"));
 			}
-		}
+			
+			if (hit.collider == null)
+			{
+				tmpPos = transform.position;
+				tmpPos.y += tmpBoxCollider2D.bounds.extents.y;
+				Debug.DrawRay(tmpPos, transform.right, Color.blue);
+				hit = Physics2D.Raycast(tmpPos, transform.right, distToGround + 0.1f, 1 << LayerMask.NameToLayer("Level"));
+			}
 
-		///// don't touch kill volume on your head too
-		Debug.DrawRay(transform.position, transform.up, Color.green);
-		hit = Physics2D.Raycast(transform.position, transform.up, distToGround + 0.1f, 1 << LayerMask.NameToLayer("Level"));
-		if ( hit.collider != null )
-		{
-			if (hit.collider.gameObject.tag == "KillVolume")
+			if ( hit.collider != null )
 			{
 				isDead = true;
-				//DeadBounceVelocity = Vector3.Reflect(tmpRigidBody.velocity, -transform.up);
+				//DeadBounceVelocity = Vector3.Reflect(tmpRigidBody.velocity, transform.right);
 				DeadBounceVelocity = tmpRigidBody.velocity;
-				DeadBounceVelocity.y = -1;
+				DeadBounceVelocity.x = -1;
+			}
+
+	//		///// also your back
+	//		Debug.DrawRay(transform.position, -transform.right, Color.green);
+	//		hit = Physics2D.Raycast(transform.position, -transform.right, distToGround + 0.1f, 1 << LayerMask.NameToLayer("Level"));
+	//		if ( hit.collider != null )
+	//		{
+	//			isDead = true;
+	//			//DeadBounceVelocity = Vector3.Reflect(tmpRigidBody.velocity, transform.right);
+	//			DeadBounceVelocity = tmpRigidBody.velocity;
+	//			DeadBounceVelocity.x = 1;
+	//		}
+
+	//		///// also your head
+	//		Debug.DrawRay(transform.position, transform.up, Color.green);
+	//		hit = Physics2D.Raycast(transform.position, transform.up, distToGround + 0.1f, 1 << LayerMask.NameToLayer("Level"));
+	//		if ( hit.collider != null )
+	//		{
+	//			isDead = true;
+	//			//DeadBounceVelocity = Vector3.Reflect(tmpRigidBody.velocity, -transform.up);
+	//			DeadBounceVelocity = tmpRigidBody.velocity;
+	//			DeadBounceVelocity.y = -1;
+	//		}
+
+			///// don't touch kill volume
+			Debug.DrawRay(transform.position, -transform.up, Color.green);
+			hit = Physics2D.Raycast(transform.position, -transform.up, distToGround + 0.1f, 1 << LayerMask.NameToLayer("Level"));
+			if ( hit.collider != null )
+			{
+				if (hit.collider.gameObject.tag == "KillVolume")
+				{
+					isDead = true;
+					//DeadBounceVelocity = Vector3.Reflect(tmpRigidBody.velocity, -transform.up);
+					DeadBounceVelocity = tmpRigidBody.velocity;
+					DeadBounceVelocity.y = 1;
+				}
+			}
+
+			///// don't touch kill volume on your head too
+			Debug.DrawRay(transform.position, transform.up, Color.green);
+			hit = Physics2D.Raycast(transform.position, transform.up, distToGround + 0.1f, 1 << LayerMask.NameToLayer("Level"));
+			if ( hit.collider != null )
+			{
+				if (hit.collider.gameObject.tag == "KillVolume")
+				{
+					isDead = true;
+					//DeadBounceVelocity = Vector3.Reflect(tmpRigidBody.velocity, -transform.up);
+					DeadBounceVelocity = tmpRigidBody.velocity;
+					DeadBounceVelocity.y = -1;
+				}
 			}
 		}
 	}

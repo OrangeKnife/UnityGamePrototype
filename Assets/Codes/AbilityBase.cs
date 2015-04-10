@@ -25,7 +25,7 @@ public class AbilityBase : MonoBehaviour {
 
 		EnableAbilityPassive();
 	}
-	void Update()
+	protected void Update()
 	{
 		//print("duration : "+GetActiveRemainingDuration());
 		//print("cooldown : "+GetRemainingCooldown());
