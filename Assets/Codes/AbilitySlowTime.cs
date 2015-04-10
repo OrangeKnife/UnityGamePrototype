@@ -10,6 +10,9 @@ public class AbilitySlowTime : AbilityBase {
 
 	void Start () {
 		bActiveAbility = true;
+
+		CDTIMER = 10.0f;
+		ACTIVETIMER = 2.5f;
 	}
 	
 	public override void StartActiveEffect()

@@ -8,9 +8,9 @@ public class SaveObject
 	{
 		firstRun = inFirstRun;
 		playerGold = inGold;
-		characterUnlockedArray = new bool[5];
+		characterUnlockedArray = new bool[50];
 		characterUnlockedArray [0] = true;
-		abilityUnlockedArray = new bool[2];
+		abilityUnlockedArray = new bool[50];
 		abilityUnlockedArray [0] = true;
 	}
 	public string firstRun;// = "True";

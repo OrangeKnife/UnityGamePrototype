@@ -4,20 +4,25 @@ using System.Collections;
 public class AbilityBase : MonoBehaviour {
 
 	public bool bActiveAbility;
-	private static float CDTIMER = 7.0f;
-	private static float ACTIVETIMER = 4.0f;
-	private float active_remain = ACTIVETIMER;
-	private float timer = CDTIMER;
-	private float startAbilityTime;
-	private float startCoolDownTime;
+	protected float CDTIMER = 10.0f;
+	protected float ACTIVETIMER = 4.0f;
+	protected float active_remain;
+	protected float timer;
+	protected float startAbilityTime;
+	protected float startCoolDownTime;
 
-	private bool isActiveEnable;
+	protected bool isActiveEnable;
+	protected Sprite IconSprite;
 
 	GameObject UIIconObjectMask = null;
 
 	void Start()
 	{
 		print ("start abi");
+		active_remain = ACTIVETIMER;
+		timer = CDTIMER;
+		IconSprite = (Sprite)Resources.Load("Ability/Icon/Combat_64");
+
 		EnableAbilityPassive();
 	}
 	void Update()
@@ -27,7 +32,7 @@ public class AbilityBase : MonoBehaviour {
 
 		float cooldown = GetRemainingCooldown();
 		if (cooldown >= 0 && UIIconObjectMask != null) {
-			float percentage = Mathf.Max(cooldown / timer,0f);
+			float percentage = Mathf.Max(cooldown / GetTotalCooldown(),0f);
 			UIIconObjectMask.GetComponent<UnityEngine.UI.Image>().fillAmount = percentage;
 			print (percentage);
 			UIIconObjectMask.GetComponent<UnityEngine.UI.Image>().enabled = percentage > 0f;
@@ -101,5 +106,10 @@ public class AbilityBase : MonoBehaviour {
 		float _currentActiveTime = Time.time - startAbilityTime;
 		return ACTIVETIMER - _currentActiveTime;
 		//return System.Convert.ToSingle(_currentActiveTime.TotalSeconds);
+	}
+
+	public virtual Sprite GetIcon()
+	{
+		return IconSprite;
 	}
 }
