@@ -153,10 +153,13 @@ public class PlayerController : MonoBehaviour {
 
 			if ( hit.collider != null )
 			{
-				isDead = true;
-				//DeadBounceVelocity = Vector3.Reflect(tmpRigidBody.velocity, transform.right);
-				DeadBounceVelocity = tmpRigidBody.velocity;
-				DeadBounceVelocity.x = -1;
+				if (hit.collider.gameObject.tag != "Ground")
+				{
+					isDead = true;
+					//DeadBounceVelocity = Vector3.Reflect(tmpRigidBody.velocity, transform.right);
+					DeadBounceVelocity = tmpRigidBody.velocity;
+					DeadBounceVelocity.x = -1;
+				}
 			}
 
 	//		///// also your back
