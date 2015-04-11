@@ -8,6 +8,7 @@ public class MovingObject : MonoBehaviour {
 	public Vector2 OffsetPointB; // second destination
 	public bool bMoveOnce = false;
 	public bool spin = false;
+	public bool spinInOneDirection = false;
 	public bool scale = false;
 	public bool scaleLoop = false;
 	public Vector3 scaleA = new Vector3 (1, 1, 1);
@@ -49,7 +50,12 @@ public class MovingObject : MonoBehaviour {
 		}
 
 		if (spin)
-			transform.Rotate (spinRotationVector * (direction_AB?1:-1));
+		{
+			if (spinInOneDirection)
+				transform.Rotate (spinRotationVector);
+			else
+				transform.Rotate (spinRotationVector * (direction_AB?1:-1));
+		}
 
 		if (scale) {
 			scaleTimer += Time.deltaTime;
