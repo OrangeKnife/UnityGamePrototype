@@ -6,8 +6,10 @@ public class AbilityAirbrake : AbilityBase {
 	private PlayerController playerCtrl;
 	private float tmpSpeed;
 
-	void Start () {
+	new void Start () {
 		bActiveAbility = true;
+
+		base.Start();
 	}
 	
 	public override void StartActiveEffect()

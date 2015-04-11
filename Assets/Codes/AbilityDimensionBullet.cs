@@ -7,13 +7,13 @@ public class AbilityDimensionBullet : AbilityBase {
 	private Rigidbody2D tmpRigid;
 	private GameObject bullet;
 	
-	void Start () {
+	new void Start () {
 		bActiveAbility = true;
 
 		CDTIMER = 8.0f;
 		ACTIVETIMER = 2.0f;
 
-		IconSprite = Resources.Load<Sprite>("Ability/Icon/AbilityIcon_2");
+		base.Start();
 	}
 	
 	public override void StartActiveEffect()
@@ -34,5 +34,13 @@ public class AbilityDimensionBullet : AbilityBase {
 
 		Destroy(bullet);
 		base.StopActiveEffect();
+	}
+
+	public override Sprite GetIcon()
+	{
+		if (IconSprite == null)
+			IconSprite = Resources.Load<Sprite>("Ability/Icon/AbilityIcon_2");
+		
+		return IconSprite;
 	}
 }

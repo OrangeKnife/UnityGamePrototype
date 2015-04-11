@@ -8,11 +8,13 @@ public class AbilitySlowTime : AbilityBase {
 	private float TimeSlowFactor = 0.3f;
 	SpriteRenderer tmp;
 
-	void Start () {
+	new void Start () {
 		bActiveAbility = true;
 
 		CDTIMER = 10.0f;
 		ACTIVETIMER = 2.5f;
+
+		base.Start();
 	}
 	
 	public override void StartActiveEffect()

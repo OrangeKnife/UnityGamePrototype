@@ -16,12 +16,11 @@ public class AbilityBase : MonoBehaviour {
 
 	GameObject UIIconObjectMask = null;
 
-	void Start()
+	protected void Start()
 	{
 		print ("start abi");
 		active_remain = ACTIVETIMER;
 		timer = CDTIMER;
-		IconSprite = (Sprite)Resources.Load("Ability/Icon/Combat_64");
 
 		EnableAbilityPassive();
 	}
@@ -115,6 +114,9 @@ public class AbilityBase : MonoBehaviour {
 
 	public virtual Sprite GetIcon()
 	{
+		if (IconSprite == null)
+			IconSprite = Resources.Load<Sprite>("Ability/Icon/Combat_64");
+
 		return IconSprite;
 	}
 }

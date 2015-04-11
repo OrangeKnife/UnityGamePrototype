@@ -9,13 +9,13 @@ public class AbilityTeleport : AbilityBase {
 	Vector3 teleportToLocation;
 	bool startInterpolation;
 	
-	void Start () {
+	new void Start () {
 		bActiveAbility = true;
 		
 		CDTIMER = 5.0f;
 		ACTIVETIMER = 2.0f;
-		
-		IconSprite = Resources.Load<Sprite>("Ability/Icon/AbilityIcon_2");
+
+		base.Start();
 	}
 	
 	public override void StartActiveEffect()
@@ -81,5 +81,13 @@ public class AbilityTeleport : AbilityBase {
 		}
 
 		base.Update();
+	}
+
+	public override Sprite GetIcon()
+	{
+		if (IconSprite == null)
+			IconSprite = Resources.Load<Sprite>("Ability/Icon/AbilityIcon_2");
+		
+		return IconSprite;
 	}
 }
