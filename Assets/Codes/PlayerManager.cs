@@ -4,6 +4,7 @@ public class PlayerManager : MonoBehaviour {
 
 	public float Score2GoldRatio = 1f;
 
+	private float CoinMultiplier = 1.0f;
 	private int playerScore = 0;
 	private int MAXSCORELENGTH = 100;
 
@@ -33,7 +34,7 @@ public class PlayerManager : MonoBehaviour {
 
 	}
 	public void addCoin(int coin) {
-		coins += coin;
+		coins += (int)(coin * CoinMultiplier);
 		print ("coins : " + coins);
 		mysave.playerGold = coins;
 		GameFile.Save ("save.data", mysave);
@@ -46,6 +47,15 @@ public class PlayerManager : MonoBehaviour {
 	public void setPlayerScore(int score) {
 		playerScore = score;
 		eventHandler.UpdateUISocre (playerScore);
+	}
+
+	public void setCoinMultiplier(float val)
+	{
+		CoinMultiplier = val;
+	}
+	public float getCoinMultiplier()
+	{
+		return CoinMultiplier;
 	}
 
  

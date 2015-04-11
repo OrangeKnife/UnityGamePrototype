@@ -5,6 +5,7 @@ public class CoinController : MonoBehaviour {
 	private GameObject player;
 	private PlayerManager _playerManager;
 	GameManager gameMgr;
+	public int CoinValue = 5;
 	// Use this for initialization
 	void Start () {
 		gameMgr = GameObject.Find("GameManager").GetComponent<GameManager>();
@@ -23,7 +24,7 @@ public class CoinController : MonoBehaviour {
 	}
 	void CollectCoin(Collider2D coinCollider)
 	{
-		_playerManager.addCoin(1);
+		_playerManager.addCoin(CoinValue);
 		Destroy(gameObject);
 	}
 }

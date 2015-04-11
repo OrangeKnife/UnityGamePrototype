@@ -92,6 +92,20 @@ public class PlayerController : MonoBehaviour {
 		CheckDeadRaycast = val;
 	}
 
+	public void setMaxGlideTime(float val) {
+		MaxGlideTime = val;
+	}
+	public float getMaxGlideTime() {
+		return MaxGlideTime;
+	}
+
+	public void setMaxGlideAllow(int val) {
+		MaxGlideAllow = val;
+	}
+	public int getMaxGlideAllow() {
+		return MaxGlideAllow;
+	}
+
 	public void setMoveSpeed(float speed) {
 		moveSpeed = speed;
 	}
@@ -428,7 +442,7 @@ public class PlayerController : MonoBehaviour {
 		HandleInput (horizontal, ButtonJumpDown, ButtonJumpHold, ButtonJumpUp, ButtonAbilityDown, ButtonAbilityHold, ButtonAbilityUp);
 	}
 
-	bool IsGrounded()
+	public bool IsGrounded()
 	{
 		//Debug.DrawRay(transform.position, -transform.up, Color.green);
 		Vector2 tmpPos;
