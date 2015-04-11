@@ -8,9 +8,14 @@ public class MovingObject : MonoBehaviour {
 	public Vector2 OffsetPointB; // second destination
 	public bool bMoveOnce = false;
 	public bool spin = false;
+	public bool scale = false;
+	public bool scaleLoop = false;
+	public Vector3 scaleA = new Vector3 (1, 1, 1);
+	public Vector3 scaleB = new Vector3 (1, 1, 1);
+	public float scaleSpeed = 0.2f;
 	public Vector3 spinRotationVector = new Vector3(0,0,5);
 
-	private float currentTimer;
+	private float currentTimer,scaleTimer;
 	private Vector2 tmpOffset;
 
 	bool direction_AB = true;
@@ -18,6 +23,7 @@ public class MovingObject : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		currentTimer = 0.0f;
+		scaleTimer = 0.0f;
 		OffsetPointA = (Vector2)transform.position + OffsetPointA;
 		OffsetPointB = (Vector2)transform.position + OffsetPointB;
 	}
@@ -44,6 +50,19 @@ public class MovingObject : MonoBehaviour {
 
 		if (spin)
 			transform.Rotate (spinRotationVector * (direction_AB?1:-1));
+
+		if (scale) {
+			scaleTimer += Time.deltaTime;
+			transform.localScale = Vector3.Lerp (scaleA, scaleB,  scaleTimer * scaleSpeed);
+
+			if(scaleLoop && transform.localScale == scaleB)
+			{
+				scaleTimer = 0.0f;
+				Vector3 tempVec3 = scaleA;
+				scaleA = scaleB;
+				scaleB = tempVec3;
+			}
+		}
 	}
 
 //	var pointB : Vector3;
