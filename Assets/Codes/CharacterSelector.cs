@@ -3,7 +3,7 @@ using System;
 using System.Collections;
 
 using System.Collections.Generic;
-
+using Soomla.Store;
 
 [Serializable]
 public struct CharacterInfo
@@ -13,9 +13,8 @@ public struct CharacterInfo
 	public int CharacterPassiveAbilityId;
 	public string CharacterName;
 	public string CharacterDescription;
-	public string CharacterProductId;
-	public int Cost;
-	public float Cost_Dollar;
+	public string CharacterSoomlaId;
+	public int Cost_Coin;
 
 };
 
@@ -26,9 +25,8 @@ public struct AbilityInfo
 	public int AbilityId;
 	public string AbilityName;
 	public string AbilityDescription;
-	public string AbilityProductId;
-	public int Cost;
-	public float Cost_Dollar;
+	public string AbilitySoomlaId;
+	public int Cost_Coin;
 };
 
 public class CharacterSelector : MonoBehaviour
@@ -53,6 +51,7 @@ public class CharacterSelector : MonoBehaviour
 	private int lastAbilityIndex = -1;
 	GameManager gameMgr;
 	CharacterSelectionEvents eventHandler;
+	ShopEventHandler shopEvents;
 
 	private int savedCharacterIndex = 0,savedAbilityIndex = 0;
 	private SaveObject mysave;
@@ -73,6 +72,9 @@ public class CharacterSelector : MonoBehaviour
 		gameMgr.CleanUpAbilityNames ();
 
 		eventHandler = GameObject.Find ("CharacterSelectionEvents").GetComponent<CharacterSelectionEvents> ();
+
+		shopEvents = new ShopEventHandler ();
+		shopEvents.setUpCharacterSelector (this);
 
 		if (CharObjectList.Count > 0) {
 			SelectCharacter(savedCharacterIndex);
@@ -195,20 +197,75 @@ public class CharacterSelector : MonoBehaviour
 			ReArrangeAbility(currentAbilityIndex);
 		}
 	}
+	public bool UnlockBySoomlaItemId(string soomlaItemId)
+	{
+		for (int idx = 0; idx < CharacterInfoList.Count; ++ idx) {
+			if(CharacterInfoList[idx].CharacterSoomlaId == soomlaItemId)
+			{
+				DoUnlockCharacter(idx);
+				return true;
+			}
+		}
 
+		for (int idx = 0; idx < AbilityInfoList.Count; ++ idx) {
+			if(AbilityInfoList[idx].AbilitySoomlaId == soomlaItemId)
+			{
+				DoUnlockAbility(idx);
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	public void DoUnlockCharacter(int characterIndex)
+	{
+		mysave.characterUnlockedArray [CharacterInfoList [characterIndex].CharacterId] = true;
+		eventHandler.OnSelectedACharacter (CharacterInfoList [characterIndex], true);
+	}
+
+	public void DoUnlockAbility(int abilityIdx)
+	{
+		mysave.abilityUnlockedArray [AbilityInfoList [abilityIdx].AbilityId] = true;
+		eventHandler.OnSelectedAnAbility (AbilityInfoList [abilityIdx], true);
+	}
 
 	
-	public void UnlockCurrentChar()
+	public void UnlockCurrentCharUsingCoin()
 	{
-		mysave.characterUnlockedArray[CharacterInfoList[currentCharacterIndex].CharacterId] = true;
-		eventHandler.OnSelectedACharacter(CharacterInfoList[currentCharacterIndex],true);
+		if (CharacterInfoList [currentCharacterIndex].Cost_Coin <= mysave.playerGold) {
+			DoUnlockCharacter(currentCharacterIndex);
+			mysave.playerGold -= CharacterInfoList [currentCharacterIndex].Cost_Coin;
+		}
 	}
 	
-	public void UnlockCurrentAbility()
+	public void UnlockCurrentAbilityUsingCoin()
 	{
-		mysave.abilityUnlockedArray [AbilityInfoList[currentAbilityIndex].AbilityId] = true;
-		eventHandler.OnSelectedAnAbility(AbilityInfoList[currentAbilityIndex],true);
+		if (AbilityInfoList [currentAbilityIndex].Cost_Coin <= mysave.playerGold) {
+			DoUnlockAbility(currentAbilityIndex);
+
+			mysave.playerGold -= AbilityInfoList [currentAbilityIndex].Cost_Coin;
+		}
 	}
+
+	public void UnlockCurrentCharUsingSoomla(){
+		try{
+			StoreInventory.BuyItem(CharacterInfoList [currentCharacterIndex].CharacterSoomlaId);
+		} catch (Exception e) {
+			Debug.LogError ("SOOMLA/UNITY " + e.Message);
+		}
+	}
+
+	
+	public void UnlockCurrentAbilityUsingSoomla(){
+		try{
+			StoreInventory.BuyItem(AbilityInfoList [currentAbilityIndex].AbilitySoomlaId);
+		} catch (Exception e) {
+			Debug.LogError ("SOOMLA/UNITY " + e.Message);
+		}
+	}
+
+
 	// Update is called once per frame
 	void Update () {
 

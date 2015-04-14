@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine.UI;
 using System;
+using Soomla.Store;
 public class MainMenuEvents : MonoBehaviour {
 
 	private SaveObject mysave;// = new SaveObject();
@@ -39,5 +40,12 @@ public class MainMenuEvents : MonoBehaviour {
 		mysave = new SaveObject("False",0);
 		GameFile.Save ("save.data",mysave);
 
+
+
+	}
+
+	public void OnTestShopButtonClick(string sceneName)
+	{
+		SceneManager.OpenScene (sceneName);
 	}
 }
