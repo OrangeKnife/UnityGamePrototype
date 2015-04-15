@@ -20,7 +20,8 @@ public class PlayerController : MonoBehaviour {
 
 	private float backgroundMoveSpeed = 8.0f;
 	private float jumpForce = 1500.0f;
-	private float moveSpeed = 8.0f;
+	private float moveSpeed = 5.0f;
+	private float moveSpeedMultPerDifficulty = 0.1f;
 	private float PlayerGravity = 80.0f;
 
 	private float distToGround = 0.0f;
@@ -40,6 +41,7 @@ public class PlayerController : MonoBehaviour {
 	GameSceneEvents eventHandler;
 	PlayerManager playerMgr;
 	GameManager gameMgr;
+	LevelGenerator tmpLevelGen;
 
 	bool freezed;
 
@@ -78,6 +80,7 @@ public class PlayerController : MonoBehaviour {
 		gameMgr = GameObject.Find("GameManager").GetComponent<GameManager>();
 
 		tmpAbilityManager = GetComponent<AbilityManager>();
+		tmpLevelGen = gameMgr.GetComponent<LevelGenerator>();
 
 		//AbilityManager abManager = gameMgr.GetCurrentPlayer().GetComponent<AbilityManager>();
 //		abManager.addAbility ("abi1");
@@ -519,7 +522,7 @@ public class PlayerController : MonoBehaviour {
 		if (freezed)
 			tmpRigidBody.velocity = new Vector2 ();
 		else
-			tmpRigidBody.velocity = new Vector2 (horizontal * moveSpeed * (bActivateGlide?GlideSpeedModifier:1.0f), tmpRigidBody.velocity.y);
+			tmpRigidBody.velocity = new Vector2 (horizontal * moveSpeed * (bActivateGlide?GlideSpeedModifier:1.0f) * (1+(tmpLevelGen.GetDifficulty()*moveSpeedMultPerDifficulty)), tmpRigidBody.velocity.y);
 
 //		print (transform.position.x + "," + groundObj.transform.position.x);
 //		if(transform.position.x >= currentGround.transform.position.x)

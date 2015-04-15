@@ -58,14 +58,14 @@ public class LevelGenerator : MonoBehaviour {
 			{
 				if (tmpRand < PercentByDifficulty[i] * Difficulty)
 				{
-					print ("PickedSection: " + GetSectionName(i));
+					print ("PickedSection: " + GetSectionName(i) + ", Diff: " + Difficulty);
 					return i;
 				}
 				tmpRand = Random.Range(0.0f, 100.0f);
 			}
 
 			// always at least return 'easy'
-			print ("PickedSection: " + GetSectionName(3));
+			print ("PickedSection: " + GetSectionName(3) + ", Diff: " + Difficulty);
 			return 3;
 		}
 
@@ -236,7 +236,7 @@ public class LevelGenerator : MonoBehaviour {
 
 	public int GetDifficulty()
 	{
-		return (NumberOfGeneratedSection % DifficultyMod) +1;
+		return (int)Mathf.Ceil(NumberOfGeneratedSection / (float)DifficultyMod);
 	}
 
 	private List<GameObject> GetSectionArray(int num)
