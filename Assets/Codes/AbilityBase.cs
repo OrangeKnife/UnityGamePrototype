@@ -14,6 +14,10 @@ public class AbilityBase : MonoBehaviour {
 	protected bool isActiveEnable;
 	protected Sprite IconSprite;
 
+	protected SpriteRenderer tmpFXRenderer;
+	protected Sprite vfxAbilityReady;
+	protected Sprite vfxAbilityActive;
+
 	GameObject UIIconObjectMask = null;
 
 	protected void Start()
@@ -22,6 +26,9 @@ public class AbilityBase : MonoBehaviour {
 		active_remain = ACTIVETIMER;
 		timer = CDTIMER;
 
+		tmpFXRenderer = transform.FindChild("AbilityFX").GetComponent<SpriteRenderer>();
+		vfxAbilityReady = Resources.Load<Sprite>("Ability/Ability_Ready");
+		vfxAbilityActive = Resources.Load<Sprite>("Ability/Ability_Active");
 		EnableAbilityPassive();
 	}
 	protected void Update()
@@ -35,6 +42,12 @@ public class AbilityBase : MonoBehaviour {
 			UIIconObjectMask.GetComponent<UnityEngine.UI.Image>().fillAmount = percentage;
 			//print (percentage);
 			UIIconObjectMask.GetComponent<UnityEngine.UI.Image>().enabled = percentage > 0f;
+		}
+
+		if (cooldown <= 0 && !tmpFXRenderer.enabled)
+		{
+			tmpFXRenderer.enabled = true;
+			tmpFXRenderer.sprite = vfxAbilityReady;
 		}
 
 		if (isActiveEnable && GetActiveRemainingDuration() < 0)
@@ -73,6 +86,11 @@ public class AbilityBase : MonoBehaviour {
 			startAbilityTime = Time.time;
 			startCoolDownTime = Time.time;
 			isActiveEnable = true;
+
+			// play vfx here
+			tmpFXRenderer.enabled = true;
+			tmpFXRenderer.sprite = vfxAbilityActive;
+
 			StartActiveEffect();
 		}
 	}
@@ -88,6 +106,7 @@ public class AbilityBase : MonoBehaviour {
 	{
 		print("Disable Active Base");
 		isActiveEnable = false;
+		tmpFXRenderer.enabled = false;
 	}
 	public virtual void EnableAbilityPassive() {
 

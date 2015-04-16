@@ -20,8 +20,8 @@ public class PlayerController : MonoBehaviour {
 
 	private float backgroundMoveSpeed = 8.0f;
 	private float jumpForce = 1500.0f;
-	private float moveSpeed = 5.0f;
-	private float moveSpeedMultPerDifficulty = 0.1f;
+	private float moveSpeed = 6.0f;
+	private float moveSpeedMultPerDifficulty = 0.05f;
 	private float PlayerGravity = 80.0f;
 
 	private float distToGround = 0.0f;
