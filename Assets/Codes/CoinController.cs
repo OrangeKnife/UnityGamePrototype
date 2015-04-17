@@ -5,7 +5,9 @@ public class CoinController : MonoBehaviour {
 	private GameObject player;
 	private PlayerManager _playerManager;
 	GameManager gameMgr;
+	private Audios sound;
 	public int CoinValue = 5;
+
 	// Use this for initialization
 	void Start () {
 		gameMgr = GameObject.Find("GameManager").GetComponent<GameManager>();
@@ -15,16 +17,21 @@ public class CoinController : MonoBehaviour {
 
 	void OnTriggerEnter2D(Collider2D collider)
 	{
-		print ("test "+collider.tag);
+		print ("test coin");
 		if (collider.gameObject.tag == "Player") {
-			print ("add coins");
 			CollectCoin (collider);
 		}
 		
 	}
+	void PlayCoinSound() 
+	{
+		sound = GameObject.Find("GameManager").GetComponent<Audios>();;
+		sound.playSound ("coin");
+	}
 	void CollectCoin(Collider2D coinCollider)
 	{
 		_playerManager.addCoin(CoinValue);
+		PlayCoinSound ();
 		Destroy(gameObject);
 	}
 }
