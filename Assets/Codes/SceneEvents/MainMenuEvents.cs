@@ -4,15 +4,21 @@ using UnityEngine.UI;
 using System;
 using Soomla.Store;
 public class MainMenuEvents : MonoBehaviour {
+	public GameObject OptionPanel;
 
 	private SaveObject mysave;// = new SaveObject();
-	// Use this for initialization
+
+	 
+
+	private GameManager gameMgr;
 	void Start () {
 
 		if(GameFile.Load ("save.data", ref mysave))
 			GameObject.Find ("WelcomeText").GetComponent<Text> ().enabled = mysave.firstRun == "True";
 		else
 			mysave = new SaveObject("False",0);
+
+		gameMgr = GameObject.Find ("GameManager").GetComponent<GameManager>() ;
 	}
 	
 	// Update is called once per frame
@@ -39,8 +45,13 @@ public class MainMenuEvents : MonoBehaviour {
 		//TODO remove when realease !
 		mysave = new SaveObject("False",0);
 		GameFile.Save ("save.data",mysave);
+#if UNITY_EDITOR
+		PlayerPrefs.DeleteAll ();
+#endif
 
+#if UNITY_IOS || UNITY_ANDROID
 
+#endif
 
 	}
 
@@ -48,4 +59,43 @@ public class MainMenuEvents : MonoBehaviour {
 	{
 		SceneManager.OpenScene (sceneName);
 	}
+
+	public void OnRestoreButtonClick()
+	{
+		gameMgr.restorePurchase ();
+	}
+
+	public void OnOptionButtonClick()
+	{
+		OptionPanel.SetActive (true);
+	}
+
+	public void OnCloseOptionButtonClick()
+	{
+		OptionPanel.SetActive (false);
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

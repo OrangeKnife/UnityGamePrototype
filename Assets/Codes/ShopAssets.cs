@@ -66,10 +66,10 @@ public class ShopAssets : IStoreAssets{
 	
 	public const string CREAMCUP_ITEM_ID   = "cream_cup";
 	
-	public const string UNLOCK_CHAR1_LIFETIME_PRODUCT_ID = "UNLOCK_CHAR1";
-	public const string UNLOCK_CHAR2_LIFETIME_PRODUCT_ID = "UNLOCK_CHAR2";
-	public const string UNLOCK_CHAR3_LIFETIME_PRODUCT_ID = "UNLOCK_CHAR3";
-	public const string UNLOCK_CHAR4_LIFETIME_PRODUCT_ID = "UNLOCK_CHAR4";
+	public const string UNLOCK_CHAR1_LIFETIME_PRODUCT_ID = "unlock_char1";
+	public const string UNLOCK_CHAR2_LIFETIME_PRODUCT_ID = "unlock_char2";
+	public const string UNLOCK_CHAR3_LIFETIME_PRODUCT_ID = "unlock_char3";
+	public const string UNLOCK_CHAR4_LIFETIME_PRODUCT_ID = "unlock_char4";
 	
 	
 	/** Virtual Currencies **/

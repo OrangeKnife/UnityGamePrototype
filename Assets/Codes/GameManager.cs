@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Soomla.Store;
 
 public class GameManager : MonoBehaviour {
 
@@ -129,7 +130,10 @@ public class GameManager : MonoBehaviour {
 	{
 		return CurrentPlayer;
 	}
-
+	public void restorePurchase()
+	{
+		SoomlaStore.RestoreTransactions ();
+	}
 	public void playSound(string type,bool bLooping = false)
 	{
 		if (type == "coin")
