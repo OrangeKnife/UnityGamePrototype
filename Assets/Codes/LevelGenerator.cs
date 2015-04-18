@@ -17,7 +17,7 @@ public class LevelGenerator : MonoBehaviour {
 	private Transform playerTransform;
 
 	public bool bInitSpawnTestSection;
-	public bool bInitSpawnTutorialSection = true;
+	public bool bInitSpawnTutorialSection = false;
 	public List<GameObject> SectionArray_TestSection;
 	public List<GameObject> SectionArray_Tutorial;
 	public List<GameObject> SectionArray_Easy;
@@ -94,7 +94,7 @@ public class LevelGenerator : MonoBehaviour {
 	// Use this for initialization
 	void Start () 
 	{
-		currentLevel = SectionArray_Easy;
+		currentLevel = SectionArray_Normal;
 
 		if (gameMgr == null)
 			gameMgr = GameObject.Find("GameManager").GetComponent<GameManager>();
@@ -112,7 +112,7 @@ public class LevelGenerator : MonoBehaviour {
 			SpawnedSectionList = new LinkedList<GameObject>();
 		
 		NumberOfGeneratedSection = 0;
-		currentLevel = SectionArray_Easy;
+		currentLevel = SectionArray_Normal;
 		NormalPicker = new SectionPicker(0.5f, 2.0f, 10.0f, 9999.0f);
 		SurprisePicker = new SectionPicker(10.0f, 9999.0f, 9999.0f, 9999.0f);
 
@@ -134,21 +134,25 @@ public class LevelGenerator : MonoBehaviour {
 
 		if (bInitSpawnTestSection)
 		{
+			print ("test section");
 			for (int i = 0; i < SectionArray_TestSection.Count; ++i)
 			{
 				SpawnSection(SectionArray_TestSection[i]);
 			}
 		}
-		else if (bInitSpawnTutorialSection)
+		/*else if (bInitSpawnTutorialSection)
 		{
+			print ("tut section");
 			// spawn tutorial sections
 			for (int i = 0; i < SectionArray_Tutorial.Count; ++i)
 			{
 				SpawnSection(SectionArray_Tutorial[i]);
 			}
-		}
+		}*/
 		else
 		{
+			
+			print ("normal section");
 			// init first 2-3 sections here
 			for (int i = 0; i < MAXSECTIONS; ++i)
 			{
@@ -242,7 +246,7 @@ public class LevelGenerator : MonoBehaviour {
 	private List<GameObject> GetSectionArray(int num)
 	{
 		if (num == 3)
-			return SectionArray_Easy;
+			return SectionArray_Normal;
 		else if (num == 2)
 			return SectionArray_Normal;
 		else if (num == 1)

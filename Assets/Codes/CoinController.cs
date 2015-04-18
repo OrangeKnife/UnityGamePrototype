@@ -25,8 +25,7 @@ public class CoinController : MonoBehaviour {
 	}
 	void PlayCoinSound() 
 	{
-		sound = GameObject.Find("GameManager").GetComponent<Audios>();;
-		sound.playSound ("coin");
+		gameMgr.playSound ("coin");
 	}
 	void CollectCoin(Collider2D coinCollider)
 	{

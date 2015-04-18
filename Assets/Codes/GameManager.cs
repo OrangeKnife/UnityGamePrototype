@@ -16,6 +16,15 @@ public class GameManager : MonoBehaviour {
 	List<string> AbilityNameArray = new List<string>();
 	GameObject CurrentPlayerTemplate;
 
+	//sound
+	public AudioClip coinCollect;
+	public AudioClip jump;
+	public AudioClip dash;
+	public AudioClip crash;
+	public AudioClip warp;
+	private AudioSource audioSource;
+	private AudioClip _audioClip;
+
 	void Start () {
 		//RespawnPlayer();
 	}
@@ -24,6 +33,8 @@ public class GameManager : MonoBehaviour {
 	{
 		bGameStarted = true;
 		GetComponent<LevelGenerator> ().enabled = bGameStarted;
+
+		audioSource=gameObject.AddComponent<AudioSource>();
 	}
 
 	public void EndGame()
@@ -118,4 +129,23 @@ public class GameManager : MonoBehaviour {
 	{
 		return CurrentPlayer;
 	}
+
+	public void playSound(string type,bool bLooping = false)
+	{
+		if (type == "coin")
+			_audioClip = coinCollect;
+		else if (type == "jump")
+			_audioClip = jump;
+		else if (type == "dash")
+			_audioClip = dash;
+		else if (type == "crash")
+			_audioClip = crash;
+		else if (type == "warp")
+			_audioClip = warp;
+		
+		audioSource.clip = _audioClip;
+		audioSource.loop = bLooping;
+		audioSource.Play ();
+	}
+
 }
