@@ -12,12 +12,15 @@ public class MainMenuEvents : MonoBehaviour {
 
 	private GameManager gameMgr;
 	void Start () {
-
+		try{
 		if(GameFile.Load ("save.data", ref mysave))
 			GameObject.Find ("WelcomeText").GetComponent<Text> ().enabled = mysave.firstRun == "True";
 		else
-			mysave = new SaveObject("False",0);
-
+				mysave = new SaveObject("False",0);}
+		catch(System.Exception)
+		{
+			Debug.Log ("save.data loading error");
+		}
 		gameMgr = GameObject.Find ("GameManager").GetComponent<GameManager>() ;
 	}
 	
