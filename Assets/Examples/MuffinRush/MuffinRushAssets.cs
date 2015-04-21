@@ -42,7 +42,7 @@ namespace Soomla.Store.Example {
 		/// see parent.
 		/// </summary>
 	    public VirtualGood[] GetGoods() {
-			return new VirtualGood[] {/*MUFFINCAKE_GOOD, PAVLOVA_GOOD,CHOCLATECAKE_GOOD, CREAMCUP_GOOD, */NO_ADS_LTVG};
+			return new VirtualGood[] {MUFFINCAKE_GOOD, PAVLOVA_GOOD,CHOCLATECAKE_GOOD, CREAMCUP_GOOD, NO_ADS_LTVG};
 		}
 
 		/// <summary>
@@ -79,7 +79,7 @@ namespace Soomla.Store.Example {
 
 	    public const string CREAMCUP_ITEM_ID   = "cream_cup";
 
-		public const string NO_ADS_LIFETIME_PRODUCT_ID = "UNLOCK_CHAR1";//"no_ads";
+		public const string NO_ADS_LIFETIME_PRODUCT_ID = "no_ads";
 
 
 	    /** Virtual Currencies **/
@@ -167,9 +167,9 @@ namespace Soomla.Store.Example {
 	    /** LifeTimeVGs **/
 		// Note: create non-consumable items using LifeTimeVG with PuchaseType of PurchaseWithMarket
 		public static VirtualGood NO_ADS_LTVG = new LifetimeVG(
-			"Unlock Char 1", 														// name
-			"You can Unlock CHAR 1!",				 									// description
-			"unlockchar1",														// item id
+			"No Ads", 														// name
+			"No More Ads!",				 									// description
+			"no_ads",														// item id
 			new PurchaseWithMarket(NO_ADS_LIFETIME_PRODUCT_ID, 0.99));	// the way this virtual good is purchased
 	}
 

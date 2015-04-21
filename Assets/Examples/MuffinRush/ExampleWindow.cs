@@ -233,7 +233,7 @@ namespace Soomla.Store.Example {
 		void welcomeScreen()
 		{
 			//drawing background, just using a white pixel here
-			//GUI.DrawTexture(new Rect(0,0,Screen.width,Screen.height),tImgDirect);
+			GUI.DrawTexture(new Rect(0,0,Screen.width,Screen.height),tImgDirect);
 			//changing the font and alignment the label, and making a backup so we can put it back.
 			Font backupFont = GUI.skin.label.font;
 			TextAnchor backupAlignment = GUI.skin.label.alignment;
@@ -264,7 +264,7 @@ namespace Soomla.Store.Example {
 		void goodsScreen()
 		{
 			//white background
-			//GUI.DrawTexture(new Rect(0,0,Screen.width,Screen.height), tWhitePixel);
+			GUI.DrawTexture(new Rect(0,0,Screen.width,Screen.height), tWhitePixel);
 			Color backupColor = GUI.color;
 			TextAnchor backupAlignment = GUI.skin.label.alignment;
 			Font backupFont = GUI.skin.label.font;
@@ -283,7 +283,7 @@ namespace Soomla.Store.Example {
 			GUI.Label(new Rect(0,Screen.height/8f,Screen.width,Screen.height/8f),"Virtual Goods");
 
 			GUI.color = backupColor;
-			//GUI.DrawTexture(new Rect(Screen.width-30,10,30,30), tMuffins);
+			GUI.DrawTexture(new Rect(Screen.width-30,10,30,30), tMuffins);
 			float productSize = Screen.width*0.30f;
 			float totalHeight = StoreInfo.Goods.Count*productSize;
 			//Here we start a scrollView, the first rectangle is the position of the scrollView on the screen,
@@ -311,13 +311,13 @@ namespace Soomla.Store.Example {
 						Debug.LogError ("SOOMLA/UNITY " + e.Message);
 					}
 				}
-				//GUI.DrawTexture(new Rect(0,y,Screen.width,productSize),tWhitePixel);
+				GUI.DrawTexture(new Rect(0,y,Screen.width,productSize),tWhitePixel);
 				//We draw a button so we can detect a touch and then draw an image on top of it.
 				//TODO
 				//Resources.Load(path) The path is the relative path starting from the Resources folder.
 				//Make sure the images used for UI, have the textureType GUI. You can change this in the Unity editor.
 				GUI.color = backupColor;
-				//GUI.DrawTexture(new Rect(0+productSize/8f, y+productSize/8f,productSize*6f/8f,productSize*6f/8f), itemsTextures[vg.ItemId]);
+				GUI.DrawTexture(new Rect(0+productSize/8f, y+productSize/8f,productSize*6f/8f,productSize*6f/8f), itemsTextures[vg.ItemId]);
 				GUI.color = Color.black;
 				GUI.skin.label.font = fName;
 				GUI.skin.label.alignment = TextAnchor.UpperLeft;
@@ -344,7 +344,7 @@ namespace Soomla.Store.Example {
 				else
 					GUI.Label(new Rect(0,y,Screen.width-10,productSize),"Cannot afford");
 				GUI.color = Color.grey;
-				//GUI.DrawTexture(new Rect(0,y+productSize-1,Screen.width,1),tWhitePixel);
+				GUI.DrawTexture(new Rect(0,y+productSize-1,Screen.width,1),tWhitePixel);
 				y+= productSize;
 				GUI.enabled = true;
 			}
@@ -364,12 +364,12 @@ namespace Soomla.Store.Example {
 				SoomlaStore.StopIabServiceInBg();
 #endif
 			}
-			//GUI.DrawTexture(new Rect(Screen.width*2f/7f-width/2f,Screen.height*7f/8f+borderSize,width,buttonHeight),tBack);
+			GUI.DrawTexture(new Rect(Screen.width*2f/7f-width/2f,Screen.height*7f/8f+borderSize,width,buttonHeight),tBack);
 			width = buttonHeight*227/94;
 			if(GUI.Button(new Rect(Screen.width*5f/7f-width/2f,Screen.height*7f/8f+borderSize,width,buttonHeight), "back")){
 				guiState = GUIState.PRODUCTS;
 			}
-			//GUI.DrawTexture(new Rect(Screen.width*5f/7f-width/2f,Screen.height*7f/8f+borderSize,width,buttonHeight),tGetMore);
+			GUI.DrawTexture(new Rect(Screen.width*5f/7f-width/2f,Screen.height*7f/8f+borderSize,width,buttonHeight),tGetMore);
 		}
 
 		/// <summary>
@@ -378,7 +378,7 @@ namespace Soomla.Store.Example {
 		void currencyScreen()
 		{
 			//white background
-			//GUI.DrawTexture(new Rect(0,0,Screen.width,Screen.height),tWhitePixel);
+			GUI.DrawTexture(new Rect(0,0,Screen.width,Screen.height),tWhitePixel);
 			Color backupColor = GUI.color;
 			TextAnchor backupAlignment = GUI.skin.label.alignment;
 			Font backupFont = GUI.skin.label.font;
@@ -395,7 +395,7 @@ namespace Soomla.Store.Example {
 			GUI.Label(new Rect(0,Screen.height/8f,Screen.width,Screen.height/8f),"Virtual Currency Packs");
 
 			GUI.color = backupColor;
-			//GUI.DrawTexture(new Rect(Screen.width-30,10,30,30),tMuffins);
+			GUI.DrawTexture(new Rect(Screen.width-30,10,30,30),tMuffins);
 			float productSize = Screen.width*0.30f;
 			float totalHeight = StoreInfo.CurrencyPacks.Count*productSize;
 			//Here we start a scrollView, the first rectangle is the position of the scrollView on the screen,
@@ -414,10 +414,10 @@ namespace Soomla.Store.Example {
 						Debug.Log ("SOOMLA/UNITY " + e.Message);
 					}
 				}
-				//GUI.DrawTexture(new Rect(0,y,Screen.width,productSize),tWhitePixel);
+				GUI.DrawTexture(new Rect(0,y,Screen.width,productSize),tWhitePixel);
 				//Resources.Load(path) The path is the relative path starting from the Resources folder.
 				//Make sure the images used for UI, have the textureType GUI. You can change this in the Unity editor.
-				//GUI.DrawTexture(new Rect(0+productSize/8f, y+productSize/8f,productSize*6f/8f,productSize*6f/8f),itemsTextures[cp.ItemId]);
+				GUI.DrawTexture(new Rect(0+productSize/8f, y+productSize/8f,productSize*6f/8f,productSize*6f/8f),itemsTextures[cp.ItemId]);
 				GUI.color = Color.black;
 				GUI.skin.label.font = fName;
 				GUI.skin.label.alignment = TextAnchor.UpperLeft;
@@ -433,7 +433,7 @@ namespace Soomla.Store.Example {
 				GUI.skin.label.font = fBuy;
 				GUI.Label(new Rect(0,y,Screen.width-10,productSize),"Click to buy");
 				GUI.color = Color.grey;
-				//GUI.DrawTexture(new Rect(0,y+productSize-1,Screen.width,1),tWhitePixel);
+				GUI.DrawTexture(new Rect(0,y+productSize-1,Screen.width,1),tWhitePixel);
 				y+= productSize;
 			}
 			GUI.EndScrollView();
@@ -449,7 +449,7 @@ namespace Soomla.Store.Example {
 			if(GUI.Button(new Rect(Screen.width/2f-width/2f,Screen.height*7f/8f+borderSize,width,buttonHeight), "back")){
 				guiState = GUIState.GOODS;
 			}
-			//GUI.DrawTexture(new Rect(Screen.width/2f-width/2f,Screen.height*7f/8f+borderSize,width,buttonHeight),tBack);
+			GUI.DrawTexture(new Rect(Screen.width/2f-width/2f,Screen.height*7f/8f+borderSize,width,buttonHeight),tBack);
 		}
 
 	}

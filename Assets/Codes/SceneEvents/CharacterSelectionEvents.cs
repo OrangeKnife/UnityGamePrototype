@@ -19,7 +19,6 @@ public class CharacterSelectionEvents : MonoBehaviour {
 		if(!SoomlaStore.Initialized)
 			SoomlaStore.Initialize(new ShopAssets());
 
-
 	}
 	// Update is called once per frame
 	void Update () {

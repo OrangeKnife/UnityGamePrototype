@@ -15,7 +15,7 @@ public class ShopAssets : IStoreAssets{
 	/// see parent.
 	/// </summary>
 	public int GetVersion() {
-		return 0;
+		return 125;
 	}
 	
 	/// <summary>
@@ -36,7 +36,7 @@ public class ShopAssets : IStoreAssets{
 	/// see parent.
 	/// </summary>
 	public VirtualCurrencyPack[] GetCurrencyPacks() {
-		return new VirtualCurrencyPack[] {TENMUFF_PACK, FIFTYMUFF_PACK, FOURHUNDMUFF_PACK, THOUSANDMUFF_PACK};
+		return new VirtualCurrencyPack[] {/*TENMUFF_PACK, FIFTYMUFF_PACK, FOURHUNDMUFF_PACK, THOUSANDMUFF_PACK*/};
 	}
 	
 	/// <summary>
