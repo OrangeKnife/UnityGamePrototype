@@ -22,6 +22,12 @@ public class MainMenuEvents : MonoBehaviour {
 			Debug.Log ("save.data loading error");
 		}
 		gameMgr = GameObject.Find ("GameManager").GetComponent<GameManager>() ;
+
+
+		
+		//shop
+		if(!SoomlaStore.Initialized)
+			SoomlaStore.Initialize(new ShopAssets());
 	}
 	
 	// Update is called once per frame

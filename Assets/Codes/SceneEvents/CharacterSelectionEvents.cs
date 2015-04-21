@@ -15,9 +15,6 @@ public class CharacterSelectionEvents : MonoBehaviour {
 	void Start () {
 		selector = GameObject.Find ("CharacterSelector").GetComponent<CharacterSelector>();
 
-		//shop
-		if(!SoomlaStore.Initialized)
-			SoomlaStore.Initialize(new ShopAssets());
 
 	}
 	// Update is called once per frame
