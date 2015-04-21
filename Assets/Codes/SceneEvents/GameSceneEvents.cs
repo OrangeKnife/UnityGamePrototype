@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
+using UnityEngine.Advertisements;
 
 public class GameSceneEvents : MonoBehaviour {
 
@@ -43,6 +45,15 @@ public class GameSceneEvents : MonoBehaviour {
 		if (gameMgr == null)
 			InitGameMgr ();
 
+	}
+
+	void Awake() {
+		if (Advertisement.isSupported) {
+			Advertisement.allowPrecache = true;
+			Advertisement.Initialize("33340",true);
+		} else {
+			Debug.Log("Platform not supported");
+		}
 	}
 
 	void InitGameMgr()
@@ -154,6 +165,12 @@ public class GameSceneEvents : MonoBehaviour {
 		slot.transform.position += offset;
 		abilityUISlots.Add (slot);
 		return slot;
+
+	}
+
+	public void ShowAds()
+	{
+		if(Advertisement.isReady()){ Advertisement.Show(); }
 
 	}
 
