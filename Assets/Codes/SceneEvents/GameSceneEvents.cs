@@ -50,7 +50,7 @@ public class GameSceneEvents : MonoBehaviour {
 	void Awake() {
 		if (Advertisement.isSupported) {
 			Advertisement.allowPrecache = true;
-			Advertisement.Initialize("33340",true);
+			Advertisement.Initialize("33340");
 		} else {
 			Debug.Log("Platform not supported");
 		}
@@ -170,7 +170,13 @@ public class GameSceneEvents : MonoBehaviour {
 
 	public void ShowAds()
 	{
-		if(Advertisement.isReady()){ Advertisement.Show(); }
+		if(Advertisement.isReady())
+		{ Advertisement.Show(null, new ShowOptions{ pause = true,
+				resultCallback = ShowResult =>{
+					playerMgr.addCoin(100);
+				}
+			});
+		}
 
 	}
 
