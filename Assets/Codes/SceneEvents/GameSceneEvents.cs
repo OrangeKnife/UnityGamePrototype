@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 using UnityEngine.Advertisements;
+using GoogleMobileAds.Api;
 
 public class GameSceneEvents : MonoBehaviour {
 
@@ -37,6 +38,9 @@ public class GameSceneEvents : MonoBehaviour {
 
 	List<GameObject> abilityUISlots = new List<GameObject>();
 
+
+	BannerView bannerView;
+	AdRequest request;
 	void Start () {
 
 
@@ -54,6 +58,29 @@ public class GameSceneEvents : MonoBehaviour {
 		} else {
 			Debug.Log("Platform not supported");
 		}
+
+		//ca-app-pub-7183026460514946/5522304910 is for IOS now
+		//ca-app-pub-7183026460514946/2010435315 is for android
+		// Create a 320x50 banner at the top of the screen.
+
+		string bannerAdsId="";
+		#if UNITY_IOS && !UNITY_EDITOR
+		bannerAdsId = "ca-app-pub-7183026460514946/5522304910";
+		#endif
+		#if UNITY_ANDROID && !UNITY_EDITOR
+		bannerAdsId = "ca-app-pub-7183026460514946/2010435315";
+		#endif
+		if (bannerView == null) {
+			bannerView = new BannerView (
+			bannerAdsId, AdSize.Banner, AdPosition.Top);
+			// Create an empty ad request.
+			request = new AdRequest.Builder ().Build ();
+			// Load the banner with the request.
+			bannerView.LoadAd (request);
+			bannerView.Hide ();
+		}
+		else
+			bannerView.Hide ();
 	}
 
 	void InitGameMgr()
@@ -113,10 +140,17 @@ public class GameSceneEvents : MonoBehaviour {
 
 		finalScore = playerMgr.getPlayerScore ();
 		finalGold = 0;
+
+		if(bannerView!=null)
+			bannerView.Show ();
+
 	}
 
 	public void OnTryAgainButtonClicked()
 	{
+		if(bannerView!=null)
+			bannerView.Hide ();
+
 		if(finalScore > 0)
 		{
 			bTickScoreToGold = false;
@@ -133,6 +167,10 @@ public class GameSceneEvents : MonoBehaviour {
 
 	public void OnChangeCharacterButtonClicked()
 	{
+		
+		if(bannerView!=null)
+			bannerView.Hide ();
+
 		if(finalScore > 0)
 		{
 			bTickScoreToGold = false;
