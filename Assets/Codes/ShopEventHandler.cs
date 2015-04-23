@@ -50,6 +50,7 @@ public class ShopEventHandler {
 	/// <param name="pvi">Purchasable virtual item.</param>
 	/// <param name="purchaseToken">Purchase token.</param>
 	public void onMarketPurchase(PurchasableVirtualItem pvi, string payload, Dictionary<string, string> extra) {
+		CharacterSelectionEvents.addLog ("onMarketPurchase called: itemid=" + pvi.ItemId + ",cs="+cs.name);
 		cs.UnlockBySoomlaItemId (pvi.ItemId);
 	}
 	

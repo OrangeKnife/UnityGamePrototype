@@ -84,4 +84,10 @@ public class CharacterSelectionEvents : MonoBehaviour {
 	{
 		GoButton.GetComponent<UnityEngine.UI.Button> ().interactable = charUnlocked && abilityUnlocked;
 	}
+
+	public static void addLog(string logstring)
+	{
+		GameObject logText = GameObject.Find ("LogText");
+		logText.GetComponent<UnityEngine.UI.Text> ().text += logstring +"\n";
+	}
 }
