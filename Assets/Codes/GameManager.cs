@@ -25,9 +25,12 @@ public class GameManager : MonoBehaviour {
 	public AudioClip warp;
 	private AudioSource audioSource;
 	private AudioClip _audioClip;
-
+	private bool bAudioAvailable = false;//trun on music when save file is loaded
 	void Start () {
 		//RespawnPlayer();
+
+		audioSource=gameObject.AddComponent<AudioSource>();
+		audioSource.mute = !bAudioAvailable;
 	}
 
 	public void StartGame()
@@ -35,13 +38,21 @@ public class GameManager : MonoBehaviour {
 		bGameStarted = true;
 		GetComponent<LevelGenerator> ().enabled = bGameStarted;
 
-		audioSource=gameObject.AddComponent<AudioSource>();
+
 	}
 
 	public void EndGame()
 	{
 		bGameStarted = false;
 		GetComponent<LevelGenerator> ().enabled = bGameStarted;
+	}
+
+	public void SetAudioAvailable(bool bAvailable)
+	{
+		if (audioSource != null)
+			audioSource.mute = !bAvailable;
+		else
+			bAudioAvailable = bAvailable;
 	}
 
 	public void CleanUpAbilityNames()

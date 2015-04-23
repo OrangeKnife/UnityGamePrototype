@@ -36,7 +36,7 @@ public class CharacterSelectionEvents : MonoBehaviour {
 
 
 
-	public void OnSelectedACharacter(CharacterInfo charInfo, bool bUnlocked)
+	public void OnSelectedACharacter(CharacterInfo charInfo, bool bUnlocked, bool bCanAfford = true)
 	{
 		charUnlocked = bUnlocked;
 		CharUIText.GetComponent<UnityEngine.UI.Text> ().text = charInfo.CharacterName;
@@ -51,7 +51,10 @@ public class CharacterSelectionEvents : MonoBehaviour {
 			UnlockCharButtonIGP.SetActive(true);
 			VirtualGood vg = StoreInfo.GetItemByItemId(charInfo.CharacterSoomlaId) as VirtualGood;
 			UnlockCharButtonIGPText.GetComponent<UnityEngine.UI.Text>().text = ((PurchaseWithMarket)vg.PurchaseType).MarketItem.Price.ToString("0.00");
-
+			if(!bCanAfford)
+				UnlockCharButtonText.GetComponent<UnityEngine.UI.Text>().color = new Color(1,0,0,1);
+			else
+				UnlockCharButtonText.GetComponent<UnityEngine.UI.Text>().color = new Color(0,1,0,1);
 			
 		}
 		checkGoButton ();

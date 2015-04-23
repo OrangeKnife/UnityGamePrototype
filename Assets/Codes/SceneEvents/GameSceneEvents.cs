@@ -31,7 +31,7 @@ public class GameSceneEvents : MonoBehaviour {
 	PlayerManager playerMgr = null;
 	bool bTickScoreToGold = false;
 	int finalScore = 0,finalGold = 0;
-	int bTickSpeed_SocrePerTick = 1;
+	int TickSpeed_SocrePerTick = 1;
 
 	GameManager gameMgr;
 
@@ -108,8 +108,9 @@ public class GameSceneEvents : MonoBehaviour {
 			playerMgr = gameMgr.GetCurrentPlayer().GetComponent<PlayerManager> ();
 
 		if (bTickScoreToGold) {
-			finalScore -= bTickSpeed_SocrePerTick;
-			finalGold += (int)(bTickSpeed_SocrePerTick * playerMgr.Score2GoldRatio + 0.5f);
+			finalScore -= TickSpeed_SocrePerTick;
+			finalScore = Math.Max(0,finalScore);
+			finalGold += (int)(TickSpeed_SocrePerTick * playerMgr.Score2GoldRatio + 0.5f);
 			UI_ScoreToGold_Score.GetComponent<UnityEngine.UI.Text>().text = finalScore.ToString();
 			UI_ScoreToGold_Gold.GetComponent<UnityEngine.UI.Text>().text = finalGold.ToString();
 
@@ -215,6 +216,11 @@ public class GameSceneEvents : MonoBehaviour {
 				}
 			});
 		}
+
+	}
+
+	public void showMessage(string message)
+	{
 
 	}
 

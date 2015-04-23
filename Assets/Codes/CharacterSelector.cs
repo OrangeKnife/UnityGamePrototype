@@ -149,7 +149,7 @@ public class CharacterSelector : MonoBehaviour
 		gameMgr.SetCurrentPlayerTemplateByIdx( CharacterInfoList[currentCharacterIndex].CharacterId );
 		gameMgr.AddAbilityByIndex (CharacterInfoList [currentCharacterIndex].CharacterPassiveAbilityId);
 
-		eventHandler.OnSelectedACharacter(CharacterInfoList[currentCharacterIndex], mysave.characterUnlockedArray[CharacterInfoList[currentCharacterIndex].CharacterId]);
+		eventHandler.OnSelectedACharacter(CharacterInfoList[currentCharacterIndex], mysave.characterUnlockedArray[CharacterInfoList[currentCharacterIndex].CharacterId],CharacterInfoList[currentCharacterIndex].Cost_Coin < mysave.playerGold);
 		
 	}
 

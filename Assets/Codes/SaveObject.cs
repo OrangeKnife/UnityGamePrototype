@@ -12,6 +12,8 @@ public class SaveObject
 		characterUnlockedArray [0] = true;
 		abilityUnlockedArray = new bool[50];
 		abilityUnlockedArray [0] = true;
+
+		optionMusic = true;
 	}
 	public string firstRun;// = "True";
 	public int playerGold;
@@ -21,5 +23,7 @@ public class SaveObject
 
 	public bool[] characterUnlockedArray;
 	public bool[] abilityUnlockedArray;
+
+	public bool optionMusic;
 }
 

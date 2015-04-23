@@ -5,6 +5,7 @@ using System;
 using Soomla.Store;
 public class MainMenuEvents : MonoBehaviour {
 	public GameObject OptionPanel;
+	public Toggle MusicAndSoundToggle;
 
 	private SaveObject mysave;// = new SaveObject();
 
@@ -22,8 +23,8 @@ public class MainMenuEvents : MonoBehaviour {
 			Debug.Log ("save.data loading error");
 		}
 		gameMgr = GameObject.Find ("GameManager").GetComponent<GameManager>() ;
-
-
+		MusicAndSoundToggle.isOn = mysave.optionMusic;
+		gameMgr.SetAudioAvailable (mysave.optionMusic);
 		
 		//shop
 		if(!SoomlaStore.Initialized)
@@ -84,7 +85,14 @@ public class MainMenuEvents : MonoBehaviour {
 		OptionPanel.SetActive (false);
 	}
 
-
+	public void onOptionMusicChanged(Boolean wtf)
+	{
+		if (mysave != null && gameMgr != null) {
+			mysave.optionMusic = MusicAndSoundToggle.isOn;
+			gameMgr.SetAudioAvailable (mysave.optionMusic);
+			GameFile.Save ("save.data", mysave);
+		}
+	}
 
 
 
