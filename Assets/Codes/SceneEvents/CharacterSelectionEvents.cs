@@ -91,12 +91,14 @@ public class CharacterSelectionEvents : MonoBehaviour {
 	public static void addLog(string logstring)
 	{
 		GameObject logText = GameObject.Find ("LogText");
+		if(logText)
 		logText.GetComponent<UnityEngine.UI.Text> ().text += logstring +"\n";
 	}
 
 	public static void clearLog()
 	{
 		GameObject logText = GameObject.Find ("LogText");
+		if(logText)
 		logText.GetComponent<UnityEngine.UI.Text> ().text = "";
 	}
 }
