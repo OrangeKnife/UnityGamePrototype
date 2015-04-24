@@ -389,4 +389,9 @@ public class CharacterSelector : MonoBehaviour
 		
 		lastAbilityIndex = idx;
 	}
+
+	public void ClearLog()
+	{
+		CharacterSelectionEvents.clearLog();
+	}
 }

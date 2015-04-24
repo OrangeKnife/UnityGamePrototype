@@ -55,8 +55,10 @@ public class GameSceneEvents : MonoBehaviour {
 		if (Advertisement.isSupported) {
 			Advertisement.allowPrecache = true;
 			Advertisement.Initialize("33340");
+			UI_ScoreText.GetComponent<UnityEngine.UI.Text>().text = "Platform supported";
 		} else {
 			Debug.Log("Platform not supported");
+			UI_ScoreText.GetComponent<UnityEngine.UI.Text>().text = "Platform not supported";
 		}
 
 		//ca-app-pub-7183026460514946/5522304910 is for IOS now
@@ -210,11 +212,19 @@ public class GameSceneEvents : MonoBehaviour {
 	public void ShowAds()
 	{
 		if(Advertisement.isReady())
-		{ Advertisement.Show(null, new ShowOptions{ pause = true,
+		{ 
+			UI_ScoreText.GetComponent<UnityEngine.UI.Text>().text = "ready";
+
+			Advertisement.Show(null, new ShowOptions{ pause = true,
 				resultCallback = ShowResult =>{
 					playerMgr.addCoin(100);
 				}
 			});
+		}
+		else
+		{
+
+			UI_ScoreText.GetComponent<UnityEngine.UI.Text>().text = "not ready";
 		}
 
 	}

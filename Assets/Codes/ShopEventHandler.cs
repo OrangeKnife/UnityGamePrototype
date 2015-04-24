@@ -59,7 +59,7 @@ public class ShopEventHandler {
 	/// </summary>
 	/// <param name="pvi">Purchasable virtual item.</param>
 	public void onMarketRefund(PurchasableVirtualItem pvi) {
-		
+		CharacterSelectionEvents.addLog ("onMarketRefund called: itemid=" + pvi.ItemId + ",cs="+cs.name);
 	}
 	
 	/// <summary>
@@ -67,7 +67,7 @@ public class ShopEventHandler {
 	/// </summary>
 	/// <param name="pvi">Purchasable virtual item.</param>
 	public void onItemPurchased(PurchasableVirtualItem pvi, string payload) {
-		
+		CharacterSelectionEvents.addLog ("onItemPurchased called: itemid=" + pvi.ItemId + ",cs="+cs.name+",payload="+payload);
 	}
 	
 	/// <summary>
@@ -100,14 +100,14 @@ public class ShopEventHandler {
 	/// Handles a billing supported event.
 	/// </summary>
 	public void onBillingSupported() {
-		
+		CharacterSelectionEvents.addLog ("onBillingSupported");
 	}
 	
 	/// <summary>
 	/// Handles a billing NOT supported event.
 	/// </summary>
 	public void onBillingNotSupported() {
-		
+		CharacterSelectionEvents.addLog ("onBillingNotSupported");
 	}
 	
 	/// <summary>
@@ -115,7 +115,7 @@ public class ShopEventHandler {
 	/// </summary>
 	/// <param name="pvi">Purchasable virtual item.</param>
 	public void onMarketPurchaseStarted(PurchasableVirtualItem pvi) {
-		
+		CharacterSelectionEvents.addLog ("onMarketPurchaseStarted called: itemid=" + pvi.ItemId + ",cs="+cs.name);
 	}
 	
 	/// <summary>
@@ -123,7 +123,7 @@ public class ShopEventHandler {
 	/// </summary>
 	/// <param name="pvi">Purchasable virtual item.</param>
 	public void onItemPurchaseStarted(PurchasableVirtualItem pvi) {
-		
+		CharacterSelectionEvents.addLog ("onItemPurchaseStarted called: itemid=" + pvi.ItemId + ",cs="+cs.name);
 	}
 	
 	/// <summary>
@@ -131,7 +131,7 @@ public class ShopEventHandler {
 	/// </summary>
 	/// <param name="pvi">Purchasable virtual item.</param>
 	public void onMarketPurchaseCancelled(PurchasableVirtualItem pvi) {
-		
+		CharacterSelectionEvents.addLog ("onMarketPurchaseCancelled called: itemid=" + pvi.ItemId + ",cs="+cs.name);
 	}
 	
 	/// <summary>
@@ -139,7 +139,7 @@ public class ShopEventHandler {
 	/// </summary>
 	/// <param name="message">Error message.</param>
 	public void onUnexpectedErrorInStore(string message) {
-		
+		CharacterSelectionEvents.addLog ("onUnexpectedErrorInStore called: message="+message);
 	}
 	
 	/// <summary>
@@ -186,10 +186,10 @@ public class ShopEventHandler {
 	
 	#if UNITY_ANDROID && !UNITY_EDITOR
 	public void onIabServiceStarted() {
-		
+		CharacterSelectionEvents.addLog ("onIabServiceStarted");
 	}
 	public void onIabServiceStopped() {
-		
+		CharacterSelectionEvents.addLog ("onIabServiceStopped");
 	}
 	#endif
 }

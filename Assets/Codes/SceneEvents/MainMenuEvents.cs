@@ -29,6 +29,7 @@ public class MainMenuEvents : MonoBehaviour {
 		//shop
 		if(!SoomlaStore.Initialized)
 			SoomlaStore.Initialize(new ShopAssets());
+
 	}
 	
 	// Update is called once per frame
