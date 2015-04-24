@@ -215,18 +215,25 @@ public class CharacterSelector : MonoBehaviour
 			}
 		}
 
+		if (soomlaItemId == "coin_100") {
+			mysave.playerGold += 100;
+			GameFile.Save("save.data",mysave);
+		}
+
 		return false;
 	}
 
 	public void DoUnlockCharacter(int characterIndex)
 	{
 		mysave.characterUnlockedArray [CharacterInfoList [characterIndex].CharacterId] = true;
+		GameFile.Save("save.data",mysave);
 		eventHandler.OnSelectedACharacter (CharacterInfoList [characterIndex], true);
 	}
 
 	public void DoUnlockAbility(int abilityIdx)
 	{
 		mysave.abilityUnlockedArray [AbilityInfoList [abilityIdx].AbilityId] = true;
+		GameFile.Save("save.data",mysave);
 		eventHandler.OnSelectedAnAbility (AbilityInfoList [abilityIdx], true);
 	}
 
@@ -236,6 +243,7 @@ public class CharacterSelector : MonoBehaviour
 		if (CharacterInfoList [currentCharacterIndex].Cost_Coin <= mysave.playerGold) {
 			DoUnlockCharacter(currentCharacterIndex);
 			mysave.playerGold -= CharacterInfoList [currentCharacterIndex].Cost_Coin;
+			GameFile.Save("save.data",mysave);
 		}
 	}
 	
@@ -245,6 +253,7 @@ public class CharacterSelector : MonoBehaviour
 			DoUnlockAbility(currentAbilityIndex);
 
 			mysave.playerGold -= AbilityInfoList [currentAbilityIndex].Cost_Coin;
+			GameFile.Save("save.data",mysave);
 		}
 	}
 
@@ -393,5 +402,9 @@ public class CharacterSelector : MonoBehaviour
 	public void ClearLog()
 	{
 		CharacterSelectionEvents.clearLog();
+	}
+	public void TestBuy100Coins()
+	{
+		StoreInventory.BuyItem ("coins100");
 	}
 }

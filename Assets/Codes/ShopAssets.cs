@@ -36,7 +36,7 @@ public class ShopAssets : IStoreAssets{
 	/// see parent.
 	/// </summary>
 	public VirtualCurrencyPack[] GetCurrencyPacks() {
-		return new VirtualCurrencyPack[] {/*TENMUFF_PACK, FIFTYMUFF_PACK, FOURHUNDMUFF_PACK, THOUSANDMUFF_PACK*/};
+		return new VirtualCurrencyPack[] {COIN_PACK/*TENMUFF_PACK, FIFTYMUFF_PACK, FOURHUNDMUFF_PACK, THOUSANDMUFF_PACK*/};
 	}
 	
 	/// <summary>
@@ -71,7 +71,7 @@ public class ShopAssets : IStoreAssets{
 	public const string UNLOCK_CHAR3_LIFETIME_PRODUCT_ID = "unlock_char3";
 	public const string UNLOCK_CHAR4_LIFETIME_PRODUCT_ID = "unlock_char4";
 	
-	
+	public const string COIN_PACK100_PRODUCT_ID="coin_100";
 	/** Virtual Currencies **/
 	
 	public static VirtualCurrency COIN_CURRENCY = new VirtualCurrency(
@@ -82,6 +82,15 @@ public class ShopAssets : IStoreAssets{
 	
 	
 	/** Virtual Currency Packs **/
+
+	public static VirtualCurrencyPack COIN_PACK = new VirtualCurrencyPack(
+		"100 coins",                                   // name
+		"Test refund of an item",                       // description
+		"coins100",                                   // item id
+		100,												// number of currencies in the pack
+		COIN_CURRENCY_ITEM_ID,                        // the currency associated with this pack
+		new PurchaseWithMarket(COIN_PACK100_PRODUCT_ID, 0.99)
+		);
 	
 	public static VirtualCurrencyPack TENMUFF_PACK = new VirtualCurrencyPack(
 		"10 Muffins",                                   // name
