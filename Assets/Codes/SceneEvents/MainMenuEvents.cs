@@ -7,6 +7,7 @@ public class MainMenuEvents : MonoBehaviour {
 	public GameObject OptionPanel;
 	public Toggle MusicAndSoundToggle;
 
+
 	private SaveObject mysave;// = new SaveObject();
 
 	 
@@ -73,6 +74,7 @@ public class MainMenuEvents : MonoBehaviour {
 
 	public void OnRestoreButtonClick()
 	{
+		MainMenuEvents.addLog ("gameMgr.restorePurchase()");
 		gameMgr.restorePurchase ();
 	}
 
@@ -95,8 +97,17 @@ public class MainMenuEvents : MonoBehaviour {
 		}
 	}
 
+	public static void addLog(string logTextString)
+	{
+		Text UILogText = GameObject.Find("LogText").GetComponent<UnityEngine.UI.Text>();
+		UILogText.text += logTextString + "\n";
+	}
 
-
+	public  void clearLog()
+	{
+		Text UILogText = GameObject.Find("LogText").GetComponent<UnityEngine.UI.Text>();
+		UILogText.text = "";
+	}
 
 
 

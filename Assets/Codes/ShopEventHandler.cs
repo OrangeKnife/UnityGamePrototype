@@ -166,7 +166,7 @@ public class ShopEventHandler {
 	/// Handles a restore Transactions process started event.
 	/// </summary>
 	public void onRestoreTransactionsStarted() {
-		
+		MainMenuEvents.addLog ("onRestoreTransactionsStarted");
 	}
 	
 	/// <summary>
@@ -174,7 +174,7 @@ public class ShopEventHandler {
 	/// </summary>
 	/// <param name="success">If set to <c>true</c> success.</param>
 	public void onRestoreTransactionsFinished(bool success) {
-		
+		MainMenuEvents.addLog ("onRestoreTransactionsFinished("+success.ToString()+")");
 	}
 	
 	/// <summary>
