@@ -215,7 +215,7 @@ public class CharacterSelector : MonoBehaviour
 			}
 		}
 
-		if (soomlaItemId == "coin_100") {
+		if (soomlaItemId == "coins100") {
 			mysave.playerGold += 100;
 			GameFile.Save("save.data",mysave);
 		}
