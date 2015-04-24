@@ -54,7 +54,16 @@ public class GameSceneEvents : MonoBehaviour {
 	void Awake() {
 		if (Advertisement.isSupported) {
 			Advertisement.allowPrecache = true;
-			Advertisement.Initialize("33340");
+			string UnityAdsId="";
+			#if UNITY_IOS && !UNITY_EDITOR
+			UnityAdsId = "33340";
+			#endif
+			#if UNITY_ANDROID && !UNITY_EDITOR
+			UnityAdsId = "34245";
+			#endif
+
+
+			Advertisement.Initialize(UnityAdsId);
 			UI_ScoreText.GetComponent<UnityEngine.UI.Text>().text = "Platform supported";
 		} else {
 			Debug.Log("Platform not supported");
