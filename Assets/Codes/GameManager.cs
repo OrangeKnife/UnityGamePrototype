@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour {
 
 	public List<GameObject> PlayerTemplates;
 	public List<string> AbilityTemplates;
+	public Dictionary<string, AudioClip> audioAll;
 
 	private GameObject CurrentPlayer;
 	AbilityManager abManager;
@@ -18,19 +19,28 @@ public class GameManager : MonoBehaviour {
 	GameObject CurrentPlayerTemplate;
 
 	//sound
+	public AudioClip bgMusic;
 	public AudioClip coinCollect;
 	public AudioClip jump;
 	public AudioClip dash;
 	public AudioClip crash;
 	public AudioClip warp;
 	private AudioSource audioSource;
+	private AudioSource audioSource_PlayOnce;
 	private AudioClip _audioClip;
-	private bool bAudioAvailable = false;//trun on music when save file is loaded
+	private bool bAudioAvailable = false;//turn on music when save file is loaded
+
 	void Start () {
 		//RespawnPlayer();
 
+		//initial audio source
 		audioSource=gameObject.AddComponent<AudioSource>();
+		audioSource.loop = true;
 		audioSource.mute = !bAudioAvailable;
+
+		audioSource_PlayOnce=gameObject.AddComponent<AudioSource>();
+		audioSource_PlayOnce.loop = false;
+		audioSource_PlayOnce.mute = !bAudioAvailable;
 	}
 
 	public void StartGame()
@@ -53,6 +63,18 @@ public class GameManager : MonoBehaviour {
 			audioSource.mute = !bAvailable;
 		else
 			bAudioAvailable = bAvailable;
+
+		if (audioSource_PlayOnce != null)
+			audioSource_PlayOnce.mute = !bAvailable;
+
+
+	}
+
+	public void PlayBackground() {
+		if (bAudioAvailable) {	
+			audioSource.clip = bgMusic;
+			audioSource.Play ();
+		}
 	}
 
 	public void CleanUpAbilityNames()
@@ -106,9 +128,18 @@ public class GameManager : MonoBehaviour {
 	}
 
 	void Awake(){
+		addAudioDictionary ();
 		DontDestroyOnLoad(gameObject);
 	}
 
+	private void addAudioDictionary() {
+		audioAll = new Dictionary<string, AudioClip>();
+		audioAll.Add ("coin", coinCollect);
+		audioAll.Add ("jump", jump);
+		audioAll.Add ("dash", dash);
+		audioAll.Add ("crash", crash);
+		audioAll.Add ("warp", warp);
+	}
 	public void RespawnPlayer()
 	{
 		if (CurrentPlayer != null)
@@ -145,9 +176,9 @@ public class GameManager : MonoBehaviour {
 	{
 		SoomlaStore.RestoreTransactions ();
 	}
-	public void playSound(string type,bool bLooping = false)
+	public void playSound(string type,bool bLooping = false, float pitch = 1)
 	{
-		if (type == "coin")
+		/*if (type == "coin")
 			_audioClip = coinCollect;
 		else if (type == "jump")
 			_audioClip = jump;
@@ -156,11 +187,11 @@ public class GameManager : MonoBehaviour {
 		else if (type == "crash")
 			_audioClip = crash;
 		else if (type == "warp")
-			_audioClip = warp;
-		
-		audioSource.clip = _audioClip;
-		audioSource.loop = bLooping;
-		audioSource.Play ();
+			_audioClip = warp;*/
+		audioSource_PlayOnce.clip = audioAll[type];
+		audioSource_PlayOnce.loop = bLooping;
+		audioSource_PlayOnce.pitch = pitch;
+		audioSource_PlayOnce.Play ();
 	}
 
 }
