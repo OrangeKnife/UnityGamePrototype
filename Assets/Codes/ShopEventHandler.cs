@@ -43,14 +43,39 @@ public class ShopEventHandler {
 		StoreEvents.OnIabServiceStopped += onIabServiceStopped;
 		#endif
 	}
-	
+
+	public void RemoveCallbacks()
+	{
+		CharacterSelectionEvents.addLog ("~ShopEventHandler");
+		StoreEvents.OnMarketPurchase -= onMarketPurchase;
+		StoreEvents.OnMarketRefund -= onMarketRefund;
+		StoreEvents.OnItemPurchased -= onItemPurchased;
+		StoreEvents.OnGoodEquipped -= onGoodEquipped;
+		StoreEvents.OnGoodUnEquipped -= onGoodUnequipped;
+		StoreEvents.OnGoodUpgrade -= onGoodUpgrade;
+		StoreEvents.OnBillingSupported -= onBillingSupported;
+		StoreEvents.OnBillingNotSupported -= onBillingNotSupported;
+		StoreEvents.OnMarketPurchaseStarted -= onMarketPurchaseStarted;
+		StoreEvents.OnItemPurchaseStarted -= onItemPurchaseStarted;
+		StoreEvents.OnUnexpectedErrorInStore -= onUnexpectedErrorInStore;
+		StoreEvents.OnCurrencyBalanceChanged -= onCurrencyBalanceChanged;
+		StoreEvents.OnGoodBalanceChanged -= onGoodBalanceChanged;
+		StoreEvents.OnMarketPurchaseCancelled -= onMarketPurchaseCancelled;
+		StoreEvents.OnRestoreTransactionsStarted -= onRestoreTransactionsStarted;
+		StoreEvents.OnRestoreTransactionsFinished -= onRestoreTransactionsFinished;
+		StoreEvents.OnSoomlaStoreInitialized -= onSoomlaStoreInitialized;
+		#if UNITY_ANDROID && !UNITY_EDITOR
+		StoreEvents.OnIabServiceStarted -= onIabServiceStarted;
+		StoreEvents.OnIabServiceStopped -= onIabServiceStopped;
+		#endif
+	}
+
 	/// <summary>
 	/// Handles a market purchase event.
 	/// </summary>
 	/// <param name="pvi">Purchasable virtual item.</param>
 	/// <param name="purchaseToken">Purchase token.</param>
 	public void onMarketPurchase(PurchasableVirtualItem pvi, string payload, Dictionary<string, string> extra) {
-		MainMenuEvents.addLog("onMarketPurchase called: itemid=" + pvi.ItemId + ",cs="+cs.name);
 		CharacterSelectionEvents.addLog ("onMarketPurchase called: itemid=" + pvi.ItemId + ",cs="+cs.name);
 		cs.UnlockBySoomlaItemId (pvi.ItemId);
 	}
@@ -61,7 +86,6 @@ public class ShopEventHandler {
 	/// <param name="pvi">Purchasable virtual item.</param>
 	public void onMarketRefund(PurchasableVirtualItem pvi) {
 		CharacterSelectionEvents.addLog ("onMarketRefund called: itemid=" + pvi.ItemId + ",cs="+cs.name);
-		MainMenuEvents.addLog ("onMarketRefund called: itemid=" + pvi.ItemId + ",cs="+cs.name);
 	}
 	
 	/// <summary>
@@ -70,7 +94,6 @@ public class ShopEventHandler {
 	/// <param name="pvi">Purchasable virtual item.</param>
 	public void onItemPurchased(PurchasableVirtualItem pvi, string payload) {
 		CharacterSelectionEvents.addLog ("onItemPurchased called: itemid=" + pvi.ItemId + ",cs="+cs.name+",payload="+payload);
-		MainMenuEvents.addLog ("onItemPurchased called: itemid=" + pvi.ItemId + ",cs="+cs.name+",payload="+payload);
 	}
 	
 	/// <summary>

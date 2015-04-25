@@ -95,6 +95,11 @@ public class CharacterSelector : MonoBehaviour
 		}
 	}
 
+	void OnDestroy()
+	{
+		shopEvents.RemoveCallbacks ();
+	}
+
 	void SetupSavedSelection(int inCharIndex, int inAbilIndex)
 	{
 		savedCharacterIndex = inCharIndex;
