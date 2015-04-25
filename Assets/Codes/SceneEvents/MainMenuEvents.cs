@@ -13,6 +13,9 @@ public class MainMenuEvents : MonoBehaviour {
 	 
 
 	private GameManager gameMgr;
+
+	ShopEventHandler shopEvents;
+
 	void Start () {
 		try{
 		if(GameFile.Load ("save.data", ref mysave))
@@ -31,6 +34,13 @@ public class MainMenuEvents : MonoBehaviour {
 		if(!SoomlaStore.Initialized)
 			SoomlaStore.Initialize(new ShopAssets());
 
+		shopEvents = new ShopEventHandler ();
+
+	}
+
+	void OnDestroy()
+	{
+		shopEvents.RemoveCallbacks ();
 	}
 	
 	// Update is called once per frame
