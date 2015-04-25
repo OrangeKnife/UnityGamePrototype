@@ -17,22 +17,31 @@ public class MainMenuEvents : MonoBehaviour {
 	ShopEventHandler shopEvents;
 
 	void Start () {
+		gameMgr = GameObject.Find ("GameManager").GetComponent<GameManager>() ;
+
 		try{
 		if(GameFile.Load ("save.data", ref mysave))
 			GameObject.Find ("WelcomeText").GetComponent<Text> ().enabled = mysave.firstRun == "True";
 		else
-				mysave = new SaveObject("False",0);}
+			mysave = new SaveObject("False");
+
+		MusicAndSoundToggle.isOn = mysave.optionMusic;
+		gameMgr.SetAudioAvailable (mysave.optionMusic);
+		}
 		catch(System.Exception)
 		{
 			Debug.Log ("save.data loading error");
 		}
-		gameMgr = GameObject.Find ("GameManager").GetComponent<GameManager>() ;
-		MusicAndSoundToggle.isOn = mysave.optionMusic;
-		gameMgr.SetAudioAvailable (mysave.optionMusic);
+
+
+
 		
 		//shop
 		if(!SoomlaStore.Initialized)
 			SoomlaStore.Initialize(new ShopAssets());
+
+		if (StoreInventory.GetItemBalance ("freechar0") == 0)
+			StoreInventory.GiveItem ("freechar0", 1);
 
 		shopEvents = new ShopEventHandler ();
 
@@ -65,7 +74,7 @@ public class MainMenuEvents : MonoBehaviour {
 	public void overSaveData()
 	{
 		//TODO remove when realease !
-		mysave = new SaveObject("False",0);
+		mysave = new SaveObject("False");
 		GameFile.Save ("save.data",mysave);
 #if UNITY_EDITOR
 		PlayerPrefs.DeleteAll ();

@@ -29,14 +29,14 @@ public class ShopAssets : IStoreAssets{
 	/// see parent.
 	/// </summary>
 	public VirtualGood[] GetGoods() {
-		return new VirtualGood[] {/*MUFFINCAKE_GOOD, PAVLOVA_GOOD,CHOCLATECAKE_GOOD, CREAMCUP_GOOD, */UNLOCK_CHAR1_LTVG,UNLOCK_CHAR2_LTVG,UNLOCK_CHAR3_LTVG,UNLOCK_CHAR4_LTVG};
+		return new VirtualGood[] {/*MUFFINCAKE_GOOD, PAVLOVA_GOOD,CHOCLATECAKE_GOOD, CREAMCUP_GOOD, */FREE_CHAR0_LTVG,UNLOCK_CHAR1_LTVG,UNLOCK_CHAR2_LTVG,UNLOCK_CHAR3_LTVG,UNLOCK_CHAR4_LTVG};
 	}
 	
 	/// <summary>
 	/// see parent.
 	/// </summary>
 	public VirtualCurrencyPack[] GetCurrencyPacks() {
-		return new VirtualCurrencyPack[] {COIN_PACK/*TENMUFF_PACK, FIFTYMUFF_PACK, FOURHUNDMUFF_PACK, THOUSANDMUFF_PACK*/};
+		return new VirtualCurrencyPack[] {COIN_ONE,COIN_PACK/*TENMUFF_PACK, FIFTYMUFF_PACK, FOURHUNDMUFF_PACK, THOUSANDMUFF_PACK*/};
 	}
 	
 	/// <summary>
@@ -76,12 +76,20 @@ public class ShopAssets : IStoreAssets{
 	
 	public static VirtualCurrency COIN_CURRENCY = new VirtualCurrency(
 		"Coins",										// name
-		"",												// description
+		"I am coin currency",												// description
 		COIN_CURRENCY_ITEM_ID							// item id
 		);
 	
 	
 	/** Virtual Currency Packs **/
+	public static VirtualCurrencyPack COIN_ONE = new VirtualCurrencyPack(
+		"1 coin",                                   // name
+		"only 1 coin",                       // description
+		"coin1",                                   // item id
+		1,												// number of currencies in the pack
+		COIN_CURRENCY_ITEM_ID,                        // the currency associated with this pack
+		new PurchaseWithMarket("", 0)
+		);
 
 	public static VirtualCurrencyPack COIN_PACK = new VirtualCurrencyPack(
 		"100 coins",                                   // name
@@ -165,6 +173,13 @@ public class ShopAssets : IStoreAssets{
 	
 	/** LifeTimeVGs **/
 	// Note: create non-consumable items using LifeTimeVG with PuchaseType of PurchaseWithMarket
+	
+	public static VirtualGood FREE_CHAR0_LTVG = new LifetimeVG(
+		"Free Char 0", 													// name
+		"Give to player for free!",				 							// description
+		"freechar0",														// item id
+		new PurchaseWithMarket("", 0));	// the way this virtual good is purchased
+
 	public static VirtualGood UNLOCK_CHAR1_LTVG = new LifetimeVG(
 		"Unlock Char 1", 													// name
 		"You can Unlock CHAR 1!",				 							// description

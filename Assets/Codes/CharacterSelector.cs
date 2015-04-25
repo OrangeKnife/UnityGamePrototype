@@ -154,8 +154,8 @@ public class CharacterSelector : MonoBehaviour
 		gameMgr.SetCurrentPlayerTemplateByIdx( CharacterInfoList[currentCharacterIndex].CharacterId );
 		gameMgr.AddAbilityByIndex (CharacterInfoList [currentCharacterIndex].CharacterPassiveAbilityId);
 
-		eventHandler.OnSelectedACharacter(CharacterInfoList[currentCharacterIndex], mysave.characterUnlockedArray[CharacterInfoList[currentCharacterIndex].CharacterId],CharacterInfoList[currentCharacterIndex].Cost_Coin < mysave.playerGold);
-		
+		eventHandler.OnSelectedACharacter(CharacterInfoList[currentCharacterIndex], StoreInventory.GetItemBalance (CharacterInfoList [currentCharacterIndex].CharacterSoomlaId) > 0,CharacterInfoList[currentCharacterIndex].Cost_Coin < StoreInventory.GetItemBalance(ShopAssets.COIN_CURRENCY_ITEM_ID));
+
 	}
 
 	void SelectAbility(int idx)
@@ -167,7 +167,7 @@ public class CharacterSelector : MonoBehaviour
 			gameMgr.AddAbilityByIndex (currentAbilityIndex);
 		}
 
-		eventHandler.OnSelectedAnAbility(AbilityInfoList[currentAbilityIndex], mysave.abilityUnlockedArray[AbilityInfoList[currentAbilityIndex].AbilityId]);
+		eventHandler.OnSelectedAnAbility(AbilityInfoList[currentAbilityIndex], mysave.abilityUnlockedArray[AbilityInfoList[currentAbilityIndex].AbilityId], AbilityInfoList[currentAbilityIndex].Cost_Coin < StoreInventory.GetItemBalance(ShopAssets.COIN_CURRENCY_ITEM_ID));
 	}
 
 	public void LeftCharacter()
@@ -220,18 +220,11 @@ public class CharacterSelector : MonoBehaviour
 			}
 		}
 
-		if (soomlaItemId == "coins100") {
-			mysave.playerGold += 100;
-			GameFile.Save("save.data",mysave);
-		}
-
 		return false;
 	}
 
 	public void DoUnlockCharacter(int characterIndex)
 	{
-		mysave.characterUnlockedArray [CharacterInfoList [characterIndex].CharacterId] = true;
-		GameFile.Save("save.data",mysave);
 		eventHandler.OnSelectedACharacter (CharacterInfoList [characterIndex], true);
 	}
 
@@ -245,20 +238,17 @@ public class CharacterSelector : MonoBehaviour
 	
 	public void UnlockCurrentCharUsingCoin()
 	{
-		if (CharacterInfoList [currentCharacterIndex].Cost_Coin <= mysave.playerGold) {
+		if (CharacterInfoList [currentCharacterIndex].Cost_Coin <= StoreInventory.GetItemBalance(ShopAssets.COIN_CURRENCY_ITEM_ID)) {
 			DoUnlockCharacter(currentCharacterIndex);
-			mysave.playerGold -= CharacterInfoList [currentCharacterIndex].Cost_Coin;
-			GameFile.Save("save.data",mysave);
+			StoreInventory.TakeItem("coin1",CharacterInfoList [currentCharacterIndex].Cost_Coin);
 		}
 	}
 	
 	public void UnlockCurrentAbilityUsingCoin()
 	{
-		if (AbilityInfoList [currentAbilityIndex].Cost_Coin <= mysave.playerGold) {
+		if (AbilityInfoList [currentAbilityIndex].Cost_Coin <= StoreInventory.GetItemBalance(ShopAssets.COIN_CURRENCY_ITEM_ID)) {
 			DoUnlockAbility(currentAbilityIndex);
-
-			mysave.playerGold -= AbilityInfoList [currentAbilityIndex].Cost_Coin;
-			GameFile.Save("save.data",mysave);
+			StoreInventory.TakeItem("coin1",AbilityInfoList [currentAbilityIndex].Cost_Coin);
 		}
 	}
 

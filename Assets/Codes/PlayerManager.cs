@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Soomla.Store;
 public class PlayerManager : MonoBehaviour {
 
 	public float Score2GoldRatio = 1f;
@@ -24,7 +25,7 @@ public class PlayerManager : MonoBehaviour {
 		eventHandler = GameObject.Find ("eventHandler").GetComponent<GameSceneEvents>();
 
 		GameFile.Load ("save.data", ref mysave);
-		coins = mysave.playerGold;
+		coins = StoreInventory.GetItemBalance(ShopAssets.COIN_CURRENCY_ITEM_ID);
 		eventHandler.UpdateUICoins (coins);
 	}
 
@@ -36,8 +37,7 @@ public class PlayerManager : MonoBehaviour {
 	public void addCoin(int coin) {
 		coins += (int)(coin * CoinMultiplier);
 		print ("coins : " + coins);
-		mysave.playerGold = coins;
-		GameFile.Save ("save.data", mysave);
+		StoreInventory.GiveItem ("coin1", coin);
 		eventHandler.UpdateUICoins (coins);
 	}
 

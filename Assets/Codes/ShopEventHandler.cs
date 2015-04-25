@@ -46,7 +46,7 @@ public class ShopEventHandler {
 
 	public void RemoveCallbacks()
 	{
-		CharacterSelectionEvents.addLog ("~ShopEventHandler");
+		CharacterSelectionEvents.addLog ("RemoveCallbacks ShopEventHandler");
 		StoreEvents.OnMarketPurchase -= onMarketPurchase;
 		StoreEvents.OnMarketRefund -= onMarketRefund;
 		StoreEvents.OnItemPurchased -= onItemPurchased;
