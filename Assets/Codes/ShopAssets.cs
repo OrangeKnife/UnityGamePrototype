@@ -88,7 +88,7 @@ public class ShopAssets : IStoreAssets{
 		"coin1",                                   // item id
 		1,												// number of currencies in the pack
 		COIN_CURRENCY_ITEM_ID,                        // the currency associated with this pack
-		new PurchaseWithMarket("", 0)
+		new PurchaseWithVirtualItem(COIN_CURRENCY_ITEM_ID, 0)
 		);
 
 	public static VirtualCurrencyPack COIN_PACK = new VirtualCurrencyPack(
@@ -178,7 +178,7 @@ public class ShopAssets : IStoreAssets{
 		"Free Char 0", 													// name
 		"Give to player for free!",				 							// description
 		"freechar0",														// item id
-		new PurchaseWithMarket("", 0));	// the way this virtual good is purchased
+		new PurchaseWithVirtualItem(COIN_CURRENCY_ITEM_ID, 0));	// the way this virtual good is purchased
 
 	public static VirtualGood UNLOCK_CHAR1_LTVG = new LifetimeVG(
 		"Unlock Char 1", 													// name

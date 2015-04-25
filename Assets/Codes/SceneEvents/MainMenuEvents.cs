@@ -20,20 +20,21 @@ public class MainMenuEvents : MonoBehaviour {
 		gameMgr = GameObject.Find ("GameManager").GetComponent<GameManager>() ;
 
 		try{
-		if(GameFile.Load ("save.data", ref mysave))
-			GameObject.Find ("WelcomeText").GetComponent<Text> ().enabled = mysave.firstRun == "True";
-		else
-			mysave = new SaveObject("False");
+			if(GameFile.Load ("save.data", ref mysave))
+				GameObject.Find ("WelcomeText").GetComponent<Text> ().enabled = mysave.firstRun == "True";
+			else
+				mysave = new SaveObject("False");
 
-		MusicAndSoundToggle.isOn = mysave.optionMusic;
-		gameMgr.SetAudioAvailable (mysave.optionMusic);
+			MusicAndSoundToggle.isOn = mysave.optionMusic;
+			gameMgr.SetAudioAvailable (mysave.optionMusic);
 		}
 		catch(System.Exception)
 		{
 			Debug.Log ("save.data loading error");
 		}
 
-
+		
+		shopEvents = new ShopEventHandler ();
 
 		
 		//shop
@@ -43,7 +44,6 @@ public class MainMenuEvents : MonoBehaviour {
 		if (StoreInventory.GetItemBalance ("freechar0") == 0)
 			StoreInventory.GiveItem ("freechar0", 1);
 
-		shopEvents = new ShopEventHandler ();
 
 	}
 

@@ -241,6 +241,7 @@ public class CharacterSelector : MonoBehaviour
 		if (CharacterInfoList [currentCharacterIndex].Cost_Coin <= StoreInventory.GetItemBalance(ShopAssets.COIN_CURRENCY_ITEM_ID)) {
 			DoUnlockCharacter(currentCharacterIndex);
 			StoreInventory.TakeItem("coin1",CharacterInfoList [currentCharacterIndex].Cost_Coin);
+			StoreInventory.GiveItem(CharacterInfoList [currentCharacterIndex].CharacterSoomlaId,1);
 		}
 	}
 	
@@ -249,6 +250,7 @@ public class CharacterSelector : MonoBehaviour
 		if (AbilityInfoList [currentAbilityIndex].Cost_Coin <= StoreInventory.GetItemBalance(ShopAssets.COIN_CURRENCY_ITEM_ID)) {
 			DoUnlockAbility(currentAbilityIndex);
 			StoreInventory.TakeItem("coin1",AbilityInfoList [currentAbilityIndex].Cost_Coin);
+
 		}
 	}
 
