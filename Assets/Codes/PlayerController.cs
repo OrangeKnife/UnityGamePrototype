@@ -248,7 +248,7 @@ public class PlayerController : MonoBehaviour {
 		SetGravity(-PlayerGravity);
 
 		SetGlide(false, true);
-		gameMgr.playSound ("crash");
+		gameMgr.playSound_Player ("crash");
 
 		//StartCoroutine(WaitForRespawn());
 		eventHandler.onPlayerDead();
@@ -599,7 +599,7 @@ public class PlayerController : MonoBehaviour {
 			{
 				tmpVec = new Vector2 (0.0f, tmpForce);
 				tmpRigidBody.AddForce (tmpVec);
-				gameMgr.playSound("jump");
+				gameMgr.playSound_Player("jump");
 			}
 		}
 	}

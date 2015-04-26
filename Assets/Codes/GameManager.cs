@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using Soomla.Store;
@@ -27,6 +27,7 @@ public class GameManager : MonoBehaviour {
 	public AudioClip warp;
 	private AudioSource audioSource;
 	private AudioSource audioSource_PlayOnce;
+	private AudioSource audioSource_PlayerAct;
 	private AudioClip _audioClip;
 	private bool bAudioAvailable = false;//turn on music when save file is loaded
 
@@ -41,6 +42,10 @@ public class GameManager : MonoBehaviour {
 		audioSource_PlayOnce=gameObject.AddComponent<AudioSource>();
 		audioSource_PlayOnce.loop = false;
 		audioSource_PlayOnce.mute = !bAudioAvailable;
+		
+		audioSource_PlayerAct=gameObject.AddComponent<AudioSource>();
+		audioSource_PlayerAct.loop = false;
+		audioSource_PlayerAct.mute = !bAudioAvailable;
 	}
 
 	public void StartGame()
@@ -66,6 +71,8 @@ public class GameManager : MonoBehaviour {
 
 		if (audioSource_PlayOnce != null)
 			audioSource_PlayOnce.mute = !bAvailable;
+		if (audioSource_PlayerAct != null)
+			audioSource_PlayerAct.mute = !bAvailable;
 
 
 	}
@@ -157,7 +164,7 @@ public class GameManager : MonoBehaviour {
 		for (int i = 0; i < AbilityNameArray.Count; ++i)
 		{
 			print ("add ability: "+AbilityNameArray[i]);
-			abManager.addAbility(AbilityNameArray[i], eventHandler.CreateAbilityUISlot(new Vector3(15 + i*65+ i*15,0,0)));
+			abManager.addAbility(AbilityNameArray[i], eventHandler.CreateAbilityUISlot(new Vector3(-65 + i*65+ i*5,0,0)));
 		}
 
 		GetComponent<LevelGenerator>().InitLevel();
@@ -176,20 +183,18 @@ public class GameManager : MonoBehaviour {
 	}
 	public void playSound(string type,bool bLooping = false, float pitch = 1)
 	{
-		/*if (type == "coin")
-			_audioClip = coinCollect;
-		else if (type == "jump")
-			_audioClip = jump;
-		else if (type == "dash")
-			_audioClip = dash;
-		else if (type == "crash")
-			_audioClip = crash;
-		else if (type == "warp")
-			_audioClip = warp;*/
 		audioSource_PlayOnce.clip = audioAll[type];
 		audioSource_PlayOnce.loop = bLooping;
 		audioSource_PlayOnce.pitch = pitch;
 		audioSource_PlayOnce.Play ();
+	}
+	
+	public void playSound_Player(string type,bool bLooping = false, float pitch = 1)
+	{
+		audioSource_PlayerAct.clip = audioAll[type];
+		audioSource_PlayerAct.loop = bLooping;
+		audioSource_PlayerAct.pitch = pitch;
+		audioSource_PlayerAct.Play ();
 	}
 
 }
