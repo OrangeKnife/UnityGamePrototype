@@ -87,15 +87,7 @@ public class CharacterSelector : MonoBehaviour
 			SelectAbility(savedAbilityIndex);
 		}
 
-		if(currentCharacterIndex != lastCharacterIndex)
-		{
-			ReArrangeCharacter(currentCharacterIndex);
-		}
-		
-		if(currentAbilityIndex != lastAbilityIndex)
-		{
-			ReArrangeAbility(currentAbilityIndex);
-		}
+
 	}
 
 	void OnDestroy()
@@ -127,9 +119,14 @@ public class CharacterSelector : MonoBehaviour
 
 	void CreateAbilites()
 	{
-		foreach (AbilityInfo  a in AbilityInfoList) {
-			if(a.canSelect)
-			AbilityObjectList.Add (CreateAbilityObject2D (a));
+		for (int i = 0; i < AbilityInfoList.Count; ++i) {
+			if(AbilityInfoList[i].canSelect)
+			{
+				GameObject go = CreateAbilityObject2D(AbilityInfoList[i]);
+				go.GetComponent<AbilityInfoDisplay>().AbilityInfoIndex = i;
+				AbilityObjectList.Add (go);
+			}
+		
 		}
 
 	}
@@ -147,7 +144,6 @@ public class CharacterSelector : MonoBehaviour
 	{
 		GameObject obj = Instantiate (AbilityInfoDisplayTemplate);
 		obj.GetComponent<SpriteRenderer> ().sprite = inAbilityInfo.AbilitySprite;
-		
 		return obj;
 	}
 
@@ -168,6 +164,11 @@ public class CharacterSelector : MonoBehaviour
 
 		eventHandler.OnSelectedACharacter(CharacterInfoList[currentCharacterIndex], StoreInventory.GetItemBalance (CharacterInfoList [currentCharacterIndex].CharacterSoomlaId) > 0,CharacterInfoList[currentCharacterIndex].Cost_Coin < StoreInventory.GetItemBalance(ShopAssets.COIN_CURRENCY_ITEM_ID));
 
+
+		if(currentCharacterIndex != lastCharacterIndex)
+		{
+			ReArrangeCharacter(currentCharacterIndex);
+		}
 	}
 
 	string GetAbilityDescriptionByAbilityInfoIndex(int AbilityInfoIndex)
@@ -177,18 +178,42 @@ public class CharacterSelector : MonoBehaviour
 
 	void SelectAbility(int idx)
 	{
-		idx = Math.Min(Math.Max(0,idx),AbilityObjectList.Count-1);
+
+
+		idx = Math.Max(0,idx);
 		currentAbilityIndex = idx;
-		if (currentAbilityIndex != lastAbilityIndex) {
+
+
+
+		if (currentAbilityIndex != lastAbilityIndex && AbilityInfoList[currentAbilityIndex].canSelect) 
+		{
 			if(lastAbilityIndex >= 0)
 				gameMgr.RemoveAbilityById(AbilityInfoList[lastAbilityIndex].AbilityId);
 
-			gameMgr.AddAbilityById (AbilityInfoList[currentAbilityIndex].AbilityId);
+			if(StoreInventory.GetItemBalance(AbilityInfoList[currentAbilityIndex].AbilitySoomlaId) > 0)
+				gameMgr.AddAbilityById (AbilityInfoList[currentAbilityIndex].AbilityId);
 		}
 
 		AbilityInfoText.text = GetAbilityDescriptionByAbilityInfoIndex(currentAbilityIndex);
 
-		eventHandler.OnSelectedAnAbility(AbilityInfoList[currentAbilityIndex], StoreInventory.GetItemBalance(AbilityInfoList[currentAbilityIndex].AbilitySoomlaId) > 0, AbilityInfoList[currentAbilityIndex].Cost_Coin < StoreInventory.GetItemBalance(ShopAssets.COIN_CURRENCY_ITEM_ID));
+		if(AbilityInfoList[currentAbilityIndex].AbilitySoomlaId != "")
+			eventHandler.OnSelectedAnAbility(AbilityInfoList[currentAbilityIndex], StoreInventory.GetItemBalance(AbilityInfoList[currentAbilityIndex].AbilitySoomlaId) > 0, AbilityInfoList[currentAbilityIndex].Cost_Coin < StoreInventory.GetItemBalance(ShopAssets.COIN_CURRENCY_ITEM_ID));
+
+		//////////
+
+		if(currentAbilityIndex != lastAbilityIndex)
+		{
+			int AbilityDisplayObjectIndex = 0;
+			for (int i = 0; i < AbilityObjectList.Count; ++i)
+			{
+				if(idx == AbilityObjectList[i].GetComponent<AbilityInfoDisplay>().AbilityInfoIndex)
+					AbilityDisplayObjectIndex = i;
+			}
+			ReArrangeAbility(AbilityDisplayObjectIndex);
+
+			
+			lastAbilityIndex = currentAbilityIndex;
+		}
 	}
 
 	public void LeftCharacter()
@@ -209,19 +234,31 @@ public class CharacterSelector : MonoBehaviour
 	}
 	public void LeftAbility()
 	{
-		SelectAbility(--currentAbilityIndex);
-		if(currentAbilityIndex != lastAbilityIndex)
-		{
-			ReArrangeAbility(currentAbilityIndex);
+		int nextAbilityIndex = currentAbilityIndex;
+		while (nextAbilityIndex > -1) {
+			nextAbilityIndex--;
+			if(nextAbilityIndex == 0 || 
+			   (nextAbilityIndex >=0 && AbilityInfoList[nextAbilityIndex].canSelect))
+			{
+				currentAbilityIndex = nextAbilityIndex;
+				break;
+			}
 		}
+		SelectAbility(currentAbilityIndex);
 	}
 	public void RightAbility()
 	{
-		SelectAbility(++currentAbilityIndex);
-		if(currentAbilityIndex != lastAbilityIndex)
-		{
-			ReArrangeAbility(currentAbilityIndex);
+		int nextAbilityIndex = currentAbilityIndex;
+		while (nextAbilityIndex < AbilityInfoList.Count) {
+			nextAbilityIndex++;
+			if(nextAbilityIndex == AbilityInfoList.Count -1 || 
+			   (nextAbilityIndex < AbilityInfoList.Count && AbilityInfoList[nextAbilityIndex].canSelect))
+			{
+				currentAbilityIndex = nextAbilityIndex;
+				break;
+			}
 		}
+		SelectAbility(currentAbilityIndex);
 	}
 	public bool UnlockBySoomlaItemId(string soomlaItemId)
 	{
@@ -251,6 +288,13 @@ public class CharacterSelector : MonoBehaviour
 
 	public void DoUnlockAbility(int abilityIdx)
 	{
+		
+		if (AbilityInfoList[abilityIdx].canSelect)
+		   // && StoreInventory.GetItemBalance(AbilityInfoList[abilityIdx].AbilitySoomlaId) > 0) 
+		{
+			gameMgr.AddAbilityById (AbilityInfoList[abilityIdx].AbilityId);
+		}
+
 		eventHandler.OnSelectedAnAbility (AbilityInfoList [abilityIdx], true);
 	}
 
@@ -258,18 +302,22 @@ public class CharacterSelector : MonoBehaviour
 	public void UnlockCurrentCharUsingCoin()
 	{
 		if (CharacterInfoList [currentCharacterIndex].Cost_Coin <= StoreInventory.GetItemBalance(ShopAssets.COIN_CURRENCY_ITEM_ID)) {
-			DoUnlockCharacter(currentCharacterIndex);
+
 			StoreInventory.TakeItem("coin1",CharacterInfoList [currentCharacterIndex].Cost_Coin);
 			StoreInventory.GiveItem(CharacterInfoList [currentCharacterIndex].CharacterSoomlaId,1);
+
+			DoUnlockCharacter(currentCharacterIndex);
 		}
 	}
 	
 	public void UnlockCurrentAbilityUsingCoin()
 	{
 		if (AbilityInfoList [currentAbilityIndex].Cost_Coin <= StoreInventory.GetItemBalance(ShopAssets.COIN_CURRENCY_ITEM_ID)) {
-			DoUnlockAbility(currentAbilityIndex);
+
 			StoreInventory.TakeItem("coin1",AbilityInfoList [currentAbilityIndex].Cost_Coin);
 			StoreInventory.GiveItem(AbilityInfoList [currentAbilityIndex].AbilitySoomlaId,1);
+
+			DoUnlockAbility(currentAbilityIndex);
 
 		}
 	}
@@ -295,76 +343,7 @@ public class CharacterSelector : MonoBehaviour
 	// Update is called once per frame
 	void Update () {
 
-		#if UNITY_STANDALONE || UNITY_WEBPLAYER
-
-		if(Input.GetKeyUp ("a"))
-			SelectCharacter(--currentCharacterIndex);
-		else if(Input.GetKeyUp ("d"))
-			SelectCharacter(++currentCharacterIndex);
-
-		if(Input.GetKeyUp("z"))
-			SelectAbility(--currentAbilityIndex);
-		else if(Input.GetKeyUp("c"))
-			SelectAbility(++currentAbilityIndex);
-
-
-		if(currentCharacterIndex != lastCharacterIndex)
-		{
-			ReArrangeCharacter(currentCharacterIndex);
-		}
-
-		if(currentAbilityIndex != lastAbilityIndex)
-		{
-			ReArrangeAbility(currentAbilityIndex);
-		}
-
-		
-		
-		#elif UNITY_IOS || UNITY_ANDROID || UNITY_WP8 || UNITY_IPHONE
 		 
-		if (Input.touchCount > 0) 
-		{
-			Touch touch = Input.GetTouch(0);
-
-			if (touch.phase == TouchPhase.Moved)
-			{
-				TouchMovementX += touch.deltaPosition.x;
-				if(Mathf.Abs(TouchMovementX) > 100)
-				{
-					if (touch.position.y >= Screen.height * 2f / 3f)
-					{
-						if(TouchMovementX > 0)
-							SelectCharacter(--currentCharacterIndex);
-						else
-							SelectCharacter(++currentCharacterIndex);
-					}
-					else if (touch.position.y >= Screen.height * 1f / 3f)
-					{
-						if(TouchMovementX > 0)
-							SelectAbility(--currentAbilityIndex);
-						else
-							SelectAbility(++currentAbilityIndex);
-					}
-
-
-
-					TouchMovementX = 0;
-				}
-
-				if(currentCharacterIndex != lastCharacterIndex)
-				{
-					ReArrangeCharacter(currentCharacterIndex);
-				}
-				if(currentAbilityIndex != lastAbilityIndex)
-				{
-					ReArrangeAbility(currentAbilityIndex);
-				}
-
-			}
- 
-		}
-
-		#endif
 
 	}
 
@@ -412,8 +391,7 @@ public class CharacterSelector : MonoBehaviour
 				AbilityObjectList[idx + i].GetComponent<AbilityInfoDisplay>().SetPosition(i * 3, -0.3f, 1, 1);
 			}
 		}
-		
-		lastAbilityIndex = idx;
+
 	}
 
 	public void ClearLog()

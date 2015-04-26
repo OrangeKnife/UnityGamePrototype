@@ -91,6 +91,12 @@ public class GameManager : MonoBehaviour {
 			return false;
 	}
 
+	public bool RemoveAllAbilities()
+	{
+		AbilityNameArray.Clear ();
+		return true;
+	}
+
 	public bool RemoveAbilityById(int abiId)
 	{
 		if (AbilityTemplates.Count > 0 && abiId > -1 && abiId < AbilityTemplates.Count) {

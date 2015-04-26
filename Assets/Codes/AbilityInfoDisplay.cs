@@ -6,6 +6,7 @@ using UnityEngine;
 public class AbilityInfoDisplay: MonoBehaviour {
 	public Vector3 DisplayPosition,DisplayScale;
 	public bool bDirty = false;
+	public int AbilityInfoIndex = -1;
 	void Awake()
 	{
 		GetComponent<SpriteRenderer> ().enabled = false;
