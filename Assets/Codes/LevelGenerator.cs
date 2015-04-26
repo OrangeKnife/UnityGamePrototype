@@ -140,7 +140,7 @@ public class LevelGenerator : MonoBehaviour {
 				SpawnSection(SectionArray_TestSection[i]);
 			}
 		}
-		/*else if (bInitSpawnTutorialSection)
+		else if (bInitSpawnTutorialSection)
 		{
 			print ("tut section");
 			// spawn tutorial sections
@@ -148,7 +148,7 @@ public class LevelGenerator : MonoBehaviour {
 			{
 				SpawnSection(SectionArray_Tutorial[i]);
 			}
-		}*/
+		}
 		else
 		{
 			

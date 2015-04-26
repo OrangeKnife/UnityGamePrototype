@@ -73,15 +73,14 @@ public class CharacterSelectionEvents : MonoBehaviour {
 		else {
 			UnlockAbilityButton.SetActive (true);
 			UnlockAbilityButtonText.GetComponent<UnityEngine.UI.Text>().text = abilityInfo.Cost_Coin.ToString();
-			UnlockAbilityButtonIGP.SetActive(false);
-			/*
+
 			UnlockAbilityButtonIGP.SetActive(true);
 			VirtualGood vg = StoreInfo.GetItemByItemId(abilityInfo.AbilitySoomlaId) as VirtualGood;
-			UnlockCharButtonIGPText.GetComponent<UnityEngine.UI.Text>().text = ((PurchaseWithMarket)vg.PurchaseType).MarketItem.Price.ToString("0.00");
+			UnlockAbilityButtonIGPText.GetComponent<UnityEngine.UI.Text>().text = ((PurchaseWithMarket)vg.PurchaseType).MarketItem.Price.ToString("0.00");
 			if(!bCanAfford)
-				UnlockCharButtonText.GetComponent<UnityEngine.UI.Text>().color = new Color(1,0,0,1);
+				UnlockAbilityButtonText.GetComponent<UnityEngine.UI.Text>().color = new Color(1,0,0,1);
 			else
-				UnlockCharButtonText.GetComponent<UnityEngine.UI.Text>().color = new Color(0,1,0,1);*/
+				UnlockAbilityButtonText.GetComponent<UnityEngine.UI.Text>().color = new Color(0,1,0,1);
 		}
 
 		checkGoButton ();

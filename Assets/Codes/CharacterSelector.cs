@@ -10,7 +10,7 @@ public struct CharacterInfo
 {
 	public Sprite CharacterSprite;
 	public int CharacterId;
-	public int CharacterPassiveAbilityId;
+	public int CharacterBuildInAbilityInfoIndex;
 	public string CharacterName;
 	public string CharacterDescription;
 	public string CharacterSoomlaId;
@@ -27,6 +27,7 @@ public struct AbilityInfo
 	public string AbilityDescription;
 	public string AbilitySoomlaId;
 	public int Cost_Coin;
+	public bool canSelect;
 };
 
 public class CharacterSelector : MonoBehaviour
@@ -42,6 +43,8 @@ public class CharacterSelector : MonoBehaviour
 	public int maxAbilityInfoDisplayNum = 5;
 	public Vector2 selectedAbilityScale = new Vector2(2.5f,2.5f);
 	public Vector2 selectedCharScale = new Vector2 (2.5f, 2.5f);
+
+	public UnityEngine.UI.Text CharInfoText, CharBuindInAbilityInfoText, AbilityInfoText;
 
 	private List<GameObject> CharObjectList = new List<GameObject>();
 	private List<GameObject> AbilityObjectList = new List<GameObject> ();
@@ -125,6 +128,7 @@ public class CharacterSelector : MonoBehaviour
 	void CreateAbilites()
 	{
 		foreach (AbilityInfo  a in AbilityInfoList) {
+			if(a.canSelect)
 			AbilityObjectList.Add (CreateAbilityObject2D (a));
 		}
 
@@ -151,11 +155,24 @@ public class CharacterSelector : MonoBehaviour
 	{
 		idx = Math.Min(Math.Max(0,idx),CharObjectList.Count-1);
 		currentCharacterIndex = idx;
-		gameMgr.SetCurrentPlayerTemplateByIdx( CharacterInfoList[currentCharacterIndex].CharacterId );
-		gameMgr.AddAbilityByIndex (CharacterInfoList [currentCharacterIndex].CharacterPassiveAbilityId);
+
+		if (currentCharacterIndex != lastCharacterIndex) {
+			if(lastCharacterIndex >= 0)
+				gameMgr.RemoveAbilityById(  AbilityInfoList[CharacterInfoList [lastCharacterIndex].CharacterBuildInAbilityInfoIndex].AbilityId );
+			gameMgr.SetCurrentPlayerTemplateByIdx (CharacterInfoList [currentCharacterIndex].CharacterId);
+			gameMgr.AddAbilityById (AbilityInfoList[CharacterInfoList [currentCharacterIndex].CharacterBuildInAbilityInfoIndex].AbilityId);
+		}
+
+		CharInfoText.text = CharacterInfoList [currentCharacterIndex].CharacterDescription;
+		CharBuindInAbilityInfoText.text = GetAbilityDescriptionByAbilityInfoIndex(CharacterInfoList[currentCharacterIndex].CharacterBuildInAbilityInfoIndex);
 
 		eventHandler.OnSelectedACharacter(CharacterInfoList[currentCharacterIndex], StoreInventory.GetItemBalance (CharacterInfoList [currentCharacterIndex].CharacterSoomlaId) > 0,CharacterInfoList[currentCharacterIndex].Cost_Coin < StoreInventory.GetItemBalance(ShopAssets.COIN_CURRENCY_ITEM_ID));
 
+	}
+
+	string GetAbilityDescriptionByAbilityInfoIndex(int AbilityInfoIndex)
+	{
+		return AbilityInfoList [AbilityInfoIndex].AbilityDescription;
 	}
 
 	void SelectAbility(int idx)
@@ -163,11 +180,15 @@ public class CharacterSelector : MonoBehaviour
 		idx = Math.Min(Math.Max(0,idx),AbilityObjectList.Count-1);
 		currentAbilityIndex = idx;
 		if (currentAbilityIndex != lastAbilityIndex) {
-			gameMgr.RemoveAbilityByIndex(lastAbilityIndex);
-			gameMgr.AddAbilityByIndex (currentAbilityIndex);
+			if(lastAbilityIndex >= 0)
+				gameMgr.RemoveAbilityById(AbilityInfoList[lastAbilityIndex].AbilityId);
+
+			gameMgr.AddAbilityById (AbilityInfoList[currentAbilityIndex].AbilityId);
 		}
 
-		eventHandler.OnSelectedAnAbility(AbilityInfoList[currentAbilityIndex], mysave.abilityUnlockedArray[AbilityInfoList[currentAbilityIndex].AbilityId], AbilityInfoList[currentAbilityIndex].Cost_Coin < StoreInventory.GetItemBalance(ShopAssets.COIN_CURRENCY_ITEM_ID));
+		AbilityInfoText.text = GetAbilityDescriptionByAbilityInfoIndex(currentAbilityIndex);
+
+		eventHandler.OnSelectedAnAbility(AbilityInfoList[currentAbilityIndex], StoreInventory.GetItemBalance(AbilityInfoList[currentAbilityIndex].AbilitySoomlaId) > 0, AbilityInfoList[currentAbilityIndex].Cost_Coin < StoreInventory.GetItemBalance(ShopAssets.COIN_CURRENCY_ITEM_ID));
 	}
 
 	public void LeftCharacter()
@@ -230,8 +251,6 @@ public class CharacterSelector : MonoBehaviour
 
 	public void DoUnlockAbility(int abilityIdx)
 	{
-		mysave.abilityUnlockedArray [AbilityInfoList [abilityIdx].AbilityId] = true;
-		GameFile.Save("save.data",mysave);
 		eventHandler.OnSelectedAnAbility (AbilityInfoList [abilityIdx], true);
 	}
 
@@ -250,6 +269,7 @@ public class CharacterSelector : MonoBehaviour
 		if (AbilityInfoList [currentAbilityIndex].Cost_Coin <= StoreInventory.GetItemBalance(ShopAssets.COIN_CURRENCY_ITEM_ID)) {
 			DoUnlockAbility(currentAbilityIndex);
 			StoreInventory.TakeItem("coin1",AbilityInfoList [currentAbilityIndex].Cost_Coin);
+			StoreInventory.GiveItem(AbilityInfoList [currentAbilityIndex].AbilitySoomlaId,1);
 
 		}
 	}

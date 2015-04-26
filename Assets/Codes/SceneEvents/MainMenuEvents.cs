@@ -44,6 +44,9 @@ public class MainMenuEvents : MonoBehaviour {
 		if (StoreInventory.GetItemBalance ("freechar0") == 0)
 			StoreInventory.GiveItem ("freechar0", 1);
 
+		if(StoreInventory.GetItemBalance("noability") == 0)
+			StoreInventory.GiveItem ("noability", 1);
+
 
 	}
 

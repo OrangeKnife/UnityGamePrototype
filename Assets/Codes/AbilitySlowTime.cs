@@ -46,4 +46,12 @@ public class AbilitySlowTime : AbilityBase {
 		transform.FindChild("SlowTimeEffect").GetComponent<SpriteRenderer>().enabled = false;
 		base.StopActiveEffect();
 	}
+
+	public override Sprite GetIcon()
+	{
+		if (IconSprite == null)
+			IconSprite = Resources.Load<Sprite>("Ability/Icon/AbilityIcon_2");
+		
+		return IconSprite;
+	}
 }

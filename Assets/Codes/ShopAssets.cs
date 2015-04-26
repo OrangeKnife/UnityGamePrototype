@@ -29,7 +29,8 @@ public class ShopAssets : IStoreAssets{
 	/// see parent.
 	/// </summary>
 	public VirtualGood[] GetGoods() {
-		return new VirtualGood[] {/*MUFFINCAKE_GOOD, PAVLOVA_GOOD,CHOCLATECAKE_GOOD, CREAMCUP_GOOD, */FREE_CHAR0_LTVG,UNLOCK_CHAR1_LTVG,UNLOCK_CHAR2_LTVG,UNLOCK_CHAR3_LTVG,UNLOCK_CHAR4_LTVG};
+		return new VirtualGood[] {/*MUFFINCAKE_GOOD, PAVLOVA_GOOD,CHOCLATECAKE_GOOD, CREAMCUP_GOOD, */FREE_CHAR0_LTVG,UNLOCK_CHAR1_LTVG,UNLOCK_CHAR2_LTVG,UNLOCK_CHAR3_LTVG,UNLOCK_CHAR4_LTVG,
+			FREE_NOABILITY_LTVG,UNLOCK_ABILITY1_LTVG,UNLOCK_ABILITY2_LTVG,UNLOCK_ABILITY3_LTVG,UNLOCK_ABILITY4_LTVG};
 	}
 	
 	/// <summary>
@@ -70,6 +71,12 @@ public class ShopAssets : IStoreAssets{
 	public const string UNLOCK_CHAR2_LIFETIME_PRODUCT_ID = "phiephierun_unlock_char2";
 	public const string UNLOCK_CHAR3_LIFETIME_PRODUCT_ID = "phiephierun_unlock_char3";
 	public const string UNLOCK_CHAR4_LIFETIME_PRODUCT_ID = "phiephierun_unlock_char4";
+
+	public const string UNLOCK_ABILITY1_LIFETIME_PRODUCT_ID = "phiephierun_unlock_ability1";
+	public const string UNLOCK_ABILITY2_LIFETIME_PRODUCT_ID = "phiephierun_unlock_ability2";
+	public const string UNLOCK_ABILITY3_LIFETIME_PRODUCT_ID = "phiephierun_unlock_ability3";
+	public const string UNLOCK_ABILITY4_LIFETIME_PRODUCT_ID = "phiephierun_unlock_ability4";
+
 	
 	public const string COIN_PACK100_PRODUCT_ID="phiephierun_coin_100";
 	/** Virtual Currencies **/
@@ -203,6 +210,38 @@ public class ShopAssets : IStoreAssets{
 		"You can Unlock CHAR 4!",				 							// description
 		"unlockchar4",														// item id
 		new PurchaseWithMarket(UNLOCK_CHAR4_LIFETIME_PRODUCT_ID, 0.99));	// the way this virtual good is purchased
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	public static VirtualGood FREE_NOABILITY_LTVG = new LifetimeVG(
+		"No ability", 													// name
+		"No ability!",				 							// description
+		"noability",														// item id
+		new PurchaseWithVirtualItem(COIN_CURRENCY_ITEM_ID, 0));	// the way this virtual good is purchased
+	
+	public static VirtualGood UNLOCK_ABILITY1_LTVG = new LifetimeVG(
+		"Unlock ability 1", 													// name
+		"You can Unlock ability 1!",				 							// description
+		"unlockability1",														// item id
+		new PurchaseWithMarket(UNLOCK_ABILITY1_LIFETIME_PRODUCT_ID, 0.99));	// the way this virtual good is purchased
+	
+	public static VirtualGood UNLOCK_ABILITY2_LTVG = new LifetimeVG(
+		"Unlock ability 2", 													// name
+		"You can Unlock ability 2!",				 							// description
+		"unlockability2",														// item id
+		new PurchaseWithMarket(UNLOCK_ABILITY2_LIFETIME_PRODUCT_ID, 0.99));	// the way this virtual good is purchased
+
+	public static VirtualGood UNLOCK_ABILITY3_LTVG = new LifetimeVG(
+		"Unlock ability 3", 													// name
+		"You can Unlock ability 3!",				 							// description
+		"unlockability3",														// item id
+		new PurchaseWithMarket(UNLOCK_ABILITY3_LIFETIME_PRODUCT_ID, 0.99));	// the way this virtual good is purchased
+
+	public static VirtualGood UNLOCK_ABILITY4_LTVG = new LifetimeVG(
+		"Unlock ability 4", 													// name
+		"You can Unlock ability 4!",				 							// description
+		"unlockability4",														// item id
+		new PurchaseWithMarket(UNLOCK_ABILITY4_LIFETIME_PRODUCT_ID, 0.99));	// the way this virtual good is purchased
 
 }
 

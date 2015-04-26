@@ -31,4 +31,12 @@ public class AbilityAirbrake : AbilityBase {
 		playerCtrl.setMoveSpeed(tmpSpeed);
 		base.StopActiveEffect();
 	}
+
+	public override Sprite GetIcon()
+	{
+		if (IconSprite == null)
+			IconSprite = Resources.Load<Sprite>("Ability/Icon/AbilityIcon_2");
+		
+		return IconSprite;
+	}
 }

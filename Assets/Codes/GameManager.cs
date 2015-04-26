@@ -91,12 +91,12 @@ public class GameManager : MonoBehaviour {
 			return false;
 	}
 
-	public bool RemoveAbilityByIndex(int idx)
+	public bool RemoveAbilityById(int abiId)
 	{
-		if (AbilityTemplates.Count > 0 && idx > -1) {
-			if(AbilityNameArray.IndexOf(AbilityTemplates [idx]) > -1)
+		if (AbilityTemplates.Count > 0 && abiId > -1 && abiId < AbilityTemplates.Count) {
+			if(AbilityNameArray.IndexOf(AbilityTemplates [abiId]) > -1)
 			{
-				AbilityNameArray.Remove (AbilityTemplates [idx]);
+				AbilityNameArray.Remove (AbilityTemplates [abiId]);
 				return true;
 			}
 			return false;
@@ -104,23 +104,15 @@ public class GameManager : MonoBehaviour {
 			return false;
 	}
 
-	public bool AddAbilityByIndex(int idx)
+	public bool AddAbilityById(int abiId)
 	{
-		if (AbilityTemplates.Count > 0 && idx > -1) {
-			AbilityNameArray.Add (AbilityTemplates [idx]);
+		if (AbilityTemplates.Count > 0 && abiId > -1 && abiId < AbilityTemplates.Count) {
+			AbilityNameArray.Add (AbilityTemplates [abiId]);
 			return true;
 		} else
 			return false;
 	}
-
-	public bool SetActiveAbilityByIndex(int idx)
-	{
-		if (AbilityTemplates.Count > 0 && idx > -1) {
-			AbilityNameArray.Add (AbilityTemplates [idx]);
-			return true;
-		} else
-			return false;
-	}
+	
 
 	// Update is called once per frame
 	void Update () {

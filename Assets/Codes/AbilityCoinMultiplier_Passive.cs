@@ -13,4 +13,12 @@ public class AbilityCoinMultiplier_Passive : AbilityBase {
 		
 		base.EnableAbilityPassive();
 	}
+
+	public override Sprite GetIcon()
+	{
+		if (IconSprite == null)
+			IconSprite = Resources.Load<Sprite>("Ability/Icon/AbilityIcon_2");
+		
+		return IconSprite;
+	}
 }
