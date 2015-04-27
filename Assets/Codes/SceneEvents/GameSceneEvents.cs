@@ -222,7 +222,7 @@ public class GameSceneEvents : MonoBehaviour {
 	{
 		if(Advertisement.isReady())
 		{ 
-			UI_ScoreText.GetComponent<UnityEngine.UI.Text>().text = "ready";
+			//UI_ScoreText.GetComponent<UnityEngine.UI.Text>().text = "ready";
 
 			Advertisement.Show(null, new ShowOptions{ pause = true,
 				resultCallback = ShowResult =>{
@@ -233,7 +233,7 @@ public class GameSceneEvents : MonoBehaviour {
 		else
 		{
 
-			UI_ScoreText.GetComponent<UnityEngine.UI.Text>().text = "not ready";
+			//UI_ScoreText.GetComponent<UnityEngine.UI.Text>().text = "not ready";
 		}
 
 	}
