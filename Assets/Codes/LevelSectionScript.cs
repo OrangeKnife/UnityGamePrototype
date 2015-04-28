@@ -12,6 +12,7 @@ public class LevelSectionScript : MonoBehaviour {
 	private int lvScore = 10; // this score value is depended on level
 	private PlayerManager _playerManager;// = new PlayerManager();
 
+	private float scoreMultiplier = 1.0f;
 	GameManager gameMgr;
 	// Use this for initialization
 	void Start () {
@@ -25,9 +26,21 @@ public class LevelSectionScript : MonoBehaviour {
 		//print ((privateBounding.max.x/3)+", player: "+player.transform.position.x );
 		_playerManager = player.GetComponent<PlayerManager>();
 	}
+	
+	public float getScoreMultiplier() {
+		return scoreMultiplier;
+	}
+	
+	private int getCurrentRealScore(float score) {
+		return Mathf.RoundToInt(score * scoreMultiplier);
+	}
+
+	public void setScoreMultiplier(float scoreMulti) {
+		scoreMultiplier = scoreMulti;
+	}
 
 	public void setLvScore(int score) {
-		lvScore = score;
+		lvScore = getCurrentRealScore(score);
 	}
 
 	private float getPlayerPositionX() {

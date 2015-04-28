@@ -20,9 +20,11 @@ public class AbilityBase : MonoBehaviour {
 
 	GameObject UIIconObjectMask = null;
 
+	protected float cdMultiplier = 1;
+
 	protected void Start()
 	{
-		print ("start abi");
+		print ("start abi_passive");
 		active_remain = ACTIVETIMER;
 		timer = CDTIMER;
 
@@ -102,6 +104,14 @@ public class AbilityBase : MonoBehaviour {
 	{
 
 	}
+	public virtual void setCDMultipler(float multi)
+	{
+		cdMultiplier = multi;
+	}
+	public virtual float getCDMultipler()
+	{
+		return cdMultiplier;
+	}
 	public virtual void StopActiveEffect()
 	{
 		print("Disable Active Base");
@@ -119,7 +129,7 @@ public class AbilityBase : MonoBehaviour {
 	public virtual float GetRemainingCooldown() {
 		float _currentCDTime = Time.time - startCoolDownTime;
 		//print ("test tim  e" +startCoolDownTime);
-		return Mathf.Max(CDTIMER - _currentCDTime,0f) ;
+		return Mathf.Max(CDTIMER - _currentCDTime,0f) * cdMultiplier ;
 		//return System.Convert.ToSingle(_currentCDTime.TotalSeconds);
 	}
 	public virtual float GetActiveTotalDuration() {
