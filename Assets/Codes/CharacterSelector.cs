@@ -396,7 +396,7 @@ public class CharacterSelector : MonoBehaviour
 
 	public void ClearLog()
 	{
-		CharacterSelectionEvents.clearLog();
+		Utils.clearLog();
 	}
 	public void TestBuy100Coins()
 	{

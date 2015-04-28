@@ -46,7 +46,7 @@ public class ShopEventHandler {
 
 	public void RemoveCallbacks()
 	{
-		CharacterSelectionEvents.addLog ("RemoveCallbacks ShopEventHandler");
+		Utils.addLog ("RemoveCallbacks ShopEventHandler");
 		StoreEvents.OnMarketPurchase -= onMarketPurchase;
 		StoreEvents.OnMarketRefund -= onMarketRefund;
 		StoreEvents.OnItemPurchased -= onItemPurchased;
@@ -76,7 +76,7 @@ public class ShopEventHandler {
 	/// <param name="pvi">Purchasable virtual item.</param>
 	/// <param name="purchaseToken">Purchase token.</param>
 	public void onMarketPurchase(PurchasableVirtualItem pvi, string payload, Dictionary<string, string> extra) {
-		CharacterSelectionEvents.addLog ("onMarketPurchase called: itemid=" + pvi.ItemId + ",cs="+cs.name);
+		Utils.addLog ("onMarketPurchase called: itemid=" + pvi.ItemId + ",cs="+cs.name);
 		if(cs)
 			cs.UnlockBySoomlaItemId (pvi.ItemId);
 	}
@@ -86,7 +86,7 @@ public class ShopEventHandler {
 	/// </summary>
 	/// <param name="pvi">Purchasable virtual item.</param>
 	public void onMarketRefund(PurchasableVirtualItem pvi) {
-		CharacterSelectionEvents.addLog ("onMarketRefund called: itemid=" + pvi.ItemId + ",cs="+cs.name);
+		Utils.addLog ("onMarketRefund called: itemid=" + pvi.ItemId + ",cs="+cs.name);
 	}
 	
 	/// <summary>
@@ -94,7 +94,7 @@ public class ShopEventHandler {
 	/// </summary>
 	/// <param name="pvi">Purchasable virtual item.</param>
 	public void onItemPurchased(PurchasableVirtualItem pvi, string payload) {
-		CharacterSelectionEvents.addLog ("onItemPurchased called: itemid=" + pvi.ItemId + ",cs="+cs.name+",payload="+payload);
+		Utils.addLog ("onItemPurchased called: itemid=" + pvi.ItemId + ",cs="+cs.name+",payload="+payload);
 	}
 	
 	/// <summary>
@@ -127,14 +127,14 @@ public class ShopEventHandler {
 	/// Handles a billing supported event.
 	/// </summary>
 	public void onBillingSupported() {
-		CharacterSelectionEvents.addLog ("onBillingSupported");
+		Utils.addLog ("onBillingSupported");
 	}
 	
 	/// <summary>
 	/// Handles a billing NOT supported event.
 	/// </summary>
 	public void onBillingNotSupported() {
-		CharacterSelectionEvents.addLog ("onBillingNotSupported");
+		Utils.addLog ("onBillingNotSupported");
 	}
 	
 	/// <summary>
@@ -142,7 +142,7 @@ public class ShopEventHandler {
 	/// </summary>
 	/// <param name="pvi">Purchasable virtual item.</param>
 	public void onMarketPurchaseStarted(PurchasableVirtualItem pvi) {
-		CharacterSelectionEvents.addLog ("onMarketPurchaseStarted called: itemid=" + pvi.ItemId + ",cs="+cs.name);
+		Utils.addLog ("onMarketPurchaseStarted called: itemid=" + pvi.ItemId + ",cs="+cs.name);
 	}
 	
 	/// <summary>
@@ -150,7 +150,7 @@ public class ShopEventHandler {
 	/// </summary>
 	/// <param name="pvi">Purchasable virtual item.</param>
 	public void onItemPurchaseStarted(PurchasableVirtualItem pvi) {
-		CharacterSelectionEvents.addLog ("onItemPurchaseStarted called: itemid=" + pvi.ItemId + ",cs="+cs.name);
+		Utils.addLog ("onItemPurchaseStarted called: itemid=" + pvi.ItemId + ",cs="+cs.name);
 	}
 	
 	/// <summary>
@@ -158,7 +158,7 @@ public class ShopEventHandler {
 	/// </summary>
 	/// <param name="pvi">Purchasable virtual item.</param>
 	public void onMarketPurchaseCancelled(PurchasableVirtualItem pvi) {
-		CharacterSelectionEvents.addLog ("onMarketPurchaseCancelled called: itemid=" + pvi.ItemId + ",cs="+cs.name);
+		Utils.addLog ("onMarketPurchaseCancelled called: itemid=" + pvi.ItemId + ",cs="+cs.name);
 	}
 	
 	/// <summary>
@@ -166,7 +166,7 @@ public class ShopEventHandler {
 	/// </summary>
 	/// <param name="message">Error message.</param>
 	public void onUnexpectedErrorInStore(string message) {
-		CharacterSelectionEvents.addLog ("onUnexpectedErrorInStore called: message="+message);
+		Utils.addLog ("onUnexpectedErrorInStore called: message="+message);
 	}
 	
 	/// <summary>
@@ -193,7 +193,7 @@ public class ShopEventHandler {
 	/// Handles a restore Transactions process started event.
 	/// </summary>
 	public void onRestoreTransactionsStarted() {
-		MainMenuEvents.addLog ("onRestoreTransactionsStarted");
+		Utils.addLog ("onRestoreTransactionsStarted");
 	}
 	
 	/// <summary>
@@ -201,7 +201,7 @@ public class ShopEventHandler {
 	/// </summary>
 	/// <param name="success">If set to <c>true</c> success.</param>
 	public void onRestoreTransactionsFinished(bool success) {
-		MainMenuEvents.addLog ("onRestoreTransactionsFinished("+success.ToString()+")");
+		Utils.addLog ("onRestoreTransactionsFinished("+success.ToString()+")");
 	}
 	
 	/// <summary>

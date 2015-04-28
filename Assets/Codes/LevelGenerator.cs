@@ -17,13 +17,18 @@ public class LevelGenerator : MonoBehaviour {
 	private Transform playerTransform;
 
 	public bool bInitSpawnTestSection;
+	public bool bInitSpawnAllSections;
 	public bool bInitSpawnTutorialSection = false;
 	public List<GameObject> SectionArray_TestSection;
 	public List<GameObject> SectionArray_Tutorial;
+	public List<GameObject> SectionArray_PreGameSection;
 	public List<GameObject> SectionArray_Easy;
 	public List<GameObject> SectionArray_Normal;
 	public List<GameObject> SectionArray_Hard;
 	public List<GameObject> SectionArray_Wtf;
+
+	public int SectionAll_Count;
+	public List<GameObject> SectionArray_All;
 
 	private List<GameObject> currentLevel = null;
 	// store spawned section here, so we know how many we have and can kill it properly
@@ -52,20 +57,27 @@ public class LevelGenerator : MonoBehaviour {
 		public int GetSectionType(int Difficulty) 
 		{
 			float tmpRand;
+			string tmpLog;
 
 			tmpRand = Random.Range(0.0f, 100.0f);
+			tmpLog = "UnPickedSection:";
 			for (int i = 0; i < 3; ++i)
 			{
+				tmpLog += GetSectionName(i) + "(" + PercentByDifficulty[i] * Difficulty + "%),";
 				if (tmpRand < PercentByDifficulty[i] * Difficulty)
 				{
-					print ("PickedSection: " + GetSectionName(i) + ", Diff: " + Difficulty);
+					Utils.addLog(tmpLog);
+					tmpLog = "PickedSection: " + GetSectionName(i) + "(" + PercentByDifficulty[i] * Difficulty + "%), Diff: " + Difficulty;
+					Utils.addLog(tmpLog);
 					return i;
 				}
 				tmpRand = Random.Range(0.0f, 100.0f);
 			}
 
 			// always at least return 'easy'
-			print ("PickedSection: " + GetSectionName(3) + ", Diff: " + Difficulty);
+			Utils.addLog(tmpLog);
+			tmpLog = "PickedSection: " + GetSectionName(3) + ", Diff: " + Difficulty;
+			Utils.addLog(tmpLog);
 			return 3;
 		}
 
@@ -140,9 +152,30 @@ public class LevelGenerator : MonoBehaviour {
 				SpawnSection(SectionArray_TestSection[i]);
 			}
 		}
+		else if (bInitSpawnAllSections)
+		{
+			print ("all test sections");
+
+			// init array_all
+			SectionArray_All.Clear();
+			//SectionAll_Count = 0;
+			for (int i = 3; i >= 0; --i)
+			{
+				for (int j = 0; j < GetSectionArray(i).Count; ++j)
+				{
+					SectionArray_All.Add(GetSectionArray(i)[j]);
+				}
+			}
+
+			// spawn blank sections
+			for (int i = 0; i < SectionArray_PreGameSection.Count; ++i)
+			{
+				SpawnSection(SectionArray_PreGameSection[i]);
+			}
+		}
 		else if (bInitSpawnTutorialSection)
 		{
-			print ("tut section");
+			print ("tutorial section");
 			// spawn tutorial sections
 			for (int i = 0; i < SectionArray_Tutorial.Count; ++i)
 			{
@@ -151,10 +184,15 @@ public class LevelGenerator : MonoBehaviour {
 		}
 		else
 		{
-			
 			print ("normal section");
 			// init first 2-3 sections here
-			for (int i = 0; i < MAXSECTIONS; ++i)
+
+			for (int i = 0; i < SectionArray_PreGameSection.Count; ++i)
+			{
+				SpawnSection(SectionArray_PreGameSection[i]);
+			}
+
+			for (int i = SectionArray_PreGameSection.Count; i < MAXSECTIONS; ++i)
 			{
 				currentLevel = GetSectionArray( NormalPicker.GetSectionType( GetDifficulty() ) );
 				SpawnSection(currentLevel[Random.Range(0,currentLevel.Count)]);
@@ -170,17 +208,28 @@ public class LevelGenerator : MonoBehaviour {
 		if (player.transform.position.x > SpawnedSectionList.Last.Previous.Value.GetComponent<LevelSectionScript>().boundingBox.min.x)
 		{
 			///// player enters last section
-			if (NumberOfGeneratedSection % SurpriseSectionMod != 0)
+			if (!bInitSpawnAllSections)
 			{
-				currentLevel = GetSectionArray( NormalPicker.GetSectionType( GetDifficulty() ) );
+				if (NumberOfGeneratedSection % SurpriseSectionMod != 0)
+				{
+					currentLevel = GetSectionArray( NormalPicker.GetSectionType( GetDifficulty() ) );
+				}
+				else
+				{
+					// pick surprise section
+					Utils.addLog("Surprise section");
+					currentLevel = GetSectionArray( SurprisePicker.GetSectionType( GetDifficulty() ) );
+				}
+				SpawnSection(currentLevel[Random.Range(0,currentLevel.Count)]);
 			}
 			else
 			{
-				// pick surprise section
-				print ("Surprise!");
-				currentLevel = GetSectionArray( SurprisePicker.GetSectionType( GetDifficulty() ) );
+				// spawn all sections for testing
+				Utils.addLog("SectionAll_Count=" + SectionAll_Count);
+				SpawnSection(SectionArray_All[SectionAll_Count]);
+				SectionAll_Count++;
 			}
-			SpawnSection(currentLevel[Random.Range(0,currentLevel.Count)]);
+
 		}
 
 		///// kill old sections
@@ -193,6 +242,7 @@ public class LevelGenerator : MonoBehaviour {
 
 	void SpawnSection(GameObject template)
 	{
+		//Utils.addLog( "NumberOfGeneratedSection="+NumberOfGeneratedSection.ToString() );
 		///// spawn template
 		if (template == null)
 			return;
@@ -246,7 +296,7 @@ public class LevelGenerator : MonoBehaviour {
 	private List<GameObject> GetSectionArray(int num)
 	{
 		if (num == 3)
-			return SectionArray_Normal;
+			return SectionArray_Easy;
 		else if (num == 2)
 			return SectionArray_Normal;
 		else if (num == 1)
