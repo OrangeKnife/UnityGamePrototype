@@ -29,7 +29,7 @@ public class AbilitySlowTime : AbilityBase {
 		Time.fixedDeltaTime = 0.02F * Time.timeScale;
 
 		transform.FindChild("SlowTimeEffect").GetComponent<SpriteRenderer>().enabled = true;
-
+		//InvertAllMaterialColors();
 		base.StartActiveEffect();
 	}
 	
@@ -44,6 +44,7 @@ public class AbilitySlowTime : AbilityBase {
 		Time.fixedDeltaTime = 0.02F * Time.timeScale;
 
 		transform.FindChild("SlowTimeEffect").GetComponent<SpriteRenderer>().enabled = false;
+		//InvertAllMaterialColors();
 		base.StopActiveEffect();
 	}
 
@@ -53,5 +54,20 @@ public class AbilitySlowTime : AbilityBase {
 			IconSprite = Resources.Load<Sprite>("Ability/Icon/AbilityIcon_2");
 		
 		return IconSprite;
+	}
+
+	public Color InvertColor (Color color)
+	{
+		return new Color (1.0f-color.r, 1.0f-color.g, 1.0f-color.b);
+	}
+
+	public void InvertAllMaterialColors () {
+		Renderer[] renderers = FindObjectsOfType<Renderer>();
+		foreach (Renderer render in renderers) {
+			if (render.material.HasProperty("_Color")) {
+				//render.material.color = InvertColor (render.material.color);
+				render.material.shader = Resources.Load<Shader>("Ability/InverseColorShader");
+			}
+		}
 	}
 }
