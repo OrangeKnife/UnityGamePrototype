@@ -28,7 +28,10 @@ public class LevelGenerator : MonoBehaviour {
 	public List<GameObject> SectionArray_Wtf;
 
 	public int SectionAll_Count;
-	public List<GameObject> SectionArray_All;
+	public List<GameObject> SectionArray_All = new List<GameObject>();
+
+	public int UniqueSectionLimit = 5;
+	public List<GameObject> SectionArray_Used = new List<GameObject>();
 
 	private List<GameObject> currentLevel = null;
 	// store spawned section here, so we know how many we have and can kill it properly
@@ -122,7 +125,8 @@ public class LevelGenerator : MonoBehaviour {
 	{
 		if (SpawnedSectionList == null)
 			SpawnedSectionList = new LinkedList<GameObject>();
-		
+
+		SectionArray_Used.Clear();
 		NumberOfGeneratedSection = 0;
 		currentLevel = SectionArray_Normal;
 		NormalPicker = new SectionPicker(0.5f, 2.0f, 10.0f, 9999.0f);
@@ -195,7 +199,7 @@ public class LevelGenerator : MonoBehaviour {
 			for (int i = SectionArray_PreGameSection.Count; i < MAXSECTIONS; ++i)
 			{
 				currentLevel = GetSectionArray( NormalPicker.GetSectionType( GetDifficulty() ) );
-				SpawnSection(currentLevel[Random.Range(0,currentLevel.Count)]);
+				SpawnSection(currentLevel[Random.Range(0,currentLevel.Count)], true);
 			}
 		}
 
@@ -220,7 +224,7 @@ public class LevelGenerator : MonoBehaviour {
 					Utils.addLog("Surprise section");
 					currentLevel = GetSectionArray( SurprisePicker.GetSectionType( GetDifficulty() ) );
 				}
-				SpawnSection(currentLevel[Random.Range(0,currentLevel.Count)]);
+				SpawnSection(currentLevel[Random.Range(0,currentLevel.Count)], true);
 			}
 			else
 			{
@@ -240,12 +244,24 @@ public class LevelGenerator : MonoBehaviour {
 		}
 	}
 
-	void SpawnSection(GameObject template)
+	void SpawnSection(GameObject template, bool randomizeSection = false)
 	{
 		//Utils.addLog( "NumberOfGeneratedSection="+NumberOfGeneratedSection.ToString() );
 		///// spawn template
 		if (template == null)
 			return;
+
+		if (randomizeSection)
+		{
+			if (SectionArray_Used.Contains(template))
+				return;
+
+			SectionArray_Used.Add(template);
+			if (SectionArray_Used.Count > UniqueSectionLimit)
+			{
+				SectionArray_Used.RemoveAt(0);
+			}
+		}
 
 		GameObject randomSection = Instantiate(template);
 		NumberOfGeneratedSection++;
