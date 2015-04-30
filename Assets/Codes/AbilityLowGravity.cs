@@ -10,7 +10,7 @@ public class AbilityLowGravity : AbilityBase {
 	new void Start () {
 		bActiveAbility = true;
 
-		CDTIMER = 3.0f;
+		CDTIMER = 5.0f;
 		ACTIVETIMER = 1.0f;
 		
 		base.Start();

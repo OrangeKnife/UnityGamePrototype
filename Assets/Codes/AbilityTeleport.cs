@@ -12,7 +12,7 @@ public class AbilityTeleport : AbilityBase {
 	new void Start () {
 		bActiveAbility = true;
 		
-		CDTIMER = 5.0f;
+		CDTIMER = 8.0f;
 		ACTIVETIMER = 2.0f;
 
 		base.Start();
