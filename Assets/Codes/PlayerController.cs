@@ -248,7 +248,7 @@ public class PlayerController : MonoBehaviour {
 		SetGravity(-PlayerGravity);
 
 		SetGlide(false, true);
-		gameMgr.playSound_Player ("crash");
+		gameMgr.playSound ("crash",true);
 
 		//StartCoroutine(WaitForRespawn());
 		eventHandler.onPlayerDead();
@@ -559,7 +559,7 @@ public class PlayerController : MonoBehaviour {
 				if (GlideCount < MaxGlideAllow)
 				{
 					SetGlide(true);
-					gameMgr.playSound("dash", false, 0.5f);
+					gameMgr.playSound("dash", false);
 				}
 			}
 
@@ -599,7 +599,7 @@ public class PlayerController : MonoBehaviour {
 			{
 				tmpVec = new Vector2 (0.0f, tmpForce);
 				tmpRigidBody.AddForce (tmpVec);
-				gameMgr.playSound_Player("jump");
+				gameMgr.playSound("jump");
 			}
 		}
 	}

@@ -87,7 +87,7 @@ public class CharacterSelector : MonoBehaviour
 			SelectAbility(savedAbilityIndex);
 		}
 
-
+		gameMgr.PlayBackgroundMusic ();
 	}
 
 	void OnDestroy()

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Soomla.Store;
 
+[RequireComponent(typeof(AudioSource))]
 public class GameManager : MonoBehaviour {
 
 
@@ -25,9 +26,7 @@ public class GameManager : MonoBehaviour {
 	public AudioClip dash;
 	public AudioClip crash;
 	public AudioClip warp;
-	private AudioSource audioSource;
-	private AudioSource audioSource_PlayOnce;
-	private AudioSource audioSource_PlayerAct;
+	private AudioSource bgAudioSource;
 	private AudioClip _audioClip;
 	private bool bAudioAvailable = false;//turn on music when save file is loaded
 
@@ -35,17 +34,10 @@ public class GameManager : MonoBehaviour {
 		//RespawnPlayer();
 
 		//initial audio source
-		audioSource=gameObject.AddComponent<AudioSource>();
-		audioSource.loop = true;
-		audioSource.mute = !bAudioAvailable;
-
-		audioSource_PlayOnce=gameObject.AddComponent<AudioSource>();
-		audioSource_PlayOnce.loop = false;
-		audioSource_PlayOnce.mute = !bAudioAvailable;
-		
-		audioSource_PlayerAct=gameObject.AddComponent<AudioSource>();
-		audioSource_PlayerAct.loop = false;
-		audioSource_PlayerAct.mute = !bAudioAvailable;
+		bgAudioSource=gameObject.AddComponent<AudioSource>();
+		bgAudioSource.loop = true;
+		bgAudioSource.mute = !bAudioAvailable;
+		bgAudioSource.clip = bgMusic;
 	}
 
 	public void StartGame()
@@ -64,24 +56,19 @@ public class GameManager : MonoBehaviour {
 
 	public void SetAudioAvailable(bool bAvailable)
 	{
-		if (audioSource != null)
-			audioSource.mute = !bAvailable;
-		else
-			bAudioAvailable = bAvailable;
+		if (bgAudioSource != null)
+			bgAudioSource.mute = !bAvailable;
 
-		if (audioSource_PlayOnce != null)
-			audioSource_PlayOnce.mute = !bAvailable;
-		if (audioSource_PlayerAct != null)
-			audioSource_PlayerAct.mute = !bAvailable;
-
+		bAudioAvailable = bAvailable;
+		PlayBackgroundMusic ();
 
 	}
 
-	public void PlayBackground() {
-		if (bAudioAvailable) {	
-			audioSource.clip = bgMusic;
-			audioSource.Play ();
+	public void PlayBackgroundMusic() {
+		if (bAudioAvailable && !bgAudioSource.isPlaying) {	
+			bgAudioSource.Play ();
 		}
+		//print ("bAudioAvailable: "+bAudioAvailable);
 	}
 
 	public void CleanUpAbilityNames()
@@ -171,30 +158,28 @@ public class GameManager : MonoBehaviour {
 
 		if(eventHandler)
 			eventHandler.onPlayerRespawn ();
+
+		PlayBackgroundMusic ();
 	}
 
 	public GameObject GetCurrentPlayer()
 	{
 		return CurrentPlayer;
 	}
+
 	public void restorePurchase()
 	{
 		SoomlaStore.RestoreTransactions ();
 	}
-	public void playSound(string type,bool bLooping = false, float pitch = 1)
+
+	public void playSound (string type, bool isStopBackground = false)
 	{
-		audioSource_PlayOnce.clip = audioAll[type];
-		audioSource_PlayOnce.loop = bLooping;
-		audioSource_PlayOnce.pitch = pitch;
-		audioSource_PlayOnce.Play ();
+		AudioSource.PlayClipAtPoint (audioAll[type], new Vector3 (5, 1, 2));
+		if (isStopBackground) 
+		{
+			bgAudioSource.Stop();
+		}
+		print ("bAudioAvailable: "+bAudioAvailable);
 	}
 	
-	public void playSound_Player(string type,bool bLooping = false, float pitch = 1)
-	{
-		audioSource_PlayerAct.clip = audioAll[type];
-		audioSource_PlayerAct.loop = bLooping;
-		audioSource_PlayerAct.pitch = pitch;
-		audioSource_PlayerAct.Play ();
-	}
-
 }
