@@ -207,7 +207,10 @@ public class CharacterSelector : MonoBehaviour
 			for (int i = 0; i < AbilityObjectList.Count; ++i)
 			{
 				if(idx == AbilityObjectList[i].GetComponent<AbilityInfoDisplay>().AbilityInfoIndex)
+				{
 					AbilityDisplayObjectIndex = i;
+					break;
+				}
 			}
 			ReArrangeAbility(AbilityDisplayObjectIndex);
 
