@@ -174,7 +174,10 @@ public class GameManager : MonoBehaviour {
 
 	public void playSound (string type, bool isStopBackground = false)
 	{
-		AudioSource.PlayClipAtPoint (audioAll[type], new Vector3 (5, 1, 2));
+		if (bAudioAvailable) 
+		{	
+			AudioSource.PlayClipAtPoint (audioAll [type], new Vector3 (5, 1, 2));
+		}
 		if (isStopBackground) 
 		{
 			bgAudioSource.Stop();
