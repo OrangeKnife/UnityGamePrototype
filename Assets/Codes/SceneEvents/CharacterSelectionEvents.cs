@@ -10,6 +10,7 @@ public class CharacterSelectionEvents : MonoBehaviour {
 	public GameObject GoButton;
 	public GameObject UnlockCharButton,UnlockAbilityButton,UnlockCharButtonIGP,UnlockAbilityButtonIGP;
 	public GameObject UnlockCharButtonText,UnlockAbilityButtonText,UnlockCharButtonIGPText,UnlockAbilityButtonIGPText;
+	public GameObject ProcessingPanel;
 	private bool charUnlocked,abilityUnlocked;
 
 	void Start () {
@@ -91,5 +92,9 @@ public class CharacterSelectionEvents : MonoBehaviour {
 		GoButton.GetComponent<UnityEngine.UI.Button> ().interactable = charUnlocked && abilityUnlocked;
 	}
 
+	public void showPorcessingPanel(bool wantToShow)
+	{
+		ProcessingPanel.SetActive (wantToShow);
+	}
 
 }

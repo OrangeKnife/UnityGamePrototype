@@ -284,14 +284,25 @@ public class CharacterSelector : MonoBehaviour
 		return false;
 	}
 
+	public void CancelPurchase(string soomlaItemId)
+	{
+		CancelInvoke("processingEnd");
+		Invoke ("processingEnd", 1f);
+	}
+
 	public void DoUnlockCharacter(int characterIndex)
 	{
+		CancelInvoke("processingEnd");
+		Invoke ("processingEnd", 1f);
+
 		eventHandler.OnSelectedACharacter (CharacterInfoList [characterIndex], true);
 	}
 
 	public void DoUnlockAbility(int abilityIdx)
 	{
-		
+		CancelInvoke("processingEnd");
+		Invoke ("processingEnd", 1f);
+
 		if (AbilityInfoList[abilityIdx].canSelect)
 		   // && StoreInventory.GetItemBalance(AbilityInfoList[abilityIdx].AbilitySoomlaId) > 0) 
 		{
@@ -328,8 +339,13 @@ public class CharacterSelector : MonoBehaviour
 	public void UnlockCurrentCharUsingSoomla(){
 		try{
 			StoreInventory.BuyItem(CharacterInfoList [currentCharacterIndex].CharacterSoomlaId);
+			eventHandler.showPorcessingPanel(true);
+
+			Invoke("processingEnd",10f);
 		} catch (Exception e) {
 			Debug.LogError ("SOOMLA/UNITY " + e.Message);
+			CancelInvoke("processingEnd");
+			processingEnd();
 		}
 	}
 
@@ -337,9 +353,19 @@ public class CharacterSelector : MonoBehaviour
 	public void UnlockCurrentAbilityUsingSoomla(){
 		try{
 			StoreInventory.BuyItem(AbilityInfoList [currentAbilityIndex].AbilitySoomlaId);
+			eventHandler.showPorcessingPanel(true);
+
+			Invoke("processingEnd",10f);
 		} catch (Exception e) {
 			Debug.LogError ("SOOMLA/UNITY " + e.Message);
+			CancelInvoke("processingEnd");
+			processingEnd();
 		}
+	}
+
+	void processingEnd()
+	{
+		eventHandler.showPorcessingPanel (false);
 	}
 
 

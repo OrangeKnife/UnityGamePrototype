@@ -158,6 +158,9 @@ public class ShopEventHandler {
 	/// </summary>
 	/// <param name="pvi">Purchasable virtual item.</param>
 	public void onMarketPurchaseCancelled(PurchasableVirtualItem pvi) {
+		if (cs) {
+			cs.CancelPurchase (pvi.ItemId);
+		}
 		Utils.addLog ("onMarketPurchaseCancelled called: itemid=" + pvi.ItemId + ",cs="+cs.name);
 	}
 	
