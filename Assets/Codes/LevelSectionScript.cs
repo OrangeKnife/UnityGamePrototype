@@ -25,22 +25,13 @@ public class LevelSectionScript : MonoBehaviour {
 
 		//print ((privateBounding.max.x/3)+", player: "+player.transform.position.x );
 		_playerManager = player.GetComponent<PlayerManager>();
+
+		scoreMultiplier = _playerManager.getScoreMultiplier ();
+		//print ("scoreMultiplier: " + scoreMultiplier);
 	}
-	
-	public float getScoreMultiplier() {
-		return scoreMultiplier;
-	}
-	
-	private int getCurrentRealScore(float score) {
+
+	private int getCalculatedScore(float score) {
 		return Mathf.RoundToInt(score * scoreMultiplier);
-	}
-
-	public void setScoreMultiplier(float scoreMulti) {
-		scoreMultiplier = scoreMulti;
-	}
-
-	public void setLvScore(int score) {
-		lvScore = getCurrentRealScore(score);
 	}
 
 	private float getPlayerPositionX() {
@@ -52,7 +43,8 @@ public class LevelSectionScript : MonoBehaviour {
 		//_playerManager.addPlayerScore(lvScore);
 		//print ("boundarymax.x: "+(boundingBox.max.x)+", player: "+player.transform.position.x );print ((boundingBox.max.x/3)+", player: "+player.transform.position.x );
 		if (getPlayerPositionX() > boundingBox.max.x && lvScore > 0) {
-			_playerManager.addPlayerScore(lvScore);
+			int _lvscore = getCalculatedScore(lvScore);
+			_playerManager.addPlayerScore(_lvscore);
 			lvScore = 0;
 
 //			_playerManager.addPlayerScore(lvScore);

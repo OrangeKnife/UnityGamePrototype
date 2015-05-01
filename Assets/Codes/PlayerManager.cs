@@ -6,6 +6,7 @@ public class PlayerManager : MonoBehaviour {
 	public float Score2GoldRatio = 1f;
 
 	private float CoinMultiplier = 1.0f;
+	private float ScoreMultiplier = 1.0f;
 	private int playerScore = 0;
 	private int MAXSCORELENGTH = 100;
 
@@ -58,7 +59,13 @@ public class PlayerManager : MonoBehaviour {
 		return CoinMultiplier;
 	}
 
- 
+	public void setScoreMultiplier(float scoreMulti) {
+		ScoreMultiplier = scoreMulti;
+	}
+	
+	public float getScoreMultiplier() {
+		return ScoreMultiplier;
+	}
 
 	// Update is called once per frame
 	void Update () {

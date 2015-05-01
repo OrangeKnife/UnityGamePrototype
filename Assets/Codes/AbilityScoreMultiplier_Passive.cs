@@ -4,13 +4,18 @@ using System.Collections;
 public class AbilityScoreMultiplier_Passive : AbilityBase {
 
 	private LevelSectionScript lvSection;
-	private PlayerManager playerMan;
+	GameManager gameMgr;
+	private GameObject player;
+	private PlayerManager _playerManager;
 	
 	public override void EnableAbilityPassive()
 	{
-		lvSection = GetComponent<LevelSectionScript>();
-		lvSection.setScoreMultiplier(lvSection.getScoreMultiplier()*2f);
-		print ("score : " + lvSection.getScoreMultiplier () * 2f);
+		gameMgr = GameObject.Find("GameManager").GetComponent<GameManager>();
+
+		player = gameMgr.GetCurrentPlayer();
+		_playerManager = player.GetComponent<PlayerManager>();
+		_playerManager.setScoreMultiplier (2f);
+
 		base.EnableAbilityPassive();
 	}
 	
