@@ -216,10 +216,10 @@ public class ShopEventHandler {
 	
 	#if UNITY_ANDROID && !UNITY_EDITOR
 	public void onIabServiceStarted() {
-		CharacterSelectionEvents.addLog ("onIabServiceStarted");
+		Utils.addLog ("onIabServiceStarted");
 	}
 	public void onIabServiceStopped() {
-		CharacterSelectionEvents.addLog ("onIabServiceStopped");
+		Utils.addLog ("onIabServiceStopped");
 	}
 	#endif
 }
