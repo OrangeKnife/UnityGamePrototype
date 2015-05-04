@@ -36,9 +36,12 @@ public class CharacterSelector : MonoBehaviour
 
 	public List<CharacterInfo> CharacterInfoList = new List<CharacterInfo> ();
 	public GameObject CharacterInfoDisplayTemplate;
+	public Vector2 CharacterInfoDisplayPosOffset;
 
 	public List<AbilityInfo> AbilityInfoList = new List<AbilityInfo> ();
 	public GameObject AbilityInfoDisplayTemplate;
+	public Vector2 AbilityInfoDisplayPosOffset;
+
 	public int maxCharacterInfoDisplayNum = 5;
 	public int maxAbilityInfoDisplayNum = 5;
 	public Vector2 selectedAbilityScale = new Vector2(2.5f,2.5f);
@@ -382,18 +385,18 @@ public class CharacterSelector : MonoBehaviour
 			gobject.GetComponent<SpriteRenderer> ().enabled = false;
 		}
 
-		CharObjectList [idx].GetComponent<CharacterInfoDisplay> ().SetPosition (0, 3.5f, selectedCharScale.x, selectedCharScale.y);
+		CharObjectList [idx].GetComponent<CharacterInfoDisplay> ().SetPosition ( 0, CharacterInfoDisplayPosOffset.y, selectedCharScale.x, selectedCharScale.y);
 
 		for(int i = 1; i <= maxCharacterInfoDisplayNum/2; i++)
 		{
 			if(idx - i  >= 0)
 			{
-				CharObjectList[idx - i].GetComponent<CharacterInfoDisplay>().SetPosition(-i * 3, 3.5f, 1, 1);
+				CharObjectList[idx - i].GetComponent<CharacterInfoDisplay>().SetPosition(-i * CharacterInfoDisplayPosOffset.x /2, CharacterInfoDisplayPosOffset.y, 1, 1);
 			}
 
 			if(idx + i < CharObjectList.Count )
 			{
-				CharObjectList[idx + i].GetComponent<CharacterInfoDisplay>().SetPosition(i * 3, 3.5f, 1, 1);
+				CharObjectList[idx + i].GetComponent<CharacterInfoDisplay>().SetPosition(i * CharacterInfoDisplayPosOffset.x / 2, CharacterInfoDisplayPosOffset.y, 1, 1);
 			}
 		}
 
@@ -406,18 +409,18 @@ public class CharacterSelector : MonoBehaviour
 			gobject.GetComponent<SpriteRenderer> ().enabled = false;
 		}
 		
-		AbilityObjectList [idx].GetComponent<AbilityInfoDisplay> ().SetPosition (0, -0.3f, selectedAbilityScale.x, selectedAbilityScale.y);
+		AbilityObjectList [idx].GetComponent<AbilityInfoDisplay> ().SetPosition (0, AbilityInfoDisplayPosOffset.y, selectedAbilityScale.x, selectedAbilityScale.y);
 		
 		for(int i = 1; i <= maxAbilityInfoDisplayNum/2; i++)
 		{
 			if(idx - i  >= 0)
 			{
-				AbilityObjectList[idx - i].GetComponent<AbilityInfoDisplay>().SetPosition(-i * 3, -0.3f, 1, 1);
+				AbilityObjectList[idx - i].GetComponent<AbilityInfoDisplay>().SetPosition(-i * AbilityInfoDisplayPosOffset.x / 2, AbilityInfoDisplayPosOffset.y, 1, 1);
 			}
 			
 			if(idx + i < AbilityObjectList.Count )
 			{
-				AbilityObjectList[idx + i].GetComponent<AbilityInfoDisplay>().SetPosition(i * 3, -0.3f, 1, 1);
+				AbilityObjectList[idx + i].GetComponent<AbilityInfoDisplay>().SetPosition(i * AbilityInfoDisplayPosOffset.x / 2, AbilityInfoDisplayPosOffset.y, 1, 1);
 			}
 		}
 

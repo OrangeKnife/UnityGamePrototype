@@ -30,6 +30,24 @@ public class GameManager : MonoBehaviour {
 	private AudioClip _audioClip;
 	private bool bAudioAvailable = false;//turn on music when save file is loaded
 
+	private static GameManager _instance;
+	
+	public static GameManager instance
+	{
+		get
+		{
+			if(_instance == null)
+			{
+				_instance = GameObject.FindObjectOfType<GameManager>();
+				DontDestroyOnLoad(_instance.gameObject);
+			}
+			
+			return _instance;
+		}
+	}
+
+
+
 	void Start () {
 		//RespawnPlayer();
 
@@ -120,6 +138,20 @@ public class GameManager : MonoBehaviour {
 	}
 
 	void Awake(){
+		if(_instance == null)
+		{
+			_instance = this;
+			DontDestroyOnLoad(this);
+		}
+		else
+		{
+			if(this != _instance)
+			{
+				Destroy(this.gameObject);
+				return;
+			}
+		}
+
 		addAudioDictionary ();
 		DontDestroyOnLoad(gameObject);
 	}
@@ -148,10 +180,12 @@ public class GameManager : MonoBehaviour {
 		CurrentPlayer = Instantiate(CurrentPlayerTemplate);
 		//AbilityNameArray [0] = "abi1";
 		abManager = CurrentPlayer.GetComponent<AbilityManager>();
+
+
 		for (int i = 0; i < AbilityNameArray.Count; ++i)
 		{
 			print ("add ability: "+AbilityNameArray[i]);
-			abManager.addAbility(AbilityNameArray[i], eventHandler.CreateAbilityUISlot(new Vector3(15 + i*65+ i*5,0,0)));
+			abManager.addAbility(AbilityNameArray[i], eventHandler.CreateAbilityUISlot(15f,15f,i));
 		}
 
 		GetComponent<LevelGenerator>().InitLevel();

@@ -205,14 +205,23 @@ public class GameSceneEvents : MonoBehaviour {
 
 	public void CleanUpAbilityUISlots()
 	{
+		foreach (GameObject go in abilityUISlots) {
+			Destroy (go);
+		}
+
 		abilityUISlots.Clear ();
 	}
 
-	public GameObject CreateAbilityUISlot(Vector3 offset)
+	public GameObject CreateAbilityUISlot(float initialOffsetX, float OffsetX, int idx)
 	{
 		GameObject slot = GameObject.Instantiate (AbilityUISlotTemplate);
-		slot.transform.SetParent(UI_AbilityPanel.transform,false);
+
+		float imgwidth = slot.GetComponentInChildren<RectTransform>().rect.width;
+		Vector3 offset = new Vector3 (initialOffsetX + idx * OffsetX + idx * imgwidth, 0, 0) *  slot.transform.localScale.x;
 		slot.transform.position += offset;
+
+		slot.transform.SetParent(UI_AbilityPanel.transform,false);
+
 		abilityUISlots.Add (slot);
 		return slot;
 
