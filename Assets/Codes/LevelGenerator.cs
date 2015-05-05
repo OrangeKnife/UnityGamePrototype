@@ -230,8 +230,11 @@ public class LevelGenerator : MonoBehaviour {
 			{
 				// spawn all sections for testing
 				Utils.addLog("SectionAll_Count=" + SectionAll_Count);
-				SpawnSection(SectionArray_All[SectionAll_Count]);
-				SectionAll_Count++;
+				if (SectionAll_Count < SectionArray_All.Count)
+				{
+					SpawnSection(SectionArray_All[SectionAll_Count]);
+					SectionAll_Count++;
+				}
 			}
 
 		}
