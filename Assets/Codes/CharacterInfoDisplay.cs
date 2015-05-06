@@ -6,9 +6,12 @@ using UnityEngine;
 public class CharacterInfoDisplay: MonoBehaviour {
 	public Vector3 DisplayPosition,DisplayScale;
 	public bool bDirty = false;
+
+	SpriteRenderer spriteRenderer;
 	void Awake()
 	{
-		GetComponent<SpriteRenderer> ().enabled = false;
+		spriteRenderer = GetComponent<SpriteRenderer> ();
+		spriteRenderer.enabled = false;
 	}
 	void Update()
 	{
@@ -27,7 +30,14 @@ public class CharacterInfoDisplay: MonoBehaviour {
 		DisplayScale.x = scaleX;
 		DisplayScale.y = scaleY;
 		bDirty = wantDirty;
-		GetComponent<SpriteRenderer> ().enabled = wantSpriteRendering;
+		spriteRenderer.enabled = wantSpriteRendering;
+	}
+
+	public void SetTranslucency(float alpha)
+	{
+		Color tempColor = spriteRenderer.color;
+		tempColor.a = alpha;
+		spriteRenderer.color = tempColor;
 	}
 	
 }

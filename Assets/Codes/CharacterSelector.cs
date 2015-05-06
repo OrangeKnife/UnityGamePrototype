@@ -386,18 +386,25 @@ public class CharacterSelector : MonoBehaviour
 		}
 
 		CharObjectList [idx].GetComponent<CharacterInfoDisplay> ().SetPosition ( 0, CharacterInfoDisplayPosOffset.y, selectedCharScale.x, selectedCharScale.y);
-
+		CharObjectList[idx].GetComponent<CharacterInfoDisplay>().SetTranslucency(1f);
 		for(int i = 1; i <= maxCharacterInfoDisplayNum/2; i++)
 		{
+			CharacterInfoDisplay tempCID;
 			if(idx - i  >= 0)
 			{
-				CharObjectList[idx - i].GetComponent<CharacterInfoDisplay>().SetPosition(-i * CharacterInfoDisplayPosOffset.x /2, CharacterInfoDisplayPosOffset.y, 1, 1);
+				tempCID = CharObjectList[idx - i].GetComponent<CharacterInfoDisplay>();
+				tempCID.SetPosition(-i * CharacterInfoDisplayPosOffset.x /2, CharacterInfoDisplayPosOffset.y, 1, 1);
+				tempCID.GetComponent<CharacterInfoDisplay>().SetTranslucency(0.5f);
 			}
 
 			if(idx + i < CharObjectList.Count )
 			{
-				CharObjectList[idx + i].GetComponent<CharacterInfoDisplay>().SetPosition(i * CharacterInfoDisplayPosOffset.x / 2, CharacterInfoDisplayPosOffset.y, 1, 1);
+				tempCID = CharObjectList[idx + i].GetComponent<CharacterInfoDisplay>();
+				tempCID.GetComponent<CharacterInfoDisplay>().SetPosition(i * CharacterInfoDisplayPosOffset.x / 2, CharacterInfoDisplayPosOffset.y, 1, 1);
+				tempCID.GetComponent<CharacterInfoDisplay>().SetTranslucency(0.5f);
 			}
+
+
 		}
 
 		lastCharacterIndex = idx;
@@ -410,17 +417,23 @@ public class CharacterSelector : MonoBehaviour
 		}
 		
 		AbilityObjectList [idx].GetComponent<AbilityInfoDisplay> ().SetPosition (0, AbilityInfoDisplayPosOffset.y, selectedAbilityScale.x, selectedAbilityScale.y);
-		
+		AbilityObjectList [idx].GetComponent<AbilityInfoDisplay> ().SetTranslucency (1f);
+
 		for(int i = 1; i <= maxAbilityInfoDisplayNum/2; i++)
 		{
+			AbilityInfoDisplay temp_AID;
 			if(idx - i  >= 0)
 			{
-				AbilityObjectList[idx - i].GetComponent<AbilityInfoDisplay>().SetPosition(-i * AbilityInfoDisplayPosOffset.x / 2, AbilityInfoDisplayPosOffset.y, 1, 1);
+				temp_AID = AbilityObjectList[idx - i].GetComponent<AbilityInfoDisplay>();
+				temp_AID.SetPosition(-i * AbilityInfoDisplayPosOffset.x / 2, AbilityInfoDisplayPosOffset.y, 1, 1);
+				temp_AID.SetTranslucency(0.5f);
 			}
 			
 			if(idx + i < AbilityObjectList.Count )
 			{
-				AbilityObjectList[idx + i].GetComponent<AbilityInfoDisplay>().SetPosition(i * AbilityInfoDisplayPosOffset.x / 2, AbilityInfoDisplayPosOffset.y, 1, 1);
+				temp_AID = AbilityObjectList[idx + i].GetComponent<AbilityInfoDisplay>();
+				temp_AID.SetPosition(i * AbilityInfoDisplayPosOffset.x / 2, AbilityInfoDisplayPosOffset.y, 1, 1);
+				temp_AID.SetTranslucency(0.5f);
 			}
 		}
 
