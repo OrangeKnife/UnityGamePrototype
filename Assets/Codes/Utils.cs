@@ -8,6 +8,7 @@ public class Utils {
 	static List<string> stringLog = new List<string>();
 	static int LogMaxLine = 10;
 
+	static string appId;
 	public static void addLog(string logstring)
 	{
 		stringLog.Add(logstring);
@@ -39,5 +40,16 @@ public class Utils {
 			logText.GetComponent<UnityEngine.UI.Text> ().text = "";
 		
 		logLineCount = 0;
+	}
+
+	public static void rateGame()
+	{
+		#if UNITY_ANDROID
+		appId = "";
+		Application.OpenURL("market://details?id="+appId);
+		#elif UNITY_IPHONE
+		appId = "";
+		Application.OpenURL("itms-apps://itunes.apple.com/app/"+appId);
+		#endif
 	}
 }

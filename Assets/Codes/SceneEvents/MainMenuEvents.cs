@@ -119,6 +119,10 @@ public class MainMenuEvents : MonoBehaviour {
 		}
 	}
 
+	public void onRateClicked()
+	{
+		Utils.rateGame ();
+	}
 
 
 

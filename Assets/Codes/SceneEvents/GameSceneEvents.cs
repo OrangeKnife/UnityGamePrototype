@@ -252,4 +252,9 @@ public class GameSceneEvents : MonoBehaviour {
 
 	}
 
+	public void onRateClicked()
+	{
+		Utils.rateGame ();
+	}
+
 }
