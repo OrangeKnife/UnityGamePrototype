@@ -68,6 +68,7 @@ public class PlayerController : MonoBehaviour {
 		SetGravity(-PlayerGravity);
 
 		distToGround = GetComponent<BoxCollider2D>().bounds.extents.y;
+		distToGround += 0.5f;
 
 //		print ("test start");
 //		currentGround = groundObj;
