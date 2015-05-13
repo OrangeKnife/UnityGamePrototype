@@ -269,6 +269,19 @@ public class LevelGenerator : MonoBehaviour {
 		GameObject randomSection = Instantiate(template);
 		NumberOfGeneratedSection++;
 
+		if (NumberOfGeneratedSection % 5 == 0)
+		{
+			// spawn coins
+			CoinController[] tmpCoins = randomSection.GetComponentsInChildren<CoinController>();
+			for (int i = 0; i < tmpCoins.Length; ++i)
+			{
+				tmpCoins[i].SetSpawnCoin(true, true, false);
+			}
+
+			// force spawn at least one coin
+			tmpCoins[Random.Range(0, tmpCoins.Length)].SetSpawnCoin(true, false, true);
+		}
+
 		///// calculate bounding box for each template (for future calculation)
 		Bounds tmp = new Bounds();
 		foreach (Transform t in randomSection.GetComponentsInChildren<Transform>())
