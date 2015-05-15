@@ -6,6 +6,9 @@ public class AbilityAirbrake : AbilityBase {
 	private PlayerController playerCtrl;
 	private float tmpSpeed;
 
+	private float ChargeTimeThreshold = 0.5f;
+	private float ChargeTime;
+
 	new void Start () {
 		bActiveAbility = true;
 
@@ -19,6 +22,7 @@ public class AbilityAirbrake : AbilityBase {
 
 		tmpSpeed = playerCtrl.getMoveSpeed ();
 		playerCtrl.setMoveSpeed(0.01f);
+		ChargeTime = 0.0f;
 
 		base.StartActiveEffect();
 	}
@@ -30,6 +34,24 @@ public class AbilityAirbrake : AbilityBase {
 
 		playerCtrl.setMoveSpeed(tmpSpeed);
 		base.StopActiveEffect();
+	}
+
+	new void Update()
+	{
+		if (playerCtrl != null && playerCtrl.bActivateGlide)
+		{
+			ChargeTime += Time.deltaTime;
+			if (ChargeTime > ChargeTimeThreshold)
+			{
+				StopActiveEffect();
+			}
+		}
+		else
+		{
+			ChargeTime = 0.0f;
+		}
+
+		base.Update();
 	}
 
 	public override Sprite GetIcon()
