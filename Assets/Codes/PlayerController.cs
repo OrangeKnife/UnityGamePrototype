@@ -236,6 +236,8 @@ public class PlayerController : MonoBehaviour {
 	{
 		animator.SetBool("IsOnGround", IsGrounded());
 		animator.SetBool("IsDead", isDead);
+		animator.SetBool("IsGliding", bActivateGlide);
+		animator.SetBool("IsFalling", tmpRigidBody.velocity.y < 0);
 	}
 
 	void Died()

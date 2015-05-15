@@ -279,7 +279,8 @@ public class LevelGenerator : MonoBehaviour {
 			}
 
 			// force spawn at least one coin
-			tmpCoins[Random.Range(0, tmpCoins.Length)].SetSpawnCoin(true, false, true);
+			if (tmpCoins.Length > 0)
+				tmpCoins[Random.Range(0, tmpCoins.Length)].SetSpawnCoin(true, false, true);
 		}
 
 		///// calculate bounding box for each template (for future calculation)
