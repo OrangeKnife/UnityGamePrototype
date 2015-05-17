@@ -68,7 +68,7 @@ public class PlayerController : MonoBehaviour {
 		SetGravity(-PlayerGravity);
 
 		distToGround = GetComponent<BoxCollider2D>().bounds.extents.y;
-		distToGround += 0.5f;
+		//distToGround += 0.5f;
 
 //		print ("test start");
 //		currentGround = groundObj;
@@ -156,6 +156,7 @@ public class PlayerController : MonoBehaviour {
 			if (hit.collider == null)
 			{
 				tmpPos = transform.position;
+				tmpPos.y += tmpBoxCollider2D.offset.y * transform.localScale.y;
 				tmpPos.y -= tmpBoxCollider2D.bounds.extents.y;
 				Debug.DrawRay(tmpPos, transform.right, Color.blue);
 				hit = Physics2D.Raycast(tmpPos, transform.right, distToGround + 0.1f, 1 << LayerMask.NameToLayer("Level"));
@@ -164,6 +165,7 @@ public class PlayerController : MonoBehaviour {
 			if (hit.collider == null)
 			{
 				tmpPos = transform.position;
+				tmpPos.y += tmpBoxCollider2D.offset.y * transform.localScale.y;
 				tmpPos.y += tmpBoxCollider2D.bounds.extents.y;
 				Debug.DrawRay(tmpPos, transform.right, Color.blue);
 				hit = Physics2D.Raycast(tmpPos, transform.right, distToGround + 0.1f, 1 << LayerMask.NameToLayer("Level"));
