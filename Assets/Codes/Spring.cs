@@ -20,6 +20,7 @@ public class Spring : MonoBehaviour {
 		//print (_player.getJumpForce ());
 		float springForce = 1500 * 1.5f;
 		Vector2 tmpVec = new Vector2 (0.0f, springForce);
+		collider.attachedRigidbody.velocity = new Vector2 (0, 0);
 		collider.attachedRigidbody.AddForce (tmpVec);
 			
 	}
