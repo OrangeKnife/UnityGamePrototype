@@ -51,11 +51,7 @@ public class GameManager : MonoBehaviour {
 	void Start () {
 		//RespawnPlayer();
 
-		//initial audio source
-		bgAudioSource=gameObject.AddComponent<AudioSource>();
-		bgAudioSource.loop = true;
-		bgAudioSource.mute = !bAudioAvailable;
-		bgAudioSource.clip = bgMusic;
+
 	}
 
 	public void StartGame()
@@ -154,6 +150,12 @@ public class GameManager : MonoBehaviour {
 
 		addAudioDictionary ();
 		DontDestroyOnLoad(gameObject);
+
+		//initial audio source
+		bgAudioSource=gameObject.AddComponent<AudioSource>();
+		bgAudioSource.loop = true;
+		bgAudioSource.mute = !bAudioAvailable;
+		bgAudioSource.clip = bgMusic;
 	}
 
 	private void addAudioDictionary() {
