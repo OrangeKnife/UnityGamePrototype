@@ -258,6 +258,8 @@ public class PlayerController : MonoBehaviour {
 		//StartCoroutine(WaitForRespawn());
 		eventHandler.onPlayerDead();
 		tmpAbilityManager.ForceStopActiveAbility();
+
+		playerMgr.checkHighScore ();
 	}
 
 	public void Respawn()

@@ -4,7 +4,8 @@ using UnityEngine.UI;
 using System;
 using Soomla.Store;
 public class MainMenuEvents : MonoBehaviour {
-	public GameObject OptionPanel;
+	public GameObject OptionPanel,HighScorePanel;
+	public List<Text> UIScores;
 	public Toggle MusicAndSoundToggle;
 
 
@@ -125,11 +126,39 @@ public class MainMenuEvents : MonoBehaviour {
 	}
 
 
+	public void onHighScoreButtonClicked()
+	{
+		HighScorePanel.SetActive (true);
+		if (GameFile.Load ("save.data", ref mysave)) {
+			for (int i = 0; i < UIScores.Count; ++i) {
+				if (i < mysave.highScores.Count)
+					UIScores [i].text = mysave.highScores [i].ToString ();
+			}
+		}
+	}
 
+	public void onCloseHighScorePanelButtonClicked()
+	{
+		HighScorePanel.SetActive (false);
+	}
 
+	public void onRemoveAllScoresButtonClicked()
+	{
+		if (GameFile.Load ("save.data", ref mysave)) {
+			mysave.highScores.Clear();
+			GameFile.Save ("save.data", mysave);
+			refreshHighScores(mysave);
+		}
+	}
 
-
-
+	void refreshHighScores(SaveObject so)
+	{
+		for (int i = 0; i < UIScores.Count; ++i) {
+			UIScores [i].text = "N / A";
+			if (i < so.highScores.Count)
+				UIScores [i].text = so.highScores [i].ToString ();
+		}
+	}
 
 
 

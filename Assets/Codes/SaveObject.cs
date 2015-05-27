@@ -1,5 +1,6 @@
 
 using System;
+using System.Collections.Generic;
 
 [Serializable]
 public class SaveObject
@@ -9,6 +10,8 @@ public class SaveObject
 		firstRun = inFirstRun;
 
 		optionMusic = true;
+
+		highScores = new List<int> ();
 	}
 	public string firstRun;// = "True";
 
@@ -16,5 +19,7 @@ public class SaveObject
 	public int lastSelectedAbilityIndex;//in selector
 
 	public bool optionMusic;
+
+	public List<int> highScores;
 }
 

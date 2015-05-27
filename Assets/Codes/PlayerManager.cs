@@ -25,7 +25,6 @@ public class PlayerManager : MonoBehaviour {
 	void Start () {
 		eventHandler = GameObject.Find ("eventHandler").GetComponent<GameSceneEvents>();
 
-		GameFile.Load ("save.data", ref mysave);
 		coins = StoreInventory.GetItemBalance(ShopAssets.COIN_CURRENCY_ITEM_ID);
 		eventHandler.UpdateUICoins (coins);
 	}
@@ -72,5 +71,34 @@ public class PlayerManager : MonoBehaviour {
 
 	}
 
+	public void checkHighScore()
+	{
+		if (playerScore == 0)
+			return;
 
+		GameFile.Load ("save.data", ref mysave);
+
+		if (mysave.highScores.Count == 0) {
+			 
+			mysave.highScores.Add(playerScore);
+
+		} else {
+		 
+				for (int i = 0; i < mysave.highScores.Count; ++i) {
+					if (playerScore >= mysave.highScores [i])
+					{
+						mysave.highScores.Insert (i, playerScore);
+						break;
+					}
+				}
+			 
+
+			if (mysave.highScores.Count > 5)
+				mysave.highScores.RemoveRange (5, mysave.highScores.Count - 5);
+		}
+
+
+
+		GameFile.Save ("save.data", mysave);
+	}
 }
