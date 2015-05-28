@@ -25,6 +25,7 @@ public class PlayerController : MonoBehaviour {
 	private float PlayerGravity = 80.0f;
 
 	private float distToGround = 0.0f;
+	private float distTraceOffset = 0.1f;
 
 	private Animator animator;
 	private bool isDead;
@@ -55,6 +56,8 @@ public class PlayerController : MonoBehaviour {
 	// Use this for initialization
 	void Start () 
 	{
+		//Time.fixedDeltaTime = 0.01f;
+
 		tmpBackground = GameObject.Find("ScrollingBackground").GetComponent<MaterialBackgroundController>();
 		animator = GetComponent<Animator>();
 
@@ -68,6 +71,7 @@ public class PlayerController : MonoBehaviour {
 		SetGravity(-PlayerGravity);
 
 		distToGround = GetComponent<BoxCollider2D>().bounds.extents.y;
+		distTraceOffset = tmpBoxCollider2D.bounds.extents.y * transform.localScale.y * 0.02f;
 		//distToGround += 0.5f;
 
 //		print ("test start");
@@ -157,7 +161,7 @@ public class PlayerController : MonoBehaviour {
 			{
 				tmpPos = transform.position;
 				tmpPos.y += tmpBoxCollider2D.offset.y * transform.localScale.y;
-				tmpPos.y -= tmpBoxCollider2D.bounds.extents.y;
+				tmpPos.y -= (tmpBoxCollider2D.bounds.extents.y - distTraceOffset);
 				Debug.DrawRay(tmpPos, transform.right, Color.blue);
 				hit = Physics2D.Raycast(tmpPos, transform.right, distToGround + 0.1f, 1 << LayerMask.NameToLayer("Level"));
 			}
@@ -166,7 +170,7 @@ public class PlayerController : MonoBehaviour {
 			{
 				tmpPos = transform.position;
 				tmpPos.y += tmpBoxCollider2D.offset.y * transform.localScale.y;
-				tmpPos.y += tmpBoxCollider2D.bounds.extents.y;
+				tmpPos.y += (tmpBoxCollider2D.bounds.extents.y - distTraceOffset);
 				Debug.DrawRay(tmpPos, transform.right, Color.blue);
 				hit = Physics2D.Raycast(tmpPos, transform.right, distToGround + 0.1f, 1 << LayerMask.NameToLayer("Level"));
 			}
